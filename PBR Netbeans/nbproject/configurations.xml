@@ -28,6 +28,8 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>../README.md</itemPath>
+    <itemPath>TestRmarkdown.Rmd</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -39,10 +41,15 @@
       </toolsSet>
       <compileType>
         <fortranCompilerTool>
+          <commandlineTool>/usr/local/bin/gfortran</commandlineTool>
           <commandLine>-k</commandLine>
         </fortranCompilerTool>
       </compileType>
+      <item path="../README.md" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="TestRmarkdown.Rmd" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
@@ -71,7 +78,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="../README.md" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="TestRmarkdown.Rmd" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
