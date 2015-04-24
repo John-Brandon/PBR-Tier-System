@@ -30,7 +30,6 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>../README.md</itemPath>
-    <itemPath>TestRmarkdown.Rmd</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -49,8 +48,6 @@
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
-      </item>
-      <item path="TestRmarkdown.Rmd" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
@@ -84,8 +81,6 @@
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
-      </item>
-      <item path="TestRmarkdown.Rmd" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
