@@ -17,38 +17,38 @@
             return
          end function debugz
 
-        subroutine init_age_distribution(a_m, npr)
+         subroutine init_age_distribution(a_m, npr)
 !#######################################################
 ! Calculate the stable age structure and equilibrium birth rate based on numbers-per-recruit calculations        
 !#######################################################
-       integer(kind = 4) :: a_m, npr
-       integer(kind = 4) :: ii, jj, kk
+            integer(kind = 4) :: a_m, npr
+            integer(kind = 4) :: ii, jj, kk
 ! INITIALIZE ##############################
-       real(kind = 4) Male_age(a_m+1)        ! Vector with numbers-at-age for males
-       real(kind = 4) Female_age(a_m+1)          ! "" females
+            real(kind = 4) Male_age(a_m+1)        ! Vector with numbers-at-age for males
+            real(kind = 4) Female_age(a_m+1)          ! "" females
 
-       real(kind = 4) Sage(a_m+1)                ! Vector of survival-at-age
-       real(kind = 4) Page(a_m+1)                ! Vector of rate of maturation-at-age
-       real(kind = 4) prop_mat_a(a_m+1)           ! Proportion mature at age (all zeros until a_m)
-       real(kind = 4) NPR_age(a_m+1)             ! Numbers-at-age-per-recruit
-       real(kind = 4) Nage_imm_0(a_m+1)          !
-       real(kind = 4) Nage_mat_0(a_m+1)          ! numbers-at-age that are mature
+            real(kind = 4) Sage(a_m+1)                ! Vector of survival-at-age
+            real(kind = 4) Page(a_m+1)                ! Vector of rate of maturation-at-age
+            real(kind = 4) prop_mat_a(a_m+1)           ! Proportion mature at age (all zeros until a_m)
+            real(kind = 4) NPR_age(a_m+1)             ! Numbers-at-age-per-recruit
+            real(kind = 4) Nage_imm_0(a_m+1)          !
+            real(kind = 4) Nage_mat_0(a_m+1)          ! numbers-at-age that are mature
 
-       temp_1plus = 0.0;
-       temp_mat = 0.0;
-       b_eq = 0.0;                             ! equilibrium birth rate at carrying capacity
-       NPR_oneplus = 0.0;                      ! size of the one-plus component scaled to per-recruit at carrying capacity - used to rescale initial recruitment with fishing
+            temp_1plus = 0.0;
+            temp_mat = 0.0;
+            b_eq = 0.0;                             ! equilibrium birth rate at carrying capacity
+            NPR_oneplus = 0.0;                      ! size of the one-plus component scaled to per-recruit at carrying capacity - used to rescale initial recruitment with fishing
 
 
 ! //////////////////////////////////////////////////
-       do 10 ii = 1, a_m
-           if(ii <= a_m) then
-               prop_mat_a(ii) = 0.0
-           else 
-               prop_mat_a(ii) = 1.0
-           end if
-           print *, "Hello from init_age_distribution"
-10     continue
+            do 10 ii = 1, a_m
+                if(ii <= a_m) then
+                    prop_mat_a(ii) = 0.0
+                else 
+                    prop_mat_a(ii) = 1.0
+                end if
+                print *, "Hello from init_age_distribution"
+10          continue
 
 !       do 11 jj = 1, a_m               ! calculate rate of maturation, given proportion mature at age
 !         if(1-prop_mat_a(jj)<0.001) then
