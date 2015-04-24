@@ -13,6 +13,7 @@
          real function debugz(a_m)
             real(kind = 4) :: a_m
             debugz = a_m / 3
+            print *, "Hello from debugz"
             return
          end function debugz
 

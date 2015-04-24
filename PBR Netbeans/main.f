@@ -1,22 +1,22 @@
-         !program test        
+         program main        
 
          
-         !use specs
-         !use zdebug    
+         use specs
+         use debug    
          !Include 'Initialize_AgeDistribution.f90'
          
          implicit none
          
 	 integer ii, jj, kk, ll ! counters
 	 integer xx, nn
-         integer a_m
          
 	 real aa, bb
 	 real start, finish
 	 real N_best, CV_N, z_variate
 	 real N_min
 	 real x_min, x_max, step_CV
-	 real yy
+         real a_m
+         real yy
 
 	 character*72 ccon
 	 integer ic
@@ -29,9 +29,9 @@
 		 
 !		write(*,*) 'Calling cpu_time'
 !		CALL test_cpu_time(start, finish, aa, bb)
-         a_m = 3
+         a_m = 3.
          write(*,*) "a_m = : ", a_m
-         !yy = debugz(a_m)
+         yy = debugz(a_m)
          write(*,*) "yy = : ", yy
          
 ! Test some random number generation

@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/PBRmodule.o \
+	${OBJECTDIR}/debugMod.o \
 	${OBJECTDIR}/main.o
 
 
@@ -66,6 +67,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans: ${OBJECTFILES}
 ${OBJECTDIR}/PBRmodule.o: PBRmodule.f 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -O2 -o ${OBJECTDIR}/PBRmodule.o PBRmodule.f
+
+${OBJECTDIR}/debugMod.o: debugMod.f 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/debugMod.o debugMod.f
 
 ${OBJECTDIR}/main.o: main.f 
 	${MKDIR} -p ${OBJECTDIR}

@@ -13,6 +13,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>PBRmodule.f</itemPath>
+      <itemPath>debugMod.f</itemPath>
       <itemPath>main.f</itemPath>
       <itemPath>par_input_file.txt</itemPath>
     </logicalFolder>
@@ -27,7 +28,6 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>../par_input_file.txt</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -38,10 +38,13 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <fortranCompilerTool>
+          <commandLine>-k</commandLine>
+        </fortranCompilerTool>
       </compileType>
-      <item path="../par_input_file.txt" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
       <item path="main.f" ex="false" tool="2" flavor2="0">
       </item>
@@ -68,9 +71,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="../par_input_file.txt" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="debugMod.f" ex="false" tool="2" flavor2="0">
       </item>
       <item path="main.f" ex="false" tool="2" flavor2="0">
       </item>

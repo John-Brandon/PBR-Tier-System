@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/PBRmodule.o \
+	${OBJECTDIR}/debugMod.o \
 	${OBJECTDIR}/main.o
 
 
@@ -47,7 +48,7 @@ CCFLAGS=
 CXXFLAGS=
 
 # Fortran Compiler Flags
-FFLAGS=
+FFLAGS=-k
 
 # Assembler Flags
 ASFLAGS=
@@ -66,6 +67,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans: ${OBJECTFILES}
 ${OBJECTDIR}/PBRmodule.o: PBRmodule.f 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/PBRmodule.o PBRmodule.f
+
+${OBJECTDIR}/debugMod.o: debugMod.f 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/debugMod.o debugMod.f
 
 ${OBJECTDIR}/main.o: main.f 
 	${MKDIR} -p ${OBJECTDIR}

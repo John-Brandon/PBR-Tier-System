@@ -1,7 +1,7 @@
       module specs
-      parameter(n2max=10000,np=33,icm=26,idm=40,iwm=201,nym=260)
-      character(8) datestart,dateend
-      character(10) timestart,timeend,timer
+!      parameter(n2max=10000,np=33,icm=26,idm=40,iwm=201,nym=260)
+!      character(8) datestart,dateend
+!      character(10) timestart,timeend,timer
 
 	 contains
 ! *************************************************************************      
