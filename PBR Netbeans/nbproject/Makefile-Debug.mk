@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/PBRmodule.o \
 	${OBJECTDIR}/debugMod.o \
+	${OBJECTDIR}/initializeMod.o \
 	${OBJECTDIR}/main.o
 
 
@@ -71,6 +72,10 @@ ${OBJECTDIR}/PBRmodule.o: PBRmodule.f
 ${OBJECTDIR}/debugMod.o: debugMod.f 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/debugMod.o debugMod.f
+
+${OBJECTDIR}/initializeMod.o: initializeMod.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/initializeMod.o initializeMod.f90
 
 ${OBJECTDIR}/main.o: main.f 
 	${MKDIR} -p ${OBJECTDIR}

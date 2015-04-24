@@ -1,23 +1,34 @@
-!         program main        
-
-         
-         use specs
+         program main        
+!#######################################################    
+! File:   main.f
+! Author: John R. Brandon
+! Contact: jbrandon at gmail             
+!
+! Created on April 23, 2015, 6:38 PM
+!#######################################################
+! Calculate the stable age structure and equilibrium birth rate based on numbers-per-recruit calculations        
+!#######################################################
+             
+! modules of code to use         
+         use calcs 
          use debug    
-         !Include 'Initialize_AgeDistribution.f90'
+         use Mod_initialize ! includes initialization of age structure
          
-         implicit none
+         implicit none ! turns off implicit typing; all variables must be declared by type
          
-	 integer ii, jj, kk, ll ! counters
-	 integer xx, nn
+	 integer(kind = 4) :: ii, jj, kk, ll ! counters
+	 integer(kind = 4) :: xx, nn
+         integer(kind = 4) :: a_m, npr
          
-	 real aa, bb
-	 real start, finish
-	 real N_best, CV_N, z_variate
-	 real N_min
-	 real x_min, x_max, step_CV
-         real a_m
-         real yy
-
+	 real(kind = 8) :: aa, bb
+	 real(kind = 8) :: start, finish
+	 real(kind = 8) :: N_best, CV_N, z_variate
+	 real(kind = 8) :: N_min
+	 real(kind = 8) :: x_min, x_max, step_CV
+         real(kind = 8) :: yy
+         real(kind = 8) :: S_juv, S_adult, delt_s ! delt_s is the difference between adult and juvenile survival rates
+         
+         !real(kind = 8), external :: debugz ! debugz 
 	 character*72 ccon
 	 integer ic
 	 
@@ -29,10 +40,18 @@
 		 
 !		write(*,*) 'Calling cpu_time'
 !		CALL test_cpu_time(start, finish, aa, bb)
-         a_m = 3.
+         a_m = 3 ! of course will want to move these hard-coded values to be read from input file
+         S_adult = 0.95
+         S_juv = 0.80
+         delt_s = S_adult - S_juv
+         npr = -99
          write(*,*) "a_m = : ", a_m
          yy = debugz(a_m)
          write(*,*) "yy = : ", yy
+
+         print *, "init_age_distribution"
+         Call init_age_distribution(a_m, npr, S_adult, delt_s)
+
          
 ! Test some random number generation
 	 write(*,*) "Random standard uniform deviate"
@@ -112,7 +131,7 @@
          
          write(*,*) "Closing down"
          return
-	end
+         end program main
 	   
 
 ! *************************************************************************      
