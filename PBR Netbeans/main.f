@@ -10,31 +10,20 @@
 ! Modules of code to use -- these modules contain subroutines, functions and possibly variable declarations.
 !  The modules are contained in seperate files (e.g. PBR_FileIO_Module.f90).
 !  The module files need to be compiled and linked with the compiled main program to produce an executable.         
-         use PBR_FileIO_Module ! routines for reading initial values from files and writing output
-         use initialize_pop ! includes initialization of age structure
-         use calcs    ! routines for various calculations (e.g. calculating N_min)
+         use Declare_variables_module
+         use PBR_FileIO_Module ! routines for reading initial values from files and writing output : PBR_FileIO_Module.f90
+         use initialize_pop ! includes initialization of age structure : initialize_Mod.f90
+         use calcs    ! routines for various calculations (e.g. calculating N_min) : PBRmodule.f
          use debug    ! testing
 
          implicit none ! turns off implicit typing by Fortran; now all variables must be explicitly declared by type
-         
-	 integer(kind = 4) :: ii, jj, kk, ll ! counters
-	 integer(kind = 4) :: xx, nn
-         integer(kind = 4) :: a_m, npr, maxage
-         
-	 real(kind = 8) :: aa, bb
-	 real(kind = 8) :: start, finish
-	 real(kind = 8) :: N_best, CV_N, z_variate
-	 real(kind = 8) :: N_min
-	 real(kind = 8) :: x_min, x_max, step_CV
-         real(kind = 8) :: yy
-         real(kind = 8) :: S_juv, S_adult, delt_s ! delt_s is the difference between adult and juvenile survival rates
-         
+       
 	 character*72 ccon ! testing input methods
 	 integer ic ! testing input methods
 	 
          CHARACTER REF*10,DESC*50,PROG*9,PARFIL*12,MATFIL*12,MANAGE*1 ! from AEP's code for File IO
-         INTEGER IOUT, IN, IN2, IN3, IN4 
-         DATA IOUT/8/,IN/7/,IN2/10/,IN3/11/,IN4/12/
+         INTEGER IOUT, IN2
+         DATA IOUT/8/,IN2/10/
          
 10	 format(a10 f5.3 a10 f8.3)
 20	 format(a10 a10) ! header for CV_N output file
@@ -42,14 +31,17 @@
 
 	 CALL RANDOM_SEED() ! initialize seed for random number generator
 
-         OPEN (IN,FILE='COPY.DAT',STATUS='OLD')
-         READ (IN,'(T37,A /A/2(/45X,A))') REF,DESC,PARFIL,MATFIL
+         OPEN (IN2,FILE='COPY.DAT',STATUS='OLD')
+         READ (IN2,'(T37,A /A/2(/45X,A))') REF,DESC,PARFIL,MATFIL
          print *, "REF : ", REF
          print *, "DESC : ", DESC
          print *, "PARFIL : ", PARFIL
          print *, "MATFIL : ", MATFIL
 !	write(*,*) 'Calling cpu_time'
 !	CALL test_cpu_time(start, finish, aa, bb)
+         
+         call read_inits()! (CV_N, CV_MORTALITY, THETA, R_MAX, F_R, INIT_DEPL, &
+         !LOWER_TAIL, YR_MAX, SURV_FREQ, KK, IPAR)
          
          maxage = 59 ! 
          a_m = 6 ! of course will want to move these hard-coded values to be read from input file
@@ -153,9 +145,7 @@
 	
 	 real N_best, CV_N, z_variate
 	 integer in
-     
-	 in = 1
-     
+        
 ! put code to open input par file 
 	 open(unit = 1, file = "par_input_file.txt")
 ! put code to read input par file 
