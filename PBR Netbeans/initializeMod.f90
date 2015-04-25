@@ -5,11 +5,11 @@
 ! Created on April 24, 2015, 12:19 PM
 !
 
-MODULE Mod_initialize
+MODULE initialize_pop
     
     contains 
     
-    subroutine init_age_distribution(a_m, npr, S_tmp1, delt_s)
+    subroutine initialize_age_struc(a_m, npr, S_tmp1, delt_s)
 !#######################################################
 ! Calculate the stable age structure and equilibrium birth rate based on numbers-per-recruit calculations  
 ! Note: Vectors-at-age are indexed starting at (age) zero, to be consistent with documented methods
@@ -95,6 +95,6 @@ MODULE Mod_initialize
             print *, "S_age = : ", S_age ! DEBUGGING
             
         return
-    end subroutine init_age_distribution
+    end subroutine initialize_age_struc
 
-END MODULE Mod_initialize
+END MODULE initialize_pop
