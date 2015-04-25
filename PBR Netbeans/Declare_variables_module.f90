@@ -12,6 +12,10 @@
 MODULE Declare_variables_module
     implicit none
     
+    CHARACTER REF*10,DESC*50,PROG*9,PARFIL*12,MATFIL*12,MANAGE*1 ! from AEP's code for File IO
+    INTEGER IOUT, IN2
+    DATA IOUT/8/,IN2/10/
+         
     real(kind=8) :: CV_N, CV_MORTALITY, THETA, R_MAX, F_R 
     real(kind=8) :: INIT_DEPL, LOWER_TAIL, b_max, S_adult, S_juv
     integer(kind = 4) :: YR_MAX, SURV_FREQ, a_m
