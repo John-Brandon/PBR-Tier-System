@@ -45,7 +45,7 @@ MODULE initialize_pop
                 else 
                     prop_mat_a(ii) = 1.0
                 end if
-                print *, "Hello again from init_age_distribution" ! DEBUGGING
+!                print *, "Hello again from init_age_distribution" ! DEBUGGING
 10          continue
 ! #######################################################
 ! This rate of maturation was used in ADMB code to have a differentiable function (logistic maturity ogive) 
@@ -65,8 +65,7 @@ MODULE initialize_pop
 
             do kk = 1,(a_m + 1)             ! fill survival-at-age vector
                 S_age(kk) = S_tmp1 
-                print *, "age = : ", kk           
-            enddo   ! syntax for looping, available in f90 
+             enddo   ! syntax for looping, available in f90 
 
             NPR_age(0) = 0.5             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
             Nage_imm_0(0) = 0.5          ! All calves assumed immature
@@ -91,8 +90,15 @@ MODULE initialize_pop
             b_1 = b_1 + (b_max - b_eq) * (1 - (depl_init ** theta))   ! Birth rate in first year of projection, given initial depletion
             NPR_oneplus = temp_1plus
 
+            print *, "Nage_imm_0 = : ", Nage_imm_0 ! DEBUGGING
+            print *, "Nage_mat_0 = : ", Nage_mat_0 ! DEBUGGING
+            print *, "temp_1plus = : ", temp_1plus ! DEBUGGING
+            print *, "temp_mat = : ", temp_mat ! DEBUGGING
+            
+            print *, "NPR_age = : ", NPR_age ! DEBUGGING
             print *, "S_age = : ", S_age ! DEBUGGING
-            print *, "S_age = : ", S_age ! DEBUGGING
+            print *, "b_eq = : ", b_eq ! DEBUGGING
+            print *, "NPR_oneplus = : ", NPR_oneplus ! DEBUGGING
             
         return
     end subroutine initialize_age_struc
