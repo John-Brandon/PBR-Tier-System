@@ -1,0 +1,18 @@
+# Input parameters for PBR Tier system simulations -- base case 
+Number of Pars  12      # Number of Parameters below, to be read in during initialization
+yr_max          100     # Number of years to project over
+surv_freq       4       # interval (yrs) between abundance surveys (first abundance survey in year 1)
+KK              10000   # Carrying capacity
+cv_n            0.20    # CV(N) , will be transformed to the standard deviation in log-space
+cv_mortality    0.30    # Variability in mortality, used to generate random normal deviate with mean = PBR
+theta           1.0     # Density dependence shape parameter
+R_max           0.04    # Default for cetaceans 
+F_r             0.50    # Base case recovery factor
+init_depl       0.30    # Initial depletion (Abundance as a fraction of carrying capacity)
+lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
+surv.yr.tmp     1       # Counter used in assigning survey years
+time.horizon    100     # Number of years to project population trajectories 
+B_max           0.5     # Maximum birth rate (in the absence of density dependence)
+S_adult         0.95    # Adult (mature) survival rate
+S_juv           0.80    # Juvenile (immature) survival rate
+a_m             10      # Age at sexual maturity  
