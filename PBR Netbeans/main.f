@@ -5,20 +5,21 @@
 ! Contact: jbrandon at gmail             
 !
 ! Created on April 23, 2015, 6:38 PM
-!#######################################################
-! Calculate the stable age structure and equilibrium birth rate based on numbers-per-recruit calculations        
-!#######################################################
+!#######################################################    
              
-! modules of code to use         
-         use calcs 
-         use debug    
-         use Mod_initialize ! includes initialization of age structure
-         
-         implicit none ! turns off implicit typing; all variables must be declared by type
+! Modules of code to use -- these modules contain subroutines, functions and possibly variable declarations.
+!  The modules are contained in seperate files (e.g. PBR_FileIO_Module.f90).
+!  The module files need to be compiled and linked with the compiled main program to produce an executable.         
+         use PBR_FileIO_Module ! routines for reading initial values from files and writing output
+         use initialize_pop ! includes initialization of age structure
+         use calcs    ! routines for various calculations (e.g. calculating N_min)
+         use debug    ! testing
+
+         implicit none ! turns off implicit typing by Fortran; now all variables must be explicitly declared by type
          
 	 integer(kind = 4) :: ii, jj, kk, ll ! counters
 	 integer(kind = 4) :: xx, nn
-         integer(kind = 4) :: a_m, npr
+         integer(kind = 4) :: a_m, npr, maxage
          
 	 real(kind = 8) :: aa, bb
 	 real(kind = 8) :: start, finish
@@ -28,19 +29,30 @@
          real(kind = 8) :: yy
          real(kind = 8) :: S_juv, S_adult, delt_s ! delt_s is the difference between adult and juvenile survival rates
          
-         !real(kind = 8), external :: debugz ! debugz 
-	 character*72 ccon
-	 integer ic
+	 character*72 ccon ! testing input methods
+	 integer ic ! testing input methods
 	 
+         CHARACTER REF*10,DESC*50,PROG*9,PARFIL*12,MATFIL*12,MANAGE*1 ! from AEP's code for File IO
+         INTEGER IOUT, IN, IN2, IN3, IN4 
+         DATA IOUT/8/,IN/7/,IN2/10/,IN3/11/,IN4/12/
+         
 10	 format(a10 f5.3 a10 f8.3)
 20	 format(a10 a10) ! header for CV_N output file
 30	 format(f10.3 f10.3) ! header for CV_N output file
 
 	 CALL RANDOM_SEED() ! initialize seed for random number generator
-		 
-!		write(*,*) 'Calling cpu_time'
-!		CALL test_cpu_time(start, finish, aa, bb)
-         a_m = 3 ! of course will want to move these hard-coded values to be read from input file
+
+         OPEN (IN,FILE='COPY.DAT',STATUS='OLD')
+         READ (IN,'(T37,A /A/2(/45X,A))') REF,DESC,PARFIL,MATFIL
+         print *, "REF : ", REF
+         print *, "DESC : ", DESC
+         print *, "PARFIL : ", PARFIL
+         print *, "MATFIL : ", MATFIL
+!	write(*,*) 'Calling cpu_time'
+!	CALL test_cpu_time(start, finish, aa, bb)
+         
+         maxage = 59 ! 
+         a_m = 6 ! of course will want to move these hard-coded values to be read from input file
          S_adult = 0.95
          S_juv = 0.80
          delt_s = S_adult - S_juv
@@ -50,7 +62,7 @@
          write(*,*) "yy = : ", yy
 
          print *, "init_age_distribution"
-         Call init_age_distribution(a_m, npr, S_adult, delt_s)
+         Call initialize_age_struc(a_m, npr, S_adult, delt_s)
 
          
 ! Test some random number generation
@@ -71,7 +83,6 @@
 
 	 	 
 ! Set up code for file I/O, e.g. reading N_best, CV_N, z from input file
-
 	 N_best = -99.99
 	 CV_N = -99.99
 	 z_variate = -99.99
@@ -84,11 +95,11 @@
 ! read file
 !  here: N_best = 1042., CV_N = 0.65, z_variate = 0.842
 	 read(1,*)
-	 read(1,*) ccon,ic
+	 read(1,*) ccon,ic 
 	 write(*,*) 'ccon: ', ccon
 	 write(*,*) 'ic: ', ic
 	 read(1,*)
-	 read(1, '(/f8.3 /// f8.3 /// f8.3)') N_best, CV_N, z_variate ! read from input file
+	 read(1, '(/f8.3 /// f8.3 /// f8.3)') N_best, CV_N, z_variate ! read from input file, forward slash moves to next line
 	 close(unit = 1) ! close input file
 	 
 	 write(*,*) 'z_variate after read'
