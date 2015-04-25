@@ -9,15 +9,17 @@
 
 
       module debug
-
+    
+         implicit none
+         
          contains 
     
-         real(kind = 8) function debugz(a_m)
+         real(kind = 8) function debugz(a_m_tmp)
             implicit none
-            integer(kind = 4), intent(in) :: a_m ! intent(in) specifies for compiler that 'a_m' is being passed into function
-            debugz = real(a_m) / 4 ! note the use of real(a_m), otherwise FORTRAN will round the quotient of two integers
-            print *, "a_m: ", a_m 
-            print *, "a_m / 4: ", a_m / 4
+            integer(kind = 4), intent(in) :: a_m_tmp ! intent(in) specifies for compiler that 'a_m' is being passed into function
+            debugz = real(a_m_tmp) / 4 ! note the use of real(a_m), otherwise FORTRAN will round the quotient of two integers
+            print *, "a_m_tmp: ", a_m_tmp 
+            print *, "a_m_tmp / 4: ", real(a_m_tmp) / 4
             print *, "Hello from debugz"
             return
          end function debugz
