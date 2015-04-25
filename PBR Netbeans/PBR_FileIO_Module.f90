@@ -24,11 +24,15 @@ module PBR_FileIO_Module
        
        OPEN (INPUT_FILE, FILE='INPUT.PAR', STATUS='OLD')
 
-800    FORMAT(/, 16X, I6) ! Note first line is assumed to be a comment ("/" skips a line in FORTRAN)
+800    FORMAT(//, 16X, I6) ! Note first line is assumed to be a comment ("/" skips a line in FORTRAN)
 801    FORMAT(16X, I6)
 802    FORMAT(16X, F6.3)
 
 !     Read in model parameters/options, checking they are within allowed range
+       READ (INPUT_FILE,'(T37, A, /A)') REF,DESC !,PARFIL,MATFIL
+       print *, "REF : ", REF
+       print *, "DESC : ", DESC
+       
        READ (INPUT_FILE, 800) n_stocks
        READ (INPUT_FILE, 801) YR_MAX 
        READ (INPUT_FILE, 801) SURV_FREQ 
@@ -46,6 +50,7 @@ module PBR_FileIO_Module
        READ (INPUT_FILE, 802) S_juv
        READ (INPUT_FILE, 801) a_m       
        
+
        WRITE(*,*) "n_stocks", n_stocks
        WRITE(*,*) "YR_MAX", YR_MAX
        WRITE(*,*) "SURV_FREQ", SURV_FREQ
