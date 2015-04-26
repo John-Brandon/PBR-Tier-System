@@ -16,4 +16,4 @@ lower_tail      0.20    # Percentile of log-normal distribution, used to calcula
 B_max           0.5     # Maximum birth rate (in the absence of density dependence)
 S_adult         0.95    # Adult (mature) survival rate
 S_juv           0.80    # Juvenile (immature) survival rate
-a_m             10      # Age at sexual maturity  
+a_m             5      # Age at sexual maturity  
