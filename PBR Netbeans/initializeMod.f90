@@ -23,7 +23,7 @@ MODULE initialize_pop
             implicit none
             
             integer(kind = 4) :: a_m, npr
-            integer(kind = 4) :: ii, jj, kk
+            integer(kind = 4) :: ii, jj, kk, ll, mm
 
             real(kind = 8), dimension(0:(a_m+1)) :: Female_age, Male_age    ! Vector with numbers-at-age for females & males
             real(kind = 8), dimension(0:(a_m+1)) :: S_age                ! Vector of survival-at-age
@@ -32,10 +32,12 @@ MODULE initialize_pop
             real(kind = 8), dimension(0:(a_m+1)) :: NPR_age             ! Numbers-at-age-per-recruit
             real(kind = 8), dimension(0:(a_m+1)) :: Nage_imm_0          ! numbers-at-age that are immature
             real(kind = 8), dimension(0:(a_m+1)) :: Nage_mat_0          ! numbers-at-age that are mature
+            real(kind = 8), dimension(0:(a_m+1)) :: prop_NPR            ! Proportions in each age of the NPR vector
             
             real(kind = 8) :: S_tmp1, delt_s       ! delt_s is the difference between juvenile and adult survival
             real(kind = 8) :: temp_1plus, temp_mat, NPR_oneplus
             real(kind = 8) :: b_eq, b_max, b_1, depl_init, theta
+            real(kind = 8) :: sum_NPR     ! The sum across ages in the NPR vector
 ! INITIALIZE ##############################                        
             temp_1plus = 0.0                       ! Temp variable to keep track of numbers aged 1+ years 
             temp_mat = 0.0                         ! Temp variable to keep track of numbers mature
@@ -78,24 +80,35 @@ MODULE initialize_pop
                 S_age(kk) = S_tmp1 
             enddo  
 
-            NPR_age(0) = 0.5             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
-            Nage_imm_0(0) = 0.5          ! All calves assumed immature
-            
-            do kk = 1, a_m
+!            NPR_age(0) = 0.5             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
+!            Nage_imm_0(0) = 0.5          ! All calves assumed immature
+
+            NPR_age(0) = 1.0             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
+            Nage_imm_0(0) = 1.0          ! All calves assumed immature
+
+            do kk = 1, (age_x - 1)       ! NPR calculations from Age 1 to Age x-1
                  NPR_age(kk) = NPR_age(kk-1) * S_age(kk-1)            ! Calculate numbers-at-age per recruit
-                 Nage_imm_0(kk) = NPR_age(kk) * (1-prop_mat_a(kk))    ! Initialize Numbers-at-Stage, based on maturity ogive
-                 Nage_mat_0(kk) = prop_mat_a(kk) * NPR_age(kk)
-                 temp_1plus = temp_1plus + NPR_age(kk)                ! Keep track of one-plus females per recruit
+                 Nage_imm_0(kk) = NPR_age(kk) * (1-prop_mat_a(kk))    ! Numbers immature at age per recruit
+                 Nage_mat_0(kk) = NPR_age(kk) * prop_mat_a(kk)        ! Numbers mature at age per recruit
+                 temp_1plus = temp_1plus + NPR_age(kk)                ! Keep track of total age one-plus per recruit
                  temp_mat = temp_mat + Nage_mat_0(kk)                 ! "" mature females per recruit
             end  do
 
-            NPR_age(age_x) = NPR_age(a_m) * S_age(a_m) / (1 - S_age(age_x))   ! PLUS GROUP numbers at age
-            Nage_imm_0(age_x) = NPR_age(age_x) * (1 - prop_mat_a(age_x)) 	 ! By definition = 0.0 given assumption that age at transition to plus group equals age at maturity
+            NPR_age(age_x) = NPR_age(age_x - 1) * S_age(age_x - 1) / (1 - S_age(age_x))   ! PLUS GROUP numbers at age
+!            Nage_imm_0(age_x) = NPR_age(age_x) * (1 - prop_mat_a(age_x)) 	 ! By definition = 0.0 given assumption that age at transition to plus group equals age at maturity
             Nage_mat_0(age_x) = prop_mat_a(age_x) * NPR_age(age_x)		 ! Mature females
 
             temp_1plus = temp_1plus + NPR_age(age_x)			 ! Keep track of one_plus component (females)
             temp_mat = temp_mat + Nage_mat_0(age_x)			 ! Keep track of mature female component
 
+            sum_NPR = sum(NPR_age)                                       ! Sum across ages in NPR vector
+            print *, "sum_NPR", sum_NPR
+            prop_NPR = NPR_age / sum_NPR                                 ! Note this is a vectorized operation in Fortran 90/95
+            print *, "prop_NPR", prop_NPR
+!            do ll = 0, age_x
+!                prop_NPR(ll) = NPR_age(ll) / sum_NPR
+!            enddo
+!            
             b_eq = 1.0 / (S_tmp1 * (temp_mat - 1))                        ! Equilibrium birth rate on a per recruit basis
             b_1 = b_eq 
             b_1 = b_1 + (b_max - b_eq) * (1 - (depl_init ** theta))   ! Birth rate in first year of projection, given initial depletion
