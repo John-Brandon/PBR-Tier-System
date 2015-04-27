@@ -57,9 +57,9 @@ MODULE initialize_pop
 !                print *, "Hello again from init_age_distribution" ! DEBUGGING
             enddo
 ! #######################################################
-! This rate of maturation was used in ADMB code to have a differentiable function (logistic maturity ogive) 
-!  which made it possible to estimate age at 50% maturity as a parameter
-!  because we're not estimating anything for the PBR code, this approach is not necessary
+! This rate of maturation was used in gray whale ADMB code to have a differentiable function (logistic maturity ogive), 
+!  which made it possible to estimate age at 50% maturity as a parameter;
+!  because we're not estimating life history parameters with the PBR code, this approach is not necessary
 ! #######################################################
 !            do jj = 1, a_m               ! calculate rate of maturation, given proportion mature at age
 !              if(1-prop_mat_a(jj)<0.001) then
@@ -69,10 +69,12 @@ MODULE initialize_pop
 !               P_age(jj-1) = P_age(jj-1) / (1-prop_mat_a(jj-1))
 !              end if
 !            enddo
-         
-            S_age(0) = S_tmp1 - delt_s      ! assign calf survival
-
-            do kk = 1, age_x             ! fill survival-at-age vector
+                  
+            do jj = 0, (a_m - 1)
+                S_age(jj) = S_tmp1 - delt_s         ! assign juvenile survival       
+            enddo
+            
+            do kk = a_m, age_x                      ! assign adult survival       
                 S_age(kk) = S_tmp1 
             enddo  
 
@@ -85,7 +87,7 @@ MODULE initialize_pop
                  Nage_mat_0(kk) = prop_mat_a(kk) * NPR_age(kk)
                  temp_1plus = temp_1plus + NPR_age(kk)                ! Keep track of one-plus females per recruit
                  temp_mat = temp_mat + Nage_mat_0(kk)                 ! "" mature females per recruit
-            end do
+            end  do
 
             NPR_age(age_x) = NPR_age(a_m) * S_age(a_m) / (1 - S_age(age_x))   ! PLUS GROUP numbers at age
             Nage_imm_0(age_x) = NPR_age(age_x) * (1 - prop_mat_a(age_x)) 	 ! By definition = 0.0 given assumption that age at transition to plus group equals age at maturity
