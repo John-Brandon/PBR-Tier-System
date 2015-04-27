@@ -22,7 +22,7 @@ MODULE Declare_variables_module
 
     integer(kind = 4) :: ii, jj, kk, ll ! counters
     integer(kind = 4) :: xx, nn
-    integer(kind = 4) :: npr, maxage, n_stocks 
+    integer(kind = 4) :: npr, maxage, age_x, n_stocks 
 
     real(kind = 8) :: aa, bb
     real(kind = 8) :: start, finish
