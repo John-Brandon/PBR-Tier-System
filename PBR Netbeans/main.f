@@ -16,7 +16,9 @@
          use calcs    ! routines for various calculations (e.g. calculating N_min) : PBRmodule.f
          use Format_module ! module with various format statements
          !         use debug    ! testing
-
+         use RNG    ! Module with routines for random number generators
+         use random
+         
          implicit none ! turns off implicit typing by Fortran; now all variables must be explicitly declared by type
 
 	 call random_seed() ! initialize seed for random number generator
@@ -35,11 +37,13 @@
          Call initialize_age_struc(a_m, npr, S_adult, delt_s)
          
 ! Test some random number generation
-!	 do jj = 1, 10
-!            call random_number(z_variate) ! intrinsic uniform (0,1) Random Number Generator
-!            write(*,*) 'z_variate RANDOM_NUMBER(r)'
-!            write(*,*) z_variate
-!         end do
+	 do jj = 1, 10
+             print *, "Here"
+!            z_variate = r8_normal_01(12345) ! 
+            z_variate = random_normal() ! Function located in 
+            write(*,*) 'z_variate r8_normal_01(12345)'
+            write(*,*) z_variate
+         end do
 
          
          write(*,*) "Closing down"
