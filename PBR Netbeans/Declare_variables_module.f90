@@ -7,11 +7,13 @@
 !====== +++ === === +++ === === +++ === ===
 ! Purpose : Declare variables for PBR Tier program
 !  These variables will be available to any routine that "uses" this module
+!  This approach is analagous with declaring global variables (or common block in Fortran 77). 
+!  It is not necessarily great programming practice, but while lazy, it does make the program code easier to read.
 !====== +++ === === +++ === === +++ === ===
 
 MODULE Declare_variables_module
     implicit none
-    
+      
     CHARACTER REF*10,DESC*50,PROG*9,PARFIL*12,MATFIL*12,MANAGE*1 ! from AEP's code for File IO
     INTEGER IOUT, IN2
     DATA IOUT/8/,IN2/10/
