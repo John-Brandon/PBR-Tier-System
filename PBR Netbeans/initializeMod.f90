@@ -49,28 +49,11 @@ MODULE initialize_pop
             do ii = 0, age_x               ! assign maturity-at-age vector (0 for immature ages, 1 for mature ages)
                 if(ii < a_m) then       
                     prop_mat_a(ii) = 0.0
-                    print *, "Here 1: "
-                    print *, ii, a_m
                 else 
                     prop_mat_a(ii) = 1.0
-                    print *, "Here 2: "
-                    print *, a_m
                 end if
 !                print *, "Hello again from init_age_distribution" ! DEBUGGING
             enddo
-! #######################################################
-! This rate of maturation was used in gray whale ADMB code to have a differentiable function (logistic maturity ogive), 
-!  which made it possible to estimate age at 50% maturity as a parameter;
-!  because we're not estimating life history parameters with the PBR code, this approach is not necessary
-! #######################################################
-!            do jj = 1, a_m               ! calculate rate of maturation, given proportion mature at age
-!              if(1-prop_mat_a(jj)<0.001) then
-!               P_age(jj-1) = 1.0
-!              else
-!               P_age(jj-1) = (prop_mat_a(jj)-prop_mat_a(jj-1))
-!               P_age(jj-1) = P_age(jj-1) / (1-prop_mat_a(jj-1))
-!              end if
-!            enddo
                   
             do jj = 0, (a_m - 1)
                 S_age(jj) = S_tmp1 - delt_s         ! assign juvenile survival       
@@ -80,11 +63,8 @@ MODULE initialize_pop
                 S_age(kk) = S_tmp1 
             enddo  
 
-!            NPR_age(0) = 0.5             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
-!            Nage_imm_0(0) = 0.5          ! All calves assumed immature
-
-            NPR_age(0) = 1.0             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
-            Nage_imm_0(0) = 1.0          ! All calves assumed immature
+            NPR_age(0) = 0.5             ! Numbers of females per recruit, assuming 50:50 sex ratio at birth
+            Nage_imm_0(0) = 0.5          ! All calves assumed immature
 
             do kk = 1, (age_x - 1)       ! NPR calculations from Age 1 to Age x-1
                  NPR_age(kk) = NPR_age(kk-1) * S_age(kk-1)            ! Calculate numbers-at-age per recruit
@@ -109,9 +89,9 @@ MODULE initialize_pop
 !                prop_NPR(ll) = NPR_age(ll) / sum_NPR
 !            enddo
 !            
-            b_eq = 1.0 / (S_tmp1 * (temp_mat - 1))                        ! Equilibrium birth rate on a per recruit basis
-            b_1 = b_eq 
-            b_1 = b_1 + (b_max - b_eq) * (1 - (depl_init ** theta))   ! Birth rate in first year of projection, given initial depletion
+            b_eq = 1.0 / (temp_mat - 1)                        ! Equilibrium birth rate on a per recruit basis
+            b_1 = b_eq + (b_max - b_eq) * (1 - (depl_init ** theta))   ! Birth rate in first year of projection, given initial depletion
+
             NPR_oneplus = temp_1plus
 
             print *, "prop_mat_a = : ", prop_mat_a ! DEBUGGING
@@ -129,5 +109,56 @@ MODULE initialize_pop
             
         return
     end subroutine initialize_age_struc
+
+    subroutine rescale_NPR() ! Rescale numbers at age per-recruit to initial numbers at age vector
+!// Rescale initial numbers at age to 1+ population size given depletion_30
+!//####################### 
+!  dvariable scale_pop;
+!  int aa;
+!  
+!  scale_pop.initialize();
+!  Nplus.initialize();
+!  N_calf.initialize();
+!  NAll.initialize();
+!  Ntot.initialize();
+!  N_m_yr_1.initialize();
+!  N_calvn_yr_1.initialize();
+!  N_recpt_yr_1.initialize();
+!  N_imm_yr_1.initialize();
+!  
+!  scale_pop=0.5*K*depl30/initial_oneplus;
+!  Nage = Nage*scale_pop;	// this now in terms of females - so, just assign another vector equal to this one to initialize males
+!
+!  for(aa=0;aa<=age_x;aa++) {
+!	  NAll(1,First_yr,aa)=Nage(aa)*(1-prop_mat_a(aa)); 	// immature numbers at age for females
+!	  NAll(2,First_yr,aa)=Nage(aa)*prop_mat_a(aa)*(1-b_1); // receptive numbers at age for females
+!	  NAll(3,First_yr,aa)=Nage(aa)*prop_mat_a(aa)*b_1; 	// calving numbers at age for females
+!	  NAll(4,First_yr,aa)=Nage(aa);   							// intial numbers at age for males  	
+!     N_imm_yr_1(First_yr)   += NAll(1,First_yr,aa);		// total numbers at stage
+!     N_recpt_yr_1(First_yr) += NAll(2,First_yr,aa);
+!     N_calvn_yr_1(First_yr) += NAll(3,First_yr,aa);
+!     N_m_yr_1(First_yr)     += NAll(4,First_yr,aa);
+!     Ntot(First_yr)         += NAll(1,First_yr,aa)+NAll(2,First_yr,aa)+NAll(3,First_yr,aa)+NAll(4,First_yr,aa);
+!  }
+!  depl(First_yr)=depl30;
+!  N30=K*depl30;		//treating depletion in 1930 as esitmated parameter, so multiply by K to get 1+ population size in 1930
+!  N_calf(First_yr) = NAll(1,First_yr,0)*2;           // Initial number of calves (for output)
+!  Nplus(First_yr) = Ntot(First_yr)-N_calf(First_yr);
+        
+    end subroutine     
+!    real function init_matrix(s_j, s_a, a_mat, age_xx, b_maxx)
+!        implicit none
+!        !S_age(0)
+!    
+!    end function init_matrix
+!    init_matrix = function(s_j, s_a, a_mat, age_xx, b_maxx){
+!  A_matrix = matrix(data = 0, nrow = age_xx, ncol = age_xx) # dimension matrix and fill with zeros
+!  A_matrix[1, (a_mat:age_xx)] = b_maxx # assign birth rates to mature ages in first row of matrix
+!  for(ii in 1:(a_mat-1)) A_matrix[ii+1, ii] = s_j # assign juvenile survival rates
+!  A_matrix[age_xx,a_mat] = s_a # adult survival assumed for maturing animals transitioning into plus-group
+!  A_matrix[age_xx, age_xx] = s_a # adult survival assumed for plus-group
+!  return(A_matrix)
+!}
+!A = init_matrix(s_juv, s_adult, a_m, age_x, b_max) # Call function to initialize matrix A
 
 END MODULE initialize_pop
