@@ -15,11 +15,31 @@
          use initialize_pop ! includes initialization of age structure : initialize_Mod.f90
          use calcs    ! routines for various calculations (e.g. calculating N_min) : PBRmodule.f
          use Format_module ! module with various format statements
-         use random ! Module with routines for random number generators
-         
-         implicit none ! turns off implicit typing by Fortran; now all variables must be explicitly declared by type
+         use random, only : random_normal ! Module with routines for random number generators -- only using random_normal at this stage
 
-	 call random_seed() ! initialize seed for random number generator
+         implicit none ! turns off implicit typing by Fortran; now all variables must be explicitly declared by type
+         
+         integer, allocatable :: seed(:)
+         integer :: n, clock
+         
+         call cpu_time(start)
+! put code to test here
+! Want to benchmark matrix multiplication in FORTRAN vs. that in R (for age-structured model)
+	  
+	 call cpu_time(finish)
+	 print '("Time = ",f6.3," seconds.")',finish-start
+
+         call random_seed(size = n)
+         allocate(seed(n))
+         print *, "seed(n): ", seed ! in gfortran 4.2 compiler on Mac OS X 10.9, seed is vector of length eight (zeros at this stage)
+         print *, "n: ", n
+         call system_clock(count = clock)
+         print *, "clock: ", clock
+         do ii = 1, n
+             seed(ii) = clock + 37*(ii-1) ! recommended function for setting seeds of RNG because 37 is prime number and RNG likes primes
+             print *, "ii / seed(ii): ", ii, seed(ii)
+         enddo
+         call random_seed(put = seed) ! initialize seed for random number generator
          
          call read_inits()! (CV_N, CV_MORTALITY, THETA, R_MAX, F_R, INIT_DEPL, &
          !LOWER_TAIL, YR_MAX, SURV_FREQ, KK, IPAR)
@@ -35,12 +55,15 @@
          Call initialize_age_struc(a_m, npr, S_adult, delt_s)
          
 ! Test some random number generation
-	 do jj = 1, 10
-             print *, "Here"
+	 open(unit = 1, file = "z_variate.out")
+	 write(1, format2) "draw_ID", "z_variate"
+         
+         write(*,*) 'z_variates from random_normal()'
+         do jj = 1, 1000
 !            z_variate = r8_normal_01(12345) ! 
             z_variate = random_normal() ! Function located in 
-            write(*,*) 'z_variate from random_normal()'
-            write(*,*) z_variate
+            !write(*,*) z_variate
+            write(1, format4) jj, z_variate 
          end do
 
          
