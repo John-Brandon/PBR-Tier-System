@@ -15,6 +15,7 @@ MODULE Declare_variables_module
     implicit none
       
     CHARACTER REF*10,DESC*50,PROG*9,PARFIL*12,MATFIL*12,MANAGE*1 ! from AEP's code for File IO
+    character cseed*1
     INTEGER IOUT, IN2
     DATA IOUT/8/,IN2/10/
          
@@ -25,6 +26,7 @@ MODULE Declare_variables_module
     integer(kind = 4) :: ii, jj, kk, ll ! counters
     integer(kind = 4) :: xx, nn
     integer(kind = 4) :: npr, maxage, age_x, n_stocks 
+    integer(kind = 4) :: iseed
 
     real(kind = 8) :: aa, bb
     real(kind = 8) :: start, finish
