@@ -1,6 +1,7 @@
-! This module file was downloaded from http://www.netlib.org/random/random.f90 on 27 April 2015
-!  The module is by Alan Miller <amiller@bigpond.net.au>
-!   http://users.bigpond.net.au/amiller/random.html
+! This module file was downloaded from http://www.netlib.org/random/random.f90 on 27 April 2015 by John R. Brandon
+!  The module code was created by Alan Miller (Retired from CSIRO Mathematical & Information Sciences)
+!   See also: http://users.bigpond.net.au/amiller/random.html
+! -JRB (jbrandon at gmail)
 MODULE random
 ! A module for random number generation from the following distributions:
 !  
