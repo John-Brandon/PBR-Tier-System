@@ -1,9 +1,12 @@
 !=== === +++ === === +++ === === +++ === ===
+! File:   Declare_variables_module.f90
 ! Author: John R. Brandon
 ! eMail:  jbrandon at gmail
 ! Date :  Apr 2015
-! OS   :  Mac OS 10.9.5 (x86_64-apple-darwin10.8.0 (64-bit))
+! Developed under OS:  Mac OS 10.9.5 (x86_64-apple-darwin10.8.0 (64-bit))
 ! Language : Fortran 90/95
+! Originally compiled using: GCC GNU gfortran v 4.2 (free open source Fortran 90/95 compiler) -- https://gcc.gnu.org/
+! IDE: Netbeans 8.0.2
 !====== +++ === === +++ === === +++ === ===
 ! Purpose : Declare variables for PBR Tier program
 !  These variables will be available to any routine that "uses" this module
