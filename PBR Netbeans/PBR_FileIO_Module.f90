@@ -24,16 +24,21 @@ module PBR_FileIO_Module
        
        OPEN (INPUT_FILE, FILE='INPUT.PAR', STATUS='OLD')
 
-800    FORMAT(//, 16X, I6) ! Note first line is assumed to be a comment ("/" skips a line in FORTRAN)
 801    FORMAT(16X, I6)
 802    FORMAT(16X, F6.3)
+803    FORMAT(16X, A6)
+804    FORMAT(16X, A1)
 
 !     Read in model parameters/options, checking they are within allowed range
        READ (INPUT_FILE,'(T37, A, /A)') REF,DESC !,PARFIL,MATFIL
        print *, "REF : ", REF
        print *, "DESC : ", DESC
        
-       READ (INPUT_FILE, 800) n_stocks
+       READ (INPUT_FILE, *) ! skip lines with comments / blanks in header of input file
+       READ (INPUT_FILE, *)
+       READ (INPUT_FILE, 804) cseed    ! Will the user be supplying a seed for the random number generator (RNG)?
+       READ (INPUT_FILE, 801) iseed    ! Seed for RNG, ignored if cseed = N
+       READ (INPUT_FILE, 801) n_stocks
        READ (INPUT_FILE, 801) YR_MAX 
        READ (INPUT_FILE, 801) SURV_FREQ 
        READ (INPUT_FILE, 801) KK 
@@ -51,6 +56,8 @@ module PBR_FileIO_Module
        READ (INPUT_FILE, 801) a_m       
        
 
+       WRITE(*,*) "cseed: ", cseed ! DEBUGGING
+       WRITE(*,*) "iseed: ", iseed ! DEBUGGING
        WRITE(*,*) "n_stocks", n_stocks
        WRITE(*,*) "YR_MAX", YR_MAX
        WRITE(*,*) "SURV_FREQ", SURV_FREQ
