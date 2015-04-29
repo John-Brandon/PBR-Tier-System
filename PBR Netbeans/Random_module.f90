@@ -106,9 +106,12 @@ INTEGER, PARAMETER :: dp = SELECTED_REAL_KIND(12, 60)
 
 
 CONTAINS
-       
-FUNCTION random_normal() RESULT(fn_val)
 
+  
+FUNCTION random_normal(mean, sd) RESULT(fn_val)
+! JRB added optional arguments :: mean, sd
+!   If user passes these into function, then random normal variate with mean and sd is returned    
+!
 ! Adapted from the following Fortran 77 code
 !      ALGORITHM 712, COLLECTED ALGORITHMS FROM ACM.
 !      THIS WORK PUBLISHED IN TRANSACTIONS ON MATHEMATICAL SOFTWARE,
@@ -121,7 +124,8 @@ FUNCTION random_normal() RESULT(fn_val)
 !  and J.F. Monahan augmented with quadratic bounding curves.
 
 REAL :: fn_val
-
+real, optional, intent(in) :: mean, sd ! added by JRB
+real :: mu, sigma ! added by JRB
 !     Local variables
 REAL     :: s = 0.449871, t = -0.386595, a = 0.19600, b = 0.25472,           &
             r1 = 0.27597, r2 = 0.27846, u, v, x, y, q
@@ -148,6 +152,21 @@ END DO
 
 !     Return ratio of P's coordinates as the normal deviate
 fn_val = v/u
+!     If user supplies a value for mean, add this value to standard normal deviate (JRB)
+if(present(mean)) then 
+    mu = mean
+else
+    mu = 0.
+end if
+!     If user supplies a value for sd, add this value to standard normal deviate (JRB)
+if(present(sd)) then 
+    sigma = sd
+else
+    sigma = 1.
+end if
+    
+    fn_val = (fn_val * sigma) + mu ! revised by JRB -- random normal deviate = standard normal deviate times sigma plus mu
+    
 RETURN
 
 END FUNCTION random_normal
