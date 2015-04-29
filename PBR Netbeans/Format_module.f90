@@ -1,9 +1,21 @@
-!     
+!=== === +++ === === +++ === === +++ === ===
 ! File:   Format_module.f90
-! Author: johnbrandon
+! Author: John R. Brandon
+! eMail:  jbrandon at gmail
+! Date :  Apr 2015
+! Developed under OS:  Mac OS 10.9.5 (x86_64-apple-darwin10.8.0 (64-bit))
+! Language : Fortran 90/95
+! Originally compiled using: GCC GNU gfortran v 4.2 (free open source Fortran 90/95 compiler) -- https://gcc.gnu.org/
+! IDE: Netbeans 8.0.2
+!====== +++ === === +++ === === +++ === ===
+! Purpose : Declare format statements as character strings
 !
-! Created on April 25, 2015, 6:52 PM
-!
+!  This is something of a hack, with the intent to organize a globally accessible list of format statements in Fortran.
+!  As an example, outside code can make use of elements of this list in a read (or write) statement as follows:
+!   READ(UNIT, format2) first_character, second_character
+!    where: format2 is declared in this module as:
+!     character(len=20), parameter :: format2 = "(a10 a10)" 
+!====== +++ === === +++ === === +++ === ===
 
 module Format_module
     implicit none
