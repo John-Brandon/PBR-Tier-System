@@ -2,6 +2,8 @@ MANAGEMENT PARAMETERS         CASE  Cet_1A
 Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 
 # Input parameters for PBR Tier system simulations
+cseed           Y       # Y = Provide a seed to the random number generator, N = seed with CPU clock           
+iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
 n_stocks        2       # Number of stocks (one or two)
 yr_max          100     # Number of years to project over
 surv_freq       4       # interval (yrs) between abundance surveys (first abundance survey in year 1)
@@ -13,7 +15,7 @@ R_max           0.04    # Default for cetaceans
 F_r             0.50    # Base case recovery factor
 init_depl       0.30    # Initial depletion (Abundance as a fraction of carrying capacity)
 lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
-B_max           0.5     # Maximum birth rate (in the absence of density dependence)
+B_max           0.134     # Maximum birth rate (in the absence of density dependence)
 S_adult         0.95    # Adult (mature) survival rate
-S_juv           0.80    # Juvenile (immature) survival rate
-a_m             5      # Age at sexual maturity  
+S_juv           0.75    # Juvenile (immature) survival rate
+a_m             3       # Age at sexual maturity  
