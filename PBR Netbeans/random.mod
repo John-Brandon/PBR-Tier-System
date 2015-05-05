@@ -1,4 +1,4 @@
-GFORTRAN module created from Random_module.f90 on Tue May  5 00:28:43 2015
+GFORTRAN module created from Random_module.f90 on Tue May  5 16:00:32 2015
 If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -64,6 +64,10 @@ UNKNOWN FUNCTION) (UNKNOWN 0 ()) 0 0 () () 99 () ())
 DECL FUNCTION) (REAL 4 ()) 101 0 (102 103) () 104 () ())
 105 'random_t' 'random' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC DECL
 FUNCTION) (REAL 4 ()) 106 0 (107) () 108 () ())
+54 'mean' '' 53 ((VARIABLE IN UNKNOWN-PROC UNKNOWN OPTIONAL DUMMY) (
+REAL 4 ()) 0 0 () () 0 () ())
+55 'sd' '' 53 ((VARIABLE IN UNKNOWN-PROC UNKNOWN OPTIONAL DUMMY) (REAL 4
+()) 0 0 () () 0 () ())
 43 'first' '' 41 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (LOGICAL 4 ())
 0 0 () () 0 () ())
 44 'fn_val' '' 41 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
@@ -90,6 +94,8 @@ FUNCTION) (REAL 4 ()) 106 0 (107) () 108 () ())
 () 0 () ())
 42 's' '' 41 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (REAL 4 ()) 0 0 ()
 () 0 () ())
+56 'fn_val' '' 53 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
+(REAL 4 ()) 0 0 () () 0 () ())
 98 'fn_val' '' 96 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
 (REAL 4 ()) 0 0 () () 0 () ())
 29 'aa' '' 28 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (REAL 4 ()) 0 0
@@ -98,6 +104,8 @@ FUNCTION) (REAL 4 ()) 106 0 (107) () 108 () ())
 0 0 () () 0 () ())
 30 'bb' '' 28 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (REAL 4 ()) 0 0
 () () 0 () ())
+32 'fn_val' '' 28 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
+(REAL 4 ()) 0 0 () () 0 () ())
 108 'fn_val' '' 106 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
 RESULT) (REAL 4 ()) 0 0 () () 0 () ())
 107 'm' '' 106 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (INTEGER 4 ())
@@ -106,8 +114,6 @@ RESULT) (REAL 4 ()) 0 0 () () 0 () ())
 0 () () 0 () ())
 65 'h' '' 63 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DIMENSION DUMMY) (REAL 4
 ()) 0 0 () (1 ASSUMED_SHAPE (CONSTANT (INTEGER 4 ()) 0 '1') ()) 0 () ())
-32 'fn_val' '' 28 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
-(REAL 4 ()) 0 0 () () 0 () ())
 67 'f' '' 63 ((VARIABLE INOUT UNKNOWN-PROC UNKNOWN DIMENSION DUMMY) (
 REAL 4 ()) 0 0 () (1 ASSUMED_SHAPE (CONSTANT (INTEGER 4 ()) 0 '1') ()) 0
 () ())
@@ -133,14 +139,6 @@ REAL 4 ()) 0 0 () (1 ASSUMED_SHAPE (CONSTANT (INTEGER 4 ()) 0 '1') ()) 0
 () () 0 () ())
 84 'first' '' 81 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (LOGICAL 4 ())
 0 0 () () 0 () ())
-75 'ival' '' 72 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT) (
-INTEGER 4 ()) 0 0 () () 0 () ())
-54 'mean' '' 53 ((VARIABLE IN UNKNOWN-PROC UNKNOWN OPTIONAL DUMMY) (
-REAL 4 ()) 0 0 () () 0 () ())
-55 'sd' '' 53 ((VARIABLE IN UNKNOWN-PROC UNKNOWN OPTIONAL DUMMY) (REAL 4
-()) 0 0 () () 0 () ())
-56 'fn_val' '' 53 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
-(REAL 4 ()) 0 0 () () 0 () ())
 23 'n' '' 22 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (INTEGER 4 ()) 0
 0 () () 0 () ())
 25 'first' '' 22 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (LOGICAL 4 ())
@@ -153,6 +151,8 @@ INTEGER 4 ()) 0 0 () () 0 () ())
 () 0 () ())
 4 'n' '' 3 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (INTEGER 4 ()) 0 0
 () () 0 () ())
+75 'ival' '' 72 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT) (
+INTEGER 4 ()) 0 0 () () 0 () ())
 7 'fn_val' '' 3 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT) (
 REAL 4 ()) 0 0 () () 0 () ())
 6 'r' '' 3 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (INTEGER 4 ()) 0 0

@@ -56,7 +56,6 @@ MODULE Declare_variables_module
     real(kind = 8) :: objf_newt ! Objective function value for solving for initial human caused mortality rate using Newton's method  
     real(kind = 8) :: S_tmp1       ! Temporary vector for survival rates -- don't think this is needed here. 
     real(kind = 8) :: temp_1plus, temp_mat, NPR_oneplus
-    real(kind = 8) :: depl_init   ! Is this necessary -- seems redundant with 'init_depl' declared above?
     real(kind = 8) :: sum_NPR     ! The sum across ages in the NPR vector
     
     real(kind = 8) :: temp_mature ! Not sure if this is used ***

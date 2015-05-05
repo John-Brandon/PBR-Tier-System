@@ -75,8 +75,8 @@ MODULE initialize_pop
         Nage_imm_0(0) = NPR_age(0)          ! All calves assumed immature
 
         do kk = 1, (age_x - 1)       ! NPR calculations from Age 1 to Age x-1
-            NPR_age(kk) = NPR_age(kk-1) * S_age(kk-1)            ! Calculate numbers-at-age per recruit
-            Nage_imm_0(kk) = NPR_age(kk) * (1-prop_mat_a(kk))    ! Numbers immature at age per recruit
+            NPR_age(kk) = NPR_age(kk - 1) * S_age(kk - 1)            ! Calculate numbers-at-age per recruit
+            Nage_imm_0(kk) = NPR_age(kk) * (1 - prop_mat_a(kk))    ! Numbers immature at age per recruit
             Nage_mat_0(kk) = NPR_age(kk) * prop_mat_a(kk)        ! Numbers mature at age per recruit
             temp_1plus = temp_1plus + NPR_age(kk)                ! Keep track of total age one-plus per recruit
             temp_mat = temp_mat + Nage_mat_0(kk)                 ! "" mature females per recruit
@@ -95,7 +95,7 @@ MODULE initialize_pop
         print *, "prop_NPR", prop_NPR           ! DEBUGGING
 
         b_eq = 1.0 / (temp_mat - 1)                                     ! Equilibrium birth rate on a per recruit basis
-        b_1 = b_eq + (b_max - b_eq) * (1 - (depl_init ** theta))        ! Birth rate in first year of projection, given initial depletion
+        b_1 = b_eq + (b_max - b_eq) * (1 - (init_depl ** theta))        ! Birth rate in first year of projection, given initial depletion
 
         NPR_oneplus = temp_1plus
 
@@ -110,6 +110,9 @@ MODULE initialize_pop
         print *, "S_age = : ", S_age            ! DEBUGGING
         print *, "S_tmp1 = : ", S_tmp1          ! DEBUGGING  
         print *, "b_eq = : ", b_eq              ! DEBUGGING
+        print *, "b_max = : ", b_max              ! DEBUGGING        
+        print *, "init_depl = : ", init_depl      ! DEBUGGING                
+        print *, "b_1 = : ", b_1              ! DEBUGGING        
         print *, "NPR_oneplus = : ", NPR_oneplus ! DEBUGGING
         print *, "prop_NPR = : ", prop_NPR      ! DEBUGGING
             
