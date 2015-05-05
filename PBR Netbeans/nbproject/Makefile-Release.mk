@@ -35,8 +35,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Declare_variables_module.o \
+	${OBJECTDIR}/Format_module.o \
+	${OBJECTDIR}/Generate_random_numbers_module.o \
+	${OBJECTDIR}/PBR_Errorcheck_module.o \
+	${OBJECTDIR}/PBR_FileIO_Module.o \
 	${OBJECTDIR}/PBRmodule.o \
-	${OBJECTDIR}/debugMod.o \
+	${OBJECTDIR}/Random_module.o \
 	${OBJECTDIR}/initializeMod.o \
 	${OBJECTDIR}/main.o
 
@@ -65,13 +70,33 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.f} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/Declare_variables_module.o: Declare_variables_module.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/Declare_variables_module.o Declare_variables_module.f90
+
+${OBJECTDIR}/Format_module.o: Format_module.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/Format_module.o Format_module.f90
+
+${OBJECTDIR}/Generate_random_numbers_module.o: Generate_random_numbers_module.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/Generate_random_numbers_module.o Generate_random_numbers_module.f90
+
+${OBJECTDIR}/PBR_Errorcheck_module.o: PBR_Errorcheck_module.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/PBR_Errorcheck_module.o PBR_Errorcheck_module.f90
+
+${OBJECTDIR}/PBR_FileIO_Module.o: PBR_FileIO_Module.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/PBR_FileIO_Module.o PBR_FileIO_Module.f90
+
 ${OBJECTDIR}/PBRmodule.o: PBRmodule.f 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -O2 -o ${OBJECTDIR}/PBRmodule.o PBRmodule.f
 
-${OBJECTDIR}/debugMod.o: debugMod.f 
+${OBJECTDIR}/Random_module.o: Random_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -O2 -o ${OBJECTDIR}/debugMod.o debugMod.f
+	$(COMPILE.f) -O2 -o ${OBJECTDIR}/Random_module.o Random_module.f90
 
 ${OBJECTDIR}/initializeMod.o: initializeMod.f90 
 	${MKDIR} -p ${OBJECTDIR}

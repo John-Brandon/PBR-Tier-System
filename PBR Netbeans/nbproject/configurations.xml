@@ -12,11 +12,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Declare_variables_module.f90</itemPath>
+      <itemPath>Format_module.f90</itemPath>
+      <itemPath>Generate_random_numbers_module.f90</itemPath>
+      <itemPath>PBR_Errorcheck_module.f90</itemPath>
+      <itemPath>PBR_FileIO_Module.f90</itemPath>
       <itemPath>PBRmodule.f</itemPath>
-      <itemPath>debugMod.f</itemPath>
+      <itemPath>Random_module.f90</itemPath>
       <itemPath>initializeMod.f90</itemPath>
       <itemPath>main.f</itemPath>
-      <itemPath>par_input_file.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -30,6 +34,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>../README.md</itemPath>
+    <itemPath>README.md</itemPath>
+    <itemPath>input.par</itemPath>
+    <itemPath>z_variate.out</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -42,20 +49,33 @@
       <compileType>
         <fortranCompilerTool>
           <commandlineTool>/usr/local/bin/gfortran</commandlineTool>
-          <commandLine>-k</commandLine>
         </fortranCompilerTool>
       </compileType>
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="PBR_FileIO_Module.f90" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="debugMod.f" ex="false" tool="2" flavor2="0">
+      <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="initializeMod.f90" ex="false" tool="2" flavor2="0">
       </item>
+      <item path="input.par" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.f" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="par_input_file.txt" ex="false" tool="3" flavor2="0">
+      <item path="z_variate.out" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -80,15 +100,29 @@
       </compileType>
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="PBR_FileIO_Module.f90" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="debugMod.f" ex="false" tool="2" flavor2="0">
+      <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="initializeMod.f90" ex="false" tool="2" flavor2="0">
       </item>
+      <item path="input.par" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.f" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="par_input_file.txt" ex="false" tool="3" flavor2="0">
+      <item path="z_variate.out" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

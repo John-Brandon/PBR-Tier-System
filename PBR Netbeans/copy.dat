@@ -1,0 +1,135 @@
+MANAGEMENT PARAMETERS         CASE  GE10
+Base Case: 2%/2%, FNeed=340/7; Pulse Immigration; Immigration=6
+
+NAME OF PARAMETER FILE               FILNAM  GE10.PAR
+NAME OF CONDITIONING DATA FILE       MATNAM  MATRIXE.DAT
+No. OF TRIALS                        NTRIAL  100
+No. OF YEARS IN SIMULATION           NYEAR   100
+YEAR MODEL BEGINS                    ISTART 1600
+YEAR TO BEGIN POPULATION PROJECTION  IYRPRJ 1930
+YEAR MANAGEMENT BEGINS               IYRMAN 2010
+NUMBER OF YEARS OF QUOTA (1)         IQUOTA    5
+NUMBER OF YEARS OF QUOTA (2)         IQUOTA    1
+MAXIMUM AGE                          MAXAGE   15
+POP.DEN.MODEL <0:Inerta 0:PT >1:Stoc ISTOCH    0
+MSYR COMPONENT      0=1+, 1=Mat      OPTF      0
+MSYL COMPONENT      0=1+, 1=Mat      OPMSYL    0
+DENSITY DEPENDENCE: 0=1+, 1=Mat      OPTDD     0
+TIME DEPENDENCE IN K(1) 0:Const      OPTK      0
+TIME DEPENDENCE IN K(2) 0:Const      OPTK      0
+TIME DEPENDENCE IN A 0:Const         OPTA      0
+TIME DEPENDENCE IN M(1) 0:Const      OPTM      0
+TIME DEPENDENCE IN M(2) 0:Const      OPTM      0
+IMMIGRATION 0: Default; 1:Pulse      OPTIMMI   1
+LAG IN DENSITY DEPENDENCE            ILAG      2
+NUMBER OF EPISODIC EVENTS            NEVENT    0
+EVENT POPULATION % REDUCTION         EVENTS    0
+EVENT TYPE 0:Uniform 1: Juvs 1st     OPTEE     0
+HISTORIC CATCH OPTION 1=50:50 catch  OPTHC     0
+MINIMUM CALVING INTERVAL             NY        0
+TARGET YEAR                          IYRTAR 1968
+CORRELATION IN RECRUITMENT           RHO     0.000              Not used if ISTOCH=-1 or 0
+VARIATION IN ENVIRONMENTAL IMPACT    SIGE**2 0.0                Not used if ISTOCH=-1 or 0
+FUTURE CATCH SEX RATIO (NORTH)       CRATIO  0.5
+FUTURE CATCH SEX RATIO (PCFG)        CRATIO  0.5
+HISTORIC CATCH BIAS                  BIASC   1.0
+IMMIGRATION SCALAR                   IMMIRRF 4.0
+YEAR OF FIRST CATCH                  ICAT1  1600
+CATCH BIAS APPLIES UP TO             ICATB  1914
+MULTIPLIER OF ABORIGINAL CATCH       ABOMUL  1.0
+AGE OF RECRUITMENT                   AREC    1.0
+INITIAL NEED LEVEL (Area 1           NEED0   150.0
+FINAL NEED LEVEL (Area 1)            NEEDF   340.0
+INITIAL NEED LEVEL (Area 2)          NEED0     7.0
+FINAL NEED LEVEL (Area 2)            NEEDF     7.0
+HISTPROP (PCFG; JUN-NOV)             HPCFG1  0.203
+HISTPROP (SOUTH)                     HPCFG2  0.01
+FUT PROP (PCFG)                      FPCFG   1.00
+FUT PROP (DELTA)                     FNORTH  0.0393
+PROB PCFG NOT DETECTED AS PCFG       PFNeg   0.00
+PROB NORTH DETECTED AS PCFG (Yr1)    PFPos   0.01
+PROB NORTH DETECTED AS PCFG (Yr99)   PFPos   0.01
+FRACTION OF NORTH IN PCFG SURVEY     FracObs 0.00
+PROBABILITY STRUCK                   PrStrk  0.50
+Month of harvest                     MonHa     4
+    Incidental catches
+NORTH AREA                           INCC(1) 0.00
+PCFG [DEC - MAY]                     INCC(2) 2.00
+PCFG [JUN - NOV]                     INCC(3) 1.40
+SOUTH                                INCC(4) 3.40
+    Abundance data:
+YEAR OF 1ST HISTORIC SURVEY          ISUR1  1968
+YEAR OF 1ST GENERATED SURVEY         IGSURV 2011
+DETERMINISTIC ABUNDANCE  0=No 1=Yes  OPTDET    0
+FREQUENCY OF ABUNDANCE ESTIMATES (1) IFREQ    10
+FREQUENCY OF ABUNDANCE ESTIMATES (2) IFREQ     1
+FUTURE BIAS FORM 0=linear, 1=cyclic  OPTB      0
+FIRST HISTORIC SURVEY BIAS (1)       BIASH1  0.50
+FINAL HISTORIC SURVEY BIAS (1)       BIASH2  1.00
+BIAS IN YEAR 25 (1)                  BIAS    1.00
+BIAS IN FINAL YEAR (1)               BIASF   1.00
+FIRST HISTORIC SURVEY BIAS (2)       BIASH1  1.00
+FINAL HISTORIC SURVEY BIAS (2)       BIASH2  1.00
+BIAS IN YEAR 25 (2)                  BIAS    1.00
+BIAS IN FINAL YEAR (2)               BIASF   1.00
+MEAN BIAS (NORTH)                    BIASB1  1.000
+SD BIAS (NORTH)                      SDB1    0.000
+MEAN BIAS (PCFG)                     BIASB2  0.715
+SD BIAS (PCFG)                       SDB2    0.112
+NO. OF DEGREES OF FREEDOM            DOF     19.00
+CV ESTIMATE: EXPECTATION VALUE (1st) CV1EST  0.075     
+CV ESTIMATE: EXPECTATION VALUE (1st) CV1EST  0.097     
+    Priors:
+CORRELATED P68 (1=Yes; 2=No)                   0    
+PRIOR FOR MSYL1                              UNIFORM
+MINIMUM VALUE                                0.6000
+MAXIMUM VALUE                                0.6000
+PRIOR FOR MSYL2                              UNIFORM
+MINIMUM VALUE                                0.6000
+MAXIMUM VALUE                                0.6000
+PRIOR FOR MSYR1                              UNIFORM
+MINIMUM VALUE                                0.0200
+MAXIMUM VALUE                                0.0200
+PRIOR FOR MSYR2                              UNIFORM
+MINIMUM VALUE                                0.0010
+MAXIMUM VALUE                                0.0010
+PRIOR FOR TRANSITION AGE (TRANSA)            DUNIFORM
+MINIMUM VALUE                                0.0000
+MAXIMUM VALUE                                0.0000
+PRIOR FOR JUVENILE SURVIVAL (NOT USED)       UNIFORM
+MINIMUM VALUE                                0.9000
+MAXIMUM VALUE                                0.9000
+PRIOR FOR ADULT SURVIVAL (ADULTS)            UNIFORM 
+MINIMUM VALUE                                0.9500
+MAXIMUM VALUE                                0.9990
+PRIOR FOR 1/MAX PREGNANCY RATE (1/PREGTG)    UNIFORM
+MINIMUM VALUE                                1.6667
+MAXIMUM VALUE                                3.3333
+PRIOR FOR AGE AT MATURITY (+1 = AGEM)        DUNIFORM
+MINIMUM VALUE                                5.0000
+MAXIMUM VALUE                                9.0000
+PRIOR FOR VALUE TO BE HIT1 ('000s)           UNIFORM
+MINIMUM VALUE                                 8.000
+MAXIMUM VALUE                                16.000
+PRIOR FOR VALUE TO BE HIT2 ('000s)           UNIFORM
+MINIMUM VALUE                                 0.020
+MAXIMUM VALUE                                 0.150
+PRIOR FOR ADDITIONAL VARIANCE (CVadd1)       UNIFORM
+MINIMUM VALUE                                 0.100
+MAXIMUM VALUE                                 0.300
+PRIOR FOR ADDITIONAL VARIANCE (CVadd2)       UNIFORM
+MINIMUM VALUE                                 0.050
+MAXIMUM VALUE                                 0.300
+PRIOR FOR CARRYING CAPACITY1 (in 1000s)      UNIFORM
+MINIMUM VALUE                                16.000
+MAXIMUM VALUE                                50.000
+PRIOR FOR CARRYING CAPACITY2 (in 1000s)      UNIFORM
+MINIMUM VALUE                                 0.100
+MAXIMUM VALUE                                 0.500
+PRIOR FOR CALF ADDITIONAL VARIANCE (CVaddC)  UNIFORM
+MINIMUM VALUE                                 0.200
+MAXIMUM VALUE                                 0.600
+PRIOR FOR EXTRA SURVIVAL (ExtraS)            UNIFORM
+MINIMUM VALUE                                 0.200
+MAXIMUM VALUE                                 1.000
+

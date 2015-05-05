@@ -9,78 +9,81 @@
 !====== +++ === === +++ === === +++ === ===
 module PBR_FileIO_Module
     
-    use Declare_variables_module 
+    use Declare_variables_module ! Access global variables
     
     implicit none
     
     contains
 
-    subroutine read_inits()! (CV_N, CV_MORTALITY, THETA, R_MAX, F_R, INIT_DEPL, &
+    subroutine read_inits()! (cseed, iseed, CV_N, CV_MORTALITY, THETA, R_MAX, F_R, INIT_DEPL, &
          !LOWER_TAIL, YR_MAX, SURV_FREQ, KK, IPAR)
 
 !     Read parameter file and initializes variables
-       integer :: INPUT_FILE
-       DATA INPUT_FILE /7/
+       integer :: input_file
+       data input_file /7/   ! move this into Declare_variables_module?
        
-       OPEN (INPUT_FILE, FILE='INPUT.PAR', STATUS='OLD')
+       open (input_file, file = 'INPUT.PAR', status = 'OLD')
 
-801    FORMAT(16X, I6)
+801    FORMAT(16X, I6) ! move these into Format_module?
 802    FORMAT(16X, F6.3)
 803    FORMAT(16X, A6)
 804    FORMAT(16X, A1)
 
 !     Read in model parameters/options, checking they are within allowed range
-       READ (INPUT_FILE,'(T37, A, /A)') REF,DESC !,PARFIL,MATFIL
+       read (input_file,'(T37, A, /A)') REF,DESC !,PARFIL,MATFIL
        print *, "REF : ", REF
        print *, "DESC : ", DESC
        
-       READ (INPUT_FILE, *) ! skip lines with comments / blanks in header of input file
-       READ (INPUT_FILE, *)
-       READ (INPUT_FILE, 804) cseed    ! Will the user be supplying a seed for the random number generator (RNG)?
-       READ (INPUT_FILE, 801) iseed    ! Seed for RNG, ignored if cseed = N
-       READ (INPUT_FILE, 801) n_stocks
-       READ (INPUT_FILE, 801) YR_MAX 
-       READ (INPUT_FILE, 801) SURV_FREQ 
-       READ (INPUT_FILE, 801) KK 
+       read (input_file, *) ! Skip lines with comments / blanks in header of input file
+       read (input_file, *) ! Each read statement in Fortran moves to next line before reading
+       read (input_file, 804) cseed    ! Will the user be supplying a seed for the random number generator (RNG)?
+       read (input_file, 801) iseed    ! Seed for RNG, ignored if cseed = N
+       read (input_file, 801) n_stocks
+       read (input_file, 801) yr_max 
+       read (input_file, 801) surv_freq
+       read (input_file, 801) k_1plus 
        
-       READ (INPUT_FILE, 802) CV_N 
-       READ (INPUT_FILE, 802) CV_MORTALITY 
-       READ (INPUT_FILE, 802) THETA 
-       READ (INPUT_FILE, 802) R_MAX 
-       READ (INPUT_FILE, 802) F_R 
-       READ (INPUT_FILE, 802) INIT_DEPL 
-       READ (INPUT_FILE, 802) LOWER_TAIL 
-       READ (INPUT_FILE, 802) b_max 
-       READ (INPUT_FILE, 802) S_adult
-       READ (INPUT_FILE, 802) S_juv
-       READ (INPUT_FILE, 801) a_m       
+       read (input_file, 802) cv_N 
+       read (input_file, 802) cv_mortality
+       read (input_file, 802) theta 
+       read (input_file, 802) r_max 
+       read (input_file, 802) f_r 
+       read (input_file, 802) init_depl 
+       read (input_file, 802) lower_tail
+       read (input_file, 802) b_max 
+       read (input_file, 802) S_adult
+       read (input_file, 802) S_juv
+       read (input_file, 801) a_m       
        
+! Output to screen for checking
+       write(*,*) "cseed: ", cseed ! DEBUGGING
+       write(*,*) "iseed: ", iseed ! DEBUGGING
+       write(*,*) "n_stocks", n_stocks
+       write(*,*) "YR_MAX", YR_MAX
+       write(*,*) "SURV_FREQ", SURV_FREQ
+       write(*,*) "k_1plus", k_1plus
+       write(*,*) "CV_N", CV_N
+       write(*,*) "CV_MORTALITY", CV_MORTALITY
+       write(*,*) "THETA", THETA
+       write(*,*) "R_MAX", R_MAX
+       write(*,*) "F_R", F_R
+       write(*,*) "INIT_DEPL", INIT_DEPL
+       write(*,*) "LOWER_TAIL", LOWER_TAIL
+       write(*,*) "b_max", b_max
+       write(*,*) "S_adult", S_adult
+       write(*,*) "S_juv", S_juv       
+       write(*,*) "a_m", a_m       
+       
+       close(input_file)
+       
+       return
+      end subroutine read_inits
 
-       WRITE(*,*) "cseed: ", cseed ! DEBUGGING
-       WRITE(*,*) "iseed: ", iseed ! DEBUGGING
-       WRITE(*,*) "n_stocks", n_stocks
-       WRITE(*,*) "YR_MAX", YR_MAX
-       WRITE(*,*) "SURV_FREQ", SURV_FREQ
-       WRITE(*,*) "KK", KK
-       WRITE(*,*) "CV_N", CV_N
-       WRITE(*,*) "CV_MORTALITY", CV_MORTALITY
-       WRITE(*,*) "THETA", THETA
-       WRITE(*,*) "R_MAX", R_MAX
-       WRITE(*,*) "F_R", F_R
-       WRITE(*,*) "INIT_DEPL", INIT_DEPL
-       WRITE(*,*) "LOWER_TAIL", LOWER_TAIL
-       WRITE(*,*) "b_max", b_max
-       WRITE(*,*) "S_adult", S_adult
-       WRITE(*,*) "S_juv", S_juv       
-       WRITE(*,*) "a_m", a_m       
-       
-       CLOSE(INPUT_FILE)
-       
-      RETURN
-      END subroutine read_inits
-
-END MODULE PBR_FileIO_Module
-!# Input parameters for PBR Tier system simulations -- base case 
+end module PBR_FileIO_Module
+!# Input parameters for PBR Tier system simulations
+!cseed           Y       # Y = Provide a seed to the random number generator, N = seed with CPU clock           
+!iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
+!n_stocks        2       # Number of stocks (one or two)
 !yr_max          100     # Number of years to project over
 !surv_freq       4       # interval (yrs) between abundance surveys (first abundance survey in year 1)
 !KK              10000   # Carrying capacity
@@ -91,8 +94,7 @@ END MODULE PBR_FileIO_Module
 !F_r             0.50    # Base case recovery factor
 !init_depl       0.30    # Initial depletion (Abundance as a fraction of carrying capacity)
 !lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
-!surv.yr.tmp     1       # Counter used in assigning survey years
-!B_max           0.5     # Maximum birth rate (in the absence of density dependence)
+!B_max           0.134     # Maximum birth rate (in the absence of density dependence)
 !S_adult         0.95    # Adult (mature) survival rate
-!S_juv           0.80    # Juvenile (immature) survival rate
-!a_m             10      # Age at sexual maturity  
+!S_juv           0.75    # Juvenile (immature) survival rate
+!a_m             3       # Age at sexual maturity  

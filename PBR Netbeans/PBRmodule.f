@@ -1,8 +1,7 @@
       module calcs
-!      parameter(n2max=10000,np=33,icm=26,idm=40,iwm=201,nym=260)
-!      character(8) datestart,dateend
-!      character(10) timestart,timeend,timer
 
+         !implicit none
+         
 	 contains
 ! *************************************************************************      
 ! Function to calculate N_min, given (i) CV of abundance estimate (ii) N_best and (iii) standard normal variate, z
