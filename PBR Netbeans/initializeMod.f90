@@ -94,7 +94,7 @@ MODULE initialize_pop
         prop_NPR = NPR_age / sum_NPR                                    ! Note this is a vectorized operation in Fortran 90/95
         print *, "prop_NPR", prop_NPR           ! DEBUGGING
 
-        b_eq = 1.0 / (temp_mat - 1)                                     ! Equilibrium birth rate on a per recruit basis
+        b_eq = 1.0 / temp_mat                                     ! Equilibrium birth rate on a per recruit basis
         b_1 = b_eq + (b_max - b_eq) * (1 - (init_depl ** theta))        ! Birth rate in first year of projection, given initial depletion
 
         NPR_oneplus = temp_1plus
@@ -172,7 +172,7 @@ MODULE initialize_pop
         Nage(0) = rec_init
         do jj = 1, (age_x - 1)
             Nage(jj) = Nage(jj - 1) * S_age(jj - 1)                      ! Natural mortality
-            Nage(jj) = Nage(jj - 1) * (1 - selectivity(jj - 1) * f_init) ! Human caused mortality at start of time series
+            Nage(jj) = Nage(jj) * (1 - selectivity(jj - 1) * f_init) ! Human caused mortality at start of time series
             initial_oneplus = initial_oneplus + Nage(jj)
         end do
 !   
