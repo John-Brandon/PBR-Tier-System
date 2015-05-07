@@ -75,15 +75,20 @@
          print *, "init_age_distribution" ! This is translated from Do_NPR() function from JRB's ADMB gray whale code
          Call initialize_age_struc() !(a_m, npr, S_adult, delt_s) -- initializes age structured vector based on numbers per recruit approach
 
-         print *, "Calling newtons_root()"         
-         foo = newtons_root()           ! 
-         print *, "initial_F: ", foo ! DEBUGGING
-
-!         foo = initial_F() ! Calculate the initial human caused mortality rate 
+!         print *, "Calling newtons_root()"         
+!         foo = newtons_root()           ! 
 !         print *, "initial_F: ", foo ! DEBUGGING
+
+         print *, "Calling initial_F" ! DEBUGGING 
+         f_init = 0.10         
+         print *, "f_init: ", f_init ! DEBUGGING
+         foo = initial_F() ! Calculate the initial human caused mortality rate 
+         print *, "initial_F: ", foo ! DEBUGGING
          
-         print *, "rescale_NPR()"
-         Call rescale_NPR() ! Rescale the numbers per recruit to initial population size, i.e. scale up to the initial numbers at age vector
+!         print *, "rescale_NPR()"
+!         Call rescale_NPR() ! Rescale the numbers per recruit to initial population size, i.e. scale up to the initial numbers at age vector
+         
+         
 ! DEVELOPING
 ! Test some random number generation
 !	 open(unit = 1, file = "z_variate.out")
