@@ -35,9 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/BRENT.o \
 	${OBJECTDIR}/Declare_variables_module.o \
 	${OBJECTDIR}/Format_module.o \
 	${OBJECTDIR}/Generate_random_numbers_module.o \
+	${OBJECTDIR}/NRTYPE.o \
+	${OBJECTDIR}/NRUTIL.o \
 	${OBJECTDIR}/PBR_Errorcheck_module.o \
 	${OBJECTDIR}/PBR_FileIO_Module.o \
 	${OBJECTDIR}/PBRmodule.o \
@@ -70,6 +73,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.f} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pbr_netbeans ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/BRENT.o: BRENT.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/BRENT.o BRENT.f90
+
 ${OBJECTDIR}/Declare_variables_module.o: Declare_variables_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Declare_variables_module.o Declare_variables_module.f90
@@ -81,6 +88,14 @@ ${OBJECTDIR}/Format_module.o: Format_module.f90
 ${OBJECTDIR}/Generate_random_numbers_module.o: Generate_random_numbers_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Generate_random_numbers_module.o Generate_random_numbers_module.f90
+
+${OBJECTDIR}/NRTYPE.o: NRTYPE.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/NRTYPE.o NRTYPE.f90
+
+${OBJECTDIR}/NRUTIL.o: NRUTIL.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/NRUTIL.o NRUTIL.f90
 
 ${OBJECTDIR}/PBR_Errorcheck_module.o: PBR_Errorcheck_module.f90 
 	${MKDIR} -p ${OBJECTDIR}

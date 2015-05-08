@@ -12,9 +12,12 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>BRENT.f90</itemPath>
       <itemPath>Declare_variables_module.f90</itemPath>
       <itemPath>Format_module.f90</itemPath>
       <itemPath>Generate_random_numbers_module.f90</itemPath>
+      <itemPath>NRTYPE.f90</itemPath>
+      <itemPath>NRUTIL.f90</itemPath>
       <itemPath>PBR_Errorcheck_module.f90</itemPath>
       <itemPath>PBR_FileIO_Module.f90</itemPath>
       <itemPath>PBRmodule.f</itemPath>
@@ -53,11 +56,17 @@
       </compileType>
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="BRENT.f90" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="NRTYPE.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="NRUTIL.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
       </item>
@@ -100,11 +109,17 @@
       </compileType>
       <item path="../README.md" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="BRENT.f90" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="NRTYPE.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="NRUTIL.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
       </item>

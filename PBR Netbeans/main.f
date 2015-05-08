@@ -39,12 +39,16 @@
          use Format_module                  ! Format statements declared as type character (bit of a hack): File = Format_module.f90
          use random, only : random_normal   ! Module with routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : File = Random_module.f90
          use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): File = Generate_random_numbers_module.f90
-!         use debug
+         ! use zbrent_tmp                     ! Module with ZBRENT method for root finding: File = Zbrent_tmp.f90
+         !         use debug
          
          implicit none ! Turns off implicit typing by Fortran; now all variables must be explicitly declared by type
 
          real(kind = 8) :: foo ! DEBUGGING
-         
+         real(kind = 8) :: f_init ! DEBUGGING         
+         real(kind = 8) :: ZBRENT, zbrent_tmp, brent
+         real(kind = 8) :: xmin
+         real(kind = 8) :: objf_brent
          call read_inits() ! Read initial values from 'input.par' file. PBR_FileIO_Module contains subroutine 'read_inits()' 
 
          age_x = a_m + 1    ! At present, population dynamics model assumes this order for entering adult-hood: maturity (ovulation) -> adult mortality rate -> partuition
@@ -62,8 +66,6 @@
          
          call set_random_seed() ! Uses input from read_inits() to set seed for RNG -- see comment after 'use Generate_random_numbers_module' statement above
          
-         delt_s = S_adult - S_juv ! Calculate difference between juvenile and adult survival
-         print *, "delt_s: ", delt_s
          print *, "S_adult: ", S_adult
          print *, "S_juv: ", S_juv         
 ! For DEBUGGING (uncomment "use debug", in linked modules above if want to test / debug a routine here that is being developed in module 'debug')        
@@ -73,17 +75,50 @@
 
 ! DEVELOPING
          print *, "init_age_distribution" ! This is translated from Do_NPR() function from JRB's ADMB gray whale code
-         Call initialize_age_struc() !(a_m, npr, S_adult, delt_s) -- initializes age structured vector based on numbers per recruit approach
+         Call initialize_age_struc() !(a_m, npr, S_adult, delt_s) -- initializes numbers at age vector based on numbers per recruit approach
 
 !         print *, "Calling newtons_root()"         
 !         foo = newtons_root()           ! 
 !         print *, "initial_F: ", foo ! DEBUGGING
 
-         print *, "Calling initial_F" ! DEBUGGING 
-         f_init = 0.10         
-         print *, "f_init: ", f_init ! DEBUGGING
-         foo = initial_F() ! Calculate the initial human caused mortality rate 
-         print *, "initial_F: ", foo ! DEBUGGING
+!         print *, "Calling initial_F" ! DEBUGGING 
+!         f_init = 0.0345264925500929        
+!         f_init = 0.0
+!         print *, "f_init: ", f_init ! DEBUGGING
+!         foo = initial_F(f_init) ! Calculate the initial human caused mortality rate 
+!         print *, "initial_F: ", foo ! DEBUGGING
+!         
+!         f_init = 1.0
+!         print *, "f_init: ", f_init ! DEBUGGING
+!         foo = initial_F(f_init) ! Calculate the initial human caused mortality rate 
+!         print *, "initial_F: ", foo ! DEBUGGING
+! 
+!         print *, "Calling ZBRENT" ! DEBUGGING 
+!         f_init = ZBRENT(initial_F, 0.0D0, 1.0D0, 0.00000000000001) ! Calculate the initial human caused mortality rate 
+!         print *, "f_init: ", f_init ! DEBUGGING
+
+         print *, "x_min: ", x_min ! DEBUGGING
+         print *, "f_init: ", f_init         
+         print *, "Calling BRENT" ! DEBUGGING 
+         ! ax,bx,cx,func,tol,xmin
+         objf_brent = BRENT(0.0D0, 0.5D0, 1.0D0, initial_F, 0.0000001D0, 
+     +       f_init) ! Calculate the initial human caused mortality rate 
+         print *, "x_min: ", x_min ! DEBUGGING
+         print *, "f_init: ", f_init
+ !        foo = zbrent_tmp()
+!         f_init = 0.0
+!         print *, "f_init: ", f_init ! DEBUGGING
+!         foo = initial_F(f_init)
+!         print *, "objf_initial_F: ", foo
+!         f_init = 1.0
+!         print *, "f_init: ", f_init ! DEBUGGING
+!         foo = initial_F(f_init)
+!         print *, "objf_initial_F: ", foo  
+!         f_init = 0.0345264925500929    ! CORRECT ANSWER -- BUT ZBRENT NOT FINDING THE ROOT CORRECTLY
+!         print *, "f_init: ", f_init ! DEBUGGING
+!         foo = initial_F(f_init)
+!         print *, "objf_initial_F: ", foo   
+         
          
 !         print *, "rescale_NPR()"
 !         Call rescale_NPR() ! Rescale the numbers per recruit to initial population size, i.e. scale up to the initial numbers at age vector

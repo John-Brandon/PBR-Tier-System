@@ -1,4 +1,4 @@
-GFORTRAN module created from Random_module.f90 on Tue May  5 16:00:32 2015
+GFORTRAN module created from Random_module.f90 on Fri May  8 16:22:14 2015
 If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -104,8 +104,6 @@ REAL 4 ()) 0 0 () () 0 () ())
 0 0 () () 0 () ())
 30 'bb' '' 28 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (REAL 4 ()) 0 0
 () () 0 () ())
-32 'fn_val' '' 28 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
-(REAL 4 ()) 0 0 () () 0 () ())
 108 'fn_val' '' 106 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
 RESULT) (REAL 4 ()) 0 0 () () 0 () ())
 107 'm' '' 106 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DUMMY) (INTEGER 4 ())
@@ -114,6 +112,8 @@ RESULT) (REAL 4 ()) 0 0 () () 0 () ())
 0 () () 0 () ())
 65 'h' '' 63 ((VARIABLE IN UNKNOWN-PROC UNKNOWN DIMENSION DUMMY) (REAL 4
 ()) 0 0 () (1 ASSUMED_SHAPE (CONSTANT (INTEGER 4 ()) 0 '1') ()) 0 () ())
+32 'fn_val' '' 28 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN RESULT)
+(REAL 4 ()) 0 0 () () 0 () ())
 67 'f' '' 63 ((VARIABLE INOUT UNKNOWN-PROC UNKNOWN DIMENSION DUMMY) (
 REAL 4 ()) 0 0 () (1 ASSUMED_SHAPE (CONSTANT (INTEGER 4 ()) 0 '1') ()) 0
 () ())

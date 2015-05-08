@@ -52,7 +52,7 @@ MODULE Declare_variables_module
     real(kind = 8) :: x_min, x_max, step_CV
     real(kind = 8) :: yy
     real(kind = 8) :: delt_s ! delt_s is the difference between adult and juvenile survival rates
-    real(kind = 8) :: f_init ! Initial human caused mortality rate
+!    real(kind = 8) :: f_init ! Initial human caused mortality rate
     real(kind = 8) :: objf_newt ! Objective function value for solving for initial human caused mortality rate using Newton's method  
     real(kind = 8) :: S_tmp1       ! Temporary vector for survival rates -- don't think this is needed here. 
     real(kind = 8) :: temp_1plus, temp_mat, NPR_oneplus

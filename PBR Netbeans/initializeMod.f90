@@ -121,7 +121,7 @@ MODULE initialize_pop
 !//####################### 
 
 !//#######################  
-    real(kind = 8) function Initial_F()
+    real(kind = 8) function Initial_F(f_init)
 !// given numbers per-recruit at equilibrium - apply initial human caused mortality rate (F_init)
 !//####################### 
         ! use
@@ -130,6 +130,7 @@ MODULE initialize_pop
 !        real(kind = 8) :: temp_mature, temp_1plus
 !        real(kind = 8) :: rec_init ! initial recruitment conditioned on Finit (in terms of females)
 !        real(kind = 8) :: pred_rec, initial_oneplus
+         real(kind = 8) :: f_init
 ! INITIALIZE variables in Initial_F() ##############################        
         temp_mature = 0.    ! Reset to zero after they were calculated in initialize_age_struc() subroutine 
         temp_1plus = 0.     ! Reset to zero after they were calculated in initialize_age_struc() subroutine 
@@ -147,9 +148,9 @@ MODULE initialize_pop
         
         !Initial_F = 0.20    ! Starting guess 
         Nage = NPR_age      ! Initialize numbers at age given number per recruit -- using a dummy vector for this routine
-        print *, "Hello from Initial_F"
-        print *, "Nage: ", Nage  
-        print *, "Input for f_init: ", f_init          
+!        print *, "Hello from Initial_F"
+!        print *, "Nage: ", Nage  
+!        print *, "Input for f_init: ", f_init          
         
 ! ##############################                
         do ii = 1, (age_x -1)
@@ -181,13 +182,33 @@ MODULE initialize_pop
         Nage(age_x) = Nage(age_x) / (1 - S_age(age_x) * (1 - selectivity(age_x) * f_init))
         initial_oneplus = initial_oneplus + Nage(age_x)
 
-        print *, "After applying f_init = ", nint(f_init * 1000.0) * 1E-3 ,", from newtons_root()"
-        print *, "Nage: ", Nage        
+        print *, ""
+        print *, "Hello from initial_F()"
+        print *, "After applying f_init = ", f_init
+!        print *, "Nage: ", Nage        
         
-        pred_rec = b_1 * (temp_mature - 1) - 1
+!         pred_rec = (0.50 * b_1 * temp_mature) 
+!         print *, "pred_rec (temp1): ", pred_rec
+!         print *, "b_1: ", b_1
+!         print *, "temp_mature: ", temp_mature
+!         pred_rec = 0.50 * init_depl * NPR_oneplus / initial_oneplus
+!         print *, "pred_rec (temp2): ", pred_rec
+!         print *, "init_depl: ", init_depl
+!         print *, "NPR_oneplus: ", NPR_oneplus
+!         print *, "initial_oneplus: ", initial_oneplus
+         pred_rec = b_1 * temp_mature 
+         pred_rec = pred_rec - (init_depl * NPR_oneplus / initial_oneplus)
+         pred_rec = 0.5 * pred_rec
+!         print *, "pred_rec (temp3): ", pred_rec         
+         !        pred_rec = (b_1 * temp_mature) - (init_depl * NPR_oneplus / initial_oneplus)        
+!        pred_rec = 0.50 * pred_rec
         objf_newt = pred_rec * pred_rec
-        
+
+        ! DEBUGGING (Subtracting one from objective function in hopes of helping ZBRENT root finding)
+        !objf_newt = objf_newt ! - 0.00000001
+
         print *, "objf_newt: ", objf_newt
+        print *, ""
         Initial_F = objf_newt
         return
     end function Initial_F
@@ -210,6 +231,7 @@ MODULE initialize_pop
         real(kind = 8) :: f1_newt
         real(kind = 8) :: df_newt
         real(kind = 8) :: dx_newt
+        real(kind = 8) :: f_init
  !       real(kind = 8), external :: Initial_F
 !
         f_init = 0.
@@ -223,10 +245,10 @@ MODULE initialize_pop
         do jcount = 1, jmax
               print *, "jcount: ", jcount
               f_init = rtnewt
-              objf_newt = Initial_F()              ! Subroutine call
+              objf_newt = Initial_F(f_init)              ! Subroutine call
               f1_newt = objf_newt	
               f_init = rtnewt + delta_Finit
-              objf_newt = Initial_F()              ! Subroutine call
+              objf_newt = Initial_F(f_init)              ! Subroutine call
               df_newt = (objf_newt - f1_newt) / delta_Finit
               dx_newt = f1_newt / df_newt
               rtnewt = rtnewt - dx_newt
