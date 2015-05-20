@@ -25,7 +25,7 @@ module PBR_FileIO_Module
        open (input_file, file = 'INPUT.PAR', status = 'OLD')
 
 801    FORMAT(16X, I6) ! move these into Format_module?
-802    FORMAT(16X, F6.3)
+802    FORMAT(16X, F8.0)
 803    FORMAT(16X, A6)
 804    FORMAT(16X, A1)
 
@@ -40,20 +40,28 @@ module PBR_FileIO_Module
        read (input_file, 801) iseed    ! Seed for RNG, ignored if cseed = N
        read (input_file, 801) n_stocks
        read (input_file, 801) yr_max 
-       read (input_file, 801) surv_freq
-       read (input_file, 801) k_1plus 
+       read (input_file, 801) surv_freq(1)
+       read (input_file, 801) surv_freq(2)       
+       read (input_file, 802) k_1plus(1)  ! Carrying capacity for stock 1
+       read (input_file, 802) k_1plus(2)  ! Carrying capacity for stock 2       
        
-       read (input_file, 802) cv_N 
-       read (input_file, 802) cv_mortality
+       read (input_file, 802) cv_N(1) 
+       read (input_file, 802) cv_N(2)       
+       read (input_file, 802) cv_mortality(1)
+       read (input_file, 802) cv_mortality(2)       
        read (input_file, 802) theta 
        read (input_file, 802) r_max 
-       read (input_file, 802) f_r 
-       read (input_file, 802) init_depl 
+       read (input_file, 802) f_r(1) 
+       read (input_file, 802) f_r(2)       
+       read (input_file, 802) init_depl(1)
+       read (input_file, 802) init_depl(2)
        read (input_file, 802) lower_tail
        read (input_file, 802) b_max 
+       read (input_file, 802) b_sex_ratio       
        read (input_file, 802) S_adult
        read (input_file, 802) S_juv
        read (input_file, 801) a_m       
+       read (input_file, 801) a_r
        
 ! Output to screen for checking
        write(*,*) "cseed: ", cseed ! DEBUGGING
@@ -61,7 +69,8 @@ module PBR_FileIO_Module
        write(*,*) "n_stocks", n_stocks
        write(*,*) "YR_MAX", YR_MAX
        write(*,*) "SURV_FREQ", SURV_FREQ
-       write(*,*) "k_1plus", k_1plus
+       write(*,*) "k_1plus(1)", k_1plus(1)
+       write(*,*) "k_1plus(2)", k_1plus(2)       
        write(*,*) "CV_N", CV_N
        write(*,*) "CV_MORTALITY", CV_MORTALITY
        write(*,*) "THETA", THETA
@@ -73,6 +82,7 @@ module PBR_FileIO_Module
        write(*,*) "S_adult", S_adult
        write(*,*) "S_juv", S_juv       
        write(*,*) "a_m", a_m       
+       write(*,*) "a_r", a_r        
        
        close(input_file)
        

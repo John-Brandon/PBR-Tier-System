@@ -16,14 +16,12 @@
       <itemPath>Declare_variables_module.f90</itemPath>
       <itemPath>Format_module.f90</itemPath>
       <itemPath>Generate_random_numbers_module.f90</itemPath>
-      <itemPath>NRTYPE.f90</itemPath>
-      <itemPath>NRUTIL.f90</itemPath>
+      <itemPath>Initialize_pop_module.f90</itemPath>
       <itemPath>PBR_Errorcheck_module.f90</itemPath>
       <itemPath>PBR_FileIO_Module.f90</itemPath>
       <itemPath>PBRmodule.f</itemPath>
       <itemPath>Random_module.f90</itemPath>
-      <itemPath>initializeMod.f90</itemPath>
-      <itemPath>main.f</itemPath>
+      <itemPath>main.f90</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -64,9 +62,7 @@
       </item>
       <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="NRTYPE.f90" ex="false" tool="2" flavor2="0">
-      </item>
-      <item path="NRUTIL.f90" ex="false" tool="2" flavor2="0">
+      <item path="Initialize_pop_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
       </item>
@@ -78,11 +74,9 @@
       </item>
       <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="initializeMod.f90" ex="false" tool="2" flavor2="0">
-      </item>
       <item path="input.par" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.f" ex="false" tool="2" flavor2="0">
+      <item path="main.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="z_variate.out" ex="false" tool="3" flavor2="0">
       </item>
@@ -117,9 +111,7 @@
       </item>
       <item path="Generate_random_numbers_module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="NRTYPE.f90" ex="false" tool="2" flavor2="0">
-      </item>
-      <item path="NRUTIL.f90" ex="false" tool="2" flavor2="0">
+      <item path="Initialize_pop_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="PBR_Errorcheck_module.f90" ex="false" tool="2" flavor2="0">
       </item>
@@ -131,11 +123,9 @@
       </item>
       <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="initializeMod.f90" ex="false" tool="2" flavor2="0">
-      </item>
       <item path="input.par" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.f" ex="false" tool="2" flavor2="0">
+      <item path="main.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="z_variate.out" ex="false" tool="3" flavor2="0">
       </item>

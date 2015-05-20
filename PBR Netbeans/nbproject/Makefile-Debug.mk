@@ -39,13 +39,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/Declare_variables_module.o \
 	${OBJECTDIR}/Format_module.o \
 	${OBJECTDIR}/Generate_random_numbers_module.o \
-	${OBJECTDIR}/NRTYPE.o \
-	${OBJECTDIR}/NRUTIL.o \
+	${OBJECTDIR}/Initialize_pop_module.o \
 	${OBJECTDIR}/PBR_Errorcheck_module.o \
 	${OBJECTDIR}/PBR_FileIO_Module.o \
 	${OBJECTDIR}/PBRmodule.o \
 	${OBJECTDIR}/Random_module.o \
-	${OBJECTDIR}/initializeMod.o \
 	${OBJECTDIR}/main.o
 
 
@@ -89,13 +87,9 @@ ${OBJECTDIR}/Generate_random_numbers_module.o: Generate_random_numbers_module.f9
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Generate_random_numbers_module.o Generate_random_numbers_module.f90
 
-${OBJECTDIR}/NRTYPE.o: NRTYPE.f90 
+${OBJECTDIR}/Initialize_pop_module.o: Initialize_pop_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -g -o ${OBJECTDIR}/NRTYPE.o NRTYPE.f90
-
-${OBJECTDIR}/NRUTIL.o: NRUTIL.f90 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -g -o ${OBJECTDIR}/NRUTIL.o NRUTIL.f90
+	$(COMPILE.f) -g -o ${OBJECTDIR}/Initialize_pop_module.o Initialize_pop_module.f90
 
 ${OBJECTDIR}/PBR_Errorcheck_module.o: PBR_Errorcheck_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
@@ -113,13 +107,9 @@ ${OBJECTDIR}/Random_module.o: Random_module.f90
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Random_module.o Random_module.f90
 
-${OBJECTDIR}/initializeMod.o: initializeMod.f90 
+${OBJECTDIR}/main.o: main.f90 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -g -o ${OBJECTDIR}/initializeMod.o initializeMod.f90
-
-${OBJECTDIR}/main.o: main.f 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -g -o ${OBJECTDIR}/main.o main.f
+	$(COMPILE.f) -g -o ${OBJECTDIR}/main.o main.f90
 
 # Subprojects
 .build-subprojects:

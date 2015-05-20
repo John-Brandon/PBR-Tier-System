@@ -10,6 +10,7 @@
 !====== +++ === === +++ === === +++ === ===
 
 MODULE PBR_Errorcheck_module
+    use Declare_variables_module ! Global variable declarations
     implicit none
     contains
     
@@ -18,6 +19,11 @@ MODULE PBR_Errorcheck_module
 ! For example, the number of stocks entered should be either 1 or 2 (no less and no more)    
         error_check_input = 0
         print *, "error_check_input: ", error_check_input
+        if (n_stocks > 2 .or. n_stocks < 1) then      ! Check that number of stocks is supported
+            print *, "ERROR : Code only currently supports either one or two stocks. Check input file, input.par"
+            error_check_input = -9
+        end if
+            
         return
     end function error_check_input
 

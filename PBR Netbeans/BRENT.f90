@@ -1,15 +1,16 @@
 FUNCTION brent(ax,bx,cx,func,tol,xmin)
-    !USE nrtype; 
-    !USE nrutil, ONLY : nrerror
+! From Numerical Recipes (Press et al)
     IMPLICIT NONE
     REAL(kind = 8), INTENT(IN) :: ax,bx,cx,tol
     REAL(kind = 8), INTENT(OUT) :: xmin
+!    INTEGER(kind = 4), INTENT(IN) :: a_r ! Modified this code to include additional arguments passed into 'func' 
     REAL(kind = 8) :: brent
+
     INTERFACE
-        FUNCTION func(x)
-       ! USE nrtype
+        FUNCTION func(x)   ! This is for Initial_F(), not very generic TODO: edit interface for generic function
         IMPLICIT NONE
         REAL(kind = 8), INTENT(IN) :: x
+!        INTEGER(kind = 4), INTENT(IN) :: a_r        
         REAL(kind = 8) :: func
         END FUNCTION func
     END INTERFACE
@@ -35,20 +36,11 @@ FUNCTION brent(ax,bx,cx,func,tol,xmin)
     fv = fx
     fw = fx
     do iter = 1, ITMAX ! Main program loop.
-!        print *, "Hello from BRENT Iterations", iter        ! DEBUGGING
         xm = 0.5 * (a + b)
-!        print *, "xm", xm                                   ! DEBUGGING        
-!        print *, "tol", tol                                 ! DEBUGGING
-!        print *, "abs(x)", abs(x)                           ! DEBUGGING
-!        print *, "ZEPS", ZEPS                               ! DEBUGGING      
         tol1 = tol * abs(x) + ZEPS
-!        print *, "tol1", tol1                               ! DEBUGGING        
-        tol2 = 2.0 * tol1
-!        print *, "tol2", tol2                               ! DEBUGGING        
-!        print *, "abs(x - xm)", tol2                               ! DEBUGGING        
-!        print *, "tol2 - 0.5 * (b - a)", tol2 - 0.5 * (b - a)                               ! DEBUGGING                
+        tol2 = 2.0 * tol1             
         if (abs(x - xm) <= (tol2 - 0.5 * (b - a))) then ! Test for done here.
-            print *, "SUCCESS FROM BRENT !! (after n iterations): ", iter
+            print *, "BRENT returning an answer (after n iterations): ", iter
             xmin = x ! Arrive here ready to exit with best values.
             brent = fx
             RETURN
