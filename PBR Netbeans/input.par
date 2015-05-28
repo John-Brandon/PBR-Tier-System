@@ -18,12 +18,17 @@ theta           1.0     # Density dependence shape parameter
 R_max           0.04    # Default for cetaceans 
 F_r(1)          0.50    # Base case recovery factor for stock 1
 F_r(2)          0.50    # Base case recovery factor for stock 2
-init_depl(1)    0.30    # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-init_depl(2)    0.50    # Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
+init_depl(1)    0.3    # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
+init_depl(2)    0.00001 # DEBUGGING: Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
 lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
 B_max           0.5     # Maximum birth rate (in the absence of density dependence)
 B_sex_ratio     0.50    # Sex ratio at birth
 S_adult         0.95    # Adult (mature) survival rate
-S_juv           0.75    # Juvenile (immature) survival rate
+S_juv           0.75   # Juvenile (immature) survival rate
 a_m             3       # Age at sexual maturity  
 a_r             2       # Age at recruitment (first vulnerability) to human caused mortality
+p_a1_s1         0.75    # Percentage of stock_1 in subarea_1
+p_a2_s1         0.25    # Percentage of stock_1 in subarea_2
+p_a2_s2         0.60    # Percentage of stock_2 in subarea_2
+p_a3_s2         0.20    # Percentage of stock_2 in subarea_3
+p_a4_s2         0.20    # Percentage of stock_2 in subarea_4

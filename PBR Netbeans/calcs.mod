@@ -1,4 +1,4 @@
-GFORTRAN module created from PBRmodule.f on Tue May 19 21:39:43 2015
+GFORTRAN module created from PBR_calcs_module.f90 on Mon May 25 17:48:47 2015
 If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -15,9 +15,9 @@ If you edit this, you'll get what you deserve.
 UNKNOWN 0 ()) 0 0 () () 0 () ())
 3 'calc_n_min' 'calcs' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC DECL
 FUNCTION) (REAL 8 ()) 4 0 (5 6 7) () 3 () ())
-6 'cv_n' '' 4 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN DUMMY) (
-REAL 8 ()) 0 0 () () 0 () ())
 5 'n_best' '' 4 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN DUMMY) (
+REAL 8 ()) 0 0 () () 0 () ())
+6 'cv_n' '' 4 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN DUMMY) (
 REAL 8 ()) 0 0 () () 0 () ())
 7 'z_variate' '' 4 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN DUMMY)
 (REAL 8 ()) 0 0 () () 0 () ())

@@ -25,10 +25,10 @@ MODULE Generate_random_numbers_module
 !#######################################################         
     subroutine set_random_seed()
         implicit none ! this is not necessary to include in procedure, because 'implicit none' is declared at the module level
-        integer, allocatable :: seed(:) ! This is a general routine, so leaving variable declarations here for portability 
-        integer :: seed_n  ! Length of the seed vector       
-        integer :: init_seed ! Value underlying creation of seed vector values  
-         
+        integer(kind = 4), allocatable :: seed(:) ! This is a general routine, so leaving variable declarations here for portability 
+        integer(kind = 4) :: seed_n               ! Length of the seed vector       
+        integer(kind = 4) :: init_seed            ! Value underlying creation of seed vector values  
+        integer(kind = 4) :: ii                   ! Counter
         call random_seed(size = seed_n) ! Call the intrinsic random_seed subroutine and return length of seed vector (might be compiler dependent)
         allocate(seed(seed_n)) ! Dimension the seed vector accordingly (using allocate to dynamically dimension vector)
          
@@ -45,7 +45,7 @@ MODULE Generate_random_numbers_module
          
 !         print *, "init_seed: ", init_seed
          do ii = 1, seed_n
-             seed(ii) = init_seed + 37*(ii-1) ! recommended function for setting seeds of RNG because 37 is prime number and RNG likes primes
+             seed(ii) = init_seed + 37*(ii-1) ! Recommended function for setting seeds of RNG because 37 is prime number and RNG likes primes
 !             print *, "ii / seed(ii): ", ii, seed(ii)
          enddo
 

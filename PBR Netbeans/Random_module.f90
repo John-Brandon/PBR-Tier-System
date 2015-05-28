@@ -1,7 +1,7 @@
-! This module file was downloaded from http://www.netlib.org/random/random.f90 on 27 April 2015 by John R. Brandon
-!  The module code was created by Alan Miller (Retired from CSIRO Mathematical & Information Sciences)
+!  The module code was written by Alan Miller (Retired from CSIRO Mathematical & Information Sciences)
 !   See also: http://users.bigpond.net.au/amiller/random.html
-! -JRB (jbrandon at gmail)
+!     This module file was downloaded from http://www.netlib.org/random/random.f90 on 27 April 2015 by John R. Brandon
+! May 2015: Modified random_normal() to take mean and standard deviation as arguments -JRB (jbrandon at gmail)
 MODULE random
 ! A module for random number generation from the following distributions:
 !  

@@ -36,14 +36,16 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/BRENT.o \
+	${OBJECTDIR}/DGEEV_and_dependencies.o \
 	${OBJECTDIR}/Declare_variables_module.o \
 	${OBJECTDIR}/Format_module.o \
 	${OBJECTDIR}/Generate_random_numbers_module.o \
 	${OBJECTDIR}/Initialize_pop_module.o \
 	${OBJECTDIR}/PBR_Errorcheck_module.o \
 	${OBJECTDIR}/PBR_FileIO_Module.o \
-	${OBJECTDIR}/PBRmodule.o \
+	${OBJECTDIR}/PBR_calcs_module.o \
 	${OBJECTDIR}/Random_module.o \
+	${OBJECTDIR}/feigen0.o \
 	${OBJECTDIR}/main.o
 
 
@@ -75,6 +77,10 @@ ${OBJECTDIR}/BRENT.o: BRENT.f90
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/BRENT.o BRENT.f90
 
+${OBJECTDIR}/DGEEV_and_dependencies.o: DGEEV_and_dependencies.f 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/DGEEV_and_dependencies.o DGEEV_and_dependencies.f
+
 ${OBJECTDIR}/Declare_variables_module.o: Declare_variables_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Declare_variables_module.o Declare_variables_module.f90
@@ -99,13 +105,17 @@ ${OBJECTDIR}/PBR_FileIO_Module.o: PBR_FileIO_Module.f90
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/PBR_FileIO_Module.o PBR_FileIO_Module.f90
 
-${OBJECTDIR}/PBRmodule.o: PBRmodule.f 
+${OBJECTDIR}/PBR_calcs_module.o: PBR_calcs_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.f) -g -o ${OBJECTDIR}/PBRmodule.o PBRmodule.f
+	$(COMPILE.f) -g -o ${OBJECTDIR}/PBR_calcs_module.o PBR_calcs_module.f90
 
 ${OBJECTDIR}/Random_module.o: Random_module.f90 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.f) -g -o ${OBJECTDIR}/Random_module.o Random_module.f90
+
+${OBJECTDIR}/feigen0.o: feigen0.f90 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.f) -g -o ${OBJECTDIR}/feigen0.o feigen0.f90
 
 ${OBJECTDIR}/main.o: main.f90 
 	${MKDIR} -p ${OBJECTDIR}

@@ -13,14 +13,16 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>BRENT.f90</itemPath>
+      <itemPath>DGEEV_and_dependencies.f</itemPath>
       <itemPath>Declare_variables_module.f90</itemPath>
       <itemPath>Format_module.f90</itemPath>
       <itemPath>Generate_random_numbers_module.f90</itemPath>
       <itemPath>Initialize_pop_module.f90</itemPath>
       <itemPath>PBR_Errorcheck_module.f90</itemPath>
       <itemPath>PBR_FileIO_Module.f90</itemPath>
-      <itemPath>PBRmodule.f</itemPath>
+      <itemPath>PBR_calcs_module.f90</itemPath>
       <itemPath>Random_module.f90</itemPath>
+      <itemPath>feigen0.f90</itemPath>
       <itemPath>main.f90</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -56,6 +58,8 @@
       </item>
       <item path="BRENT.f90" ex="false" tool="2" flavor2="0">
       </item>
+      <item path="DGEEV_and_dependencies.f" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
@@ -68,11 +72,13 @@
       </item>
       <item path="PBR_FileIO_Module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      <item path="PBR_calcs_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="feigen0.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="input.par" ex="false" tool="3" flavor2="0">
       </item>
@@ -105,6 +111,8 @@
       </item>
       <item path="BRENT.f90" ex="false" tool="2" flavor2="0">
       </item>
+      <item path="DGEEV_and_dependencies.f" ex="false" tool="2" flavor2="0">
+      </item>
       <item path="Declare_variables_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="Format_module.f90" ex="false" tool="2" flavor2="0">
@@ -117,11 +125,13 @@
       </item>
       <item path="PBR_FileIO_Module.f90" ex="false" tool="2" flavor2="0">
       </item>
-      <item path="PBRmodule.f" ex="false" tool="2" flavor2="0">
+      <item path="PBR_calcs_module.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Random_module.f90" ex="false" tool="2" flavor2="0">
+      </item>
+      <item path="feigen0.f90" ex="false" tool="2" flavor2="0">
       </item>
       <item path="input.par" ex="false" tool="3" flavor2="0">
       </item>

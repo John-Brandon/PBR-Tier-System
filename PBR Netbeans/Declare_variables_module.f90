@@ -8,12 +8,11 @@
 ! Originally compiled using: GCC GNU gfortran v 4.2 (free open source Fortran 90/95 compiler) -- https://gcc.gnu.org/
 ! IDE: Netbeans 8.0.2
 !====== +++ === === +++ === === +++ === ===
-! Purpose : Declare variables for PBR Tier program
+! Purpose : Declare variables for PBR Tier System code
 !  These variables will be available to any routine that "uses" this module
-!  This approach is analagous with declaring global variables (or common block in Fortran 77). 
-!  It is not necessarily great programming practice, but while lazy, it does make the program code easier to read in some cases.
+!  This approach is analagous with declaring global variables (or a common block in Fortran 77). 
+!  It is not necessarily great programming practice, but while lazy, it does make the program code easier to develop in some cases.
 !====== +++ === === +++ === === +++ === ===
-
 MODULE Declare_variables_module
     implicit none
 !    INTEGER IOUT, IN1       ! File IO 
@@ -26,23 +25,28 @@ MODULE Declare_variables_module
     integer(kind = 4) :: yr_max         ! Number of years to project over   
     integer(kind = 4) :: surv_freq(2)   ! Interval (yrs) between abundance surveys (first abundance survey in year 1)    
     real(kind = 8) :: k_1plus(2)        ! Carrying capacity (in terms of the age 1+ component of the population)    
-    real(kind=8) :: cv_n(2)             ! The coefficient of variation (CV) associated with sampling error in abundance estimates
-    real(kind=8) :: cv_mortality(2)     ! The CV associated with sampling error for human caused mortality of marine mammals
-    real(kind=8) :: theta               ! The shape parameter for density dependence (assumed to act through birth rates)
-    real(kind=8) :: r_max               ! The maximum annual growth rate of the population
-    real(kind=8) :: f_r(2)              ! Recovery factor parameter for PBR    
-    real(kind=8) :: init_depl(2)        ! Initial depletion (fraction of carrying capacity) in first year of projections
-    real(kind=8) :: lower_tail          ! The percentile of the (log-normal) abundance estimates = N_min for PBR
-    real(kind=8) :: b_max               ! Maximum birth rate (in the absence of carrying capacity, i.e. in the limit of zero abundance)
-    real(kind=8) :: b_sex_ratio         ! Sex ratio at birth
-    real(kind=8) :: s_adult             ! Adult survival rate
-    real(kind=8) :: s_juv               ! Juvenile survival rate
+    real(kind = 8) :: cv_n(2)             ! The coefficient of variation (CV) associated with sampling error in abundance estimates
+    real(kind = 8) :: cv_mortality(2)     ! The CV associated with sampling error for human caused mortality of marine mammals
+    real(kind = 8) :: theta               ! The shape parameter for density dependence (assumed to act through birth rates)
+    real(kind = 8) :: r_max               ! The maximum annual growth rate of the population
+    real(kind = 8) :: f_r(2)              ! Recovery factor parameter for PBR    
+    real(kind = 8) :: init_depl(2)        ! Initial depletion (fraction of carrying capacity) in first year of projections
+    real(kind = 8) :: lower_tail          ! The percentile of the (log-normal) abundance estimates = N_min for PBR
+    real(kind = 8) :: b_max               ! Maximum birth rate (in the absence of carrying capacity, i.e. in the limit of zero abundance)
+    real(kind = 8) :: b_sex_ratio         ! Sex ratio at birth
+    real(kind = 8) :: s_adult             ! Adult survival rate
+    real(kind = 8) :: s_juv               ! Juvenile survival rate
     integer(kind = 4) :: a_m            ! Age at sexual maturity  
     integer(kind = 4) :: a_r            ! Age at recruitment (vulnerability) to human caused mortality - knife edge selectivity assumed
+    real(kind = 8) :: p_a1_s1           ! Percentage of stock_1 in subarea_1
+    real(kind = 8) :: p_a2_s1           ! Percentage of stock_1 in subarea_2
+    real(kind = 8) :: p_a2_s2           ! Percentage of stock_2 in subarea_2
+    real(kind = 8) :: p_a3_s2           ! Percentage of stock_2 in subarea_3
+    real(kind = 8) :: p_a4_s2           ! Percentage of stock_2 in subarea_4    
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
     integer(kind = 4) :: age_x                      ! Age at which individuals enter the 'plus-group' (identical for each stock at present)
-    real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)
+    real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)  
     real(kind = 8), allocatable :: S_age(:)         ! Vector of survival-at-age (identical for each stock at present)
     real(kind = 8), allocatable :: prop_mat_age(:)  ! Proportion mature at age (all zeros until a_m) (identical for each stock at present)
                                                     ! Variables below can be stock specific given different initial depletion conditions for each stock
@@ -55,15 +59,13 @@ MODULE Declare_variables_module
     real(kind=8) :: b_eq                            ! Equilibrium birth rate (at carrying capacity)
     real(kind=8) :: b_init                          ! Birth rate in first year of projections (a function of initial depletion in abundance)
 !    integer(kind = 4) :: first_yr       ! First year of projection
-
-    integer(kind = 4) :: ii, jj, kk, ll, mm ! Counters
-    
+   
     integer(kind = 4) :: stock_i            ! Stock ID number   
 
     real(kind = 8) :: N_best                ! Mean of the abundance estimate 
     real(kind = 8) :: N_min                 ! 
     
-    real(kind = 8) :: z_variate             ! Standard normal random variate, i.e. ~ N(mu = 0, sigma = 1)
+!    real(kind = 8) :: z_variate             ! Standard normal random variate, i.e. ~ N(mu = 0, sigma = 1)
 
 !    real(kind = 8) :: f_init ! Initial human caused mortality rate
 !    real(kind = 8) :: objf_f_init     ! Objective function value for solving for initial human caused mortality rate
@@ -87,7 +89,7 @@ MODULE Declare_variables_module
     real(kind = 8), allocatable :: Ntot(:)        ! Total (0+) population size each year for stock 'i' 
     real(kind = 8), allocatable :: N_calf(:)       ! Vector of calf production for stock 'i' across all years
     real(kind = 8), allocatable :: depl_i_t(:, :)         ! Depletion for each stock each year
-    real(kind = 8), allocatable :: Nage(:)       ! Numbers-at-age-per-recruit    
+    real(kind = 8), allocatable :: N_age(:)       ! Numbers-at-age
 !    real(kind = 8), allocatable :: selectivity_i(:, :)    ! Selectivity at age for stock 'i'
 !    
 !    real(kind = 8), allocatable :: N_oneplus_i_t(:, :, :)    ! Vector of 1+ population size for stock 'i' across all years 
