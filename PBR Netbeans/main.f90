@@ -37,12 +37,10 @@ program main
     use PBR_FileIO_Module              ! Reading initial values from files, and for writing output : PBR_FileIO_Module.f90
     use initialize_pop                 ! Initialization of life history and age structure : Initialize_pop_module.f90
     use calcs                          ! Routines for various calculations (e.g. calculating N_min) : PBRmodule.f
-    !use Format_module                  ! Fortran format statements (everyone's favorite) declared as type character (bit of a hack): Format_module.f90
     use random, only : random_normal   ! Routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : Random_module.f90
     use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): Generate_random_numbers_module.f90
     use PBR_Errorcheck_module          ! Contains function 'error_check_input' to do error checking on input values [Very Beta]
     use eigen_module                   ! Contains calls to DGEEV for calculating the eigenvalues and eigenvectors of the projection matrix
-    ! use debug
 !====== +++ === === +++ === === +++ === ! Turns off implicit typing by Fortran; all variables must be explicitly declared by type
     implicit none 
 !====== +++ === === +++ === === +++ ===                 ! Constant parameters
@@ -300,7 +298,7 @@ program main
     end do        ! End loop over years
                   ! End loop over number of simulations
 !====== +++ === === +++ === === +++ ===    
-! DEBUGGING: Look at calculated depletion through time
+! DEBUGGING: Look at calculated depletion through time -- ideally want this written to file for plotting in R etc.
 !====== +++ === === +++ === === +++ === 
     print *, "Depletion_yr  : "
     do yr = 0, yr_max
