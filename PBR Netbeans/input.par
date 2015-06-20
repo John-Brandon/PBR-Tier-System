@@ -4,28 +4,31 @@ Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 # Input parameters for PBR Tier system simulations
 cseed           Y       # Y = Yes, provide a seed (iseed) to the random number generator, N = seed with CPU clock instead           
 iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
+n_sims          2000    # Number of simulated population trajectories
 n_stocks        2       # Number of stocks (one or two)
 yr_max          100     # Number of years to project over
 surv_freq(1)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 1
 surv_freq(2)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 2
-KK(1)           10000   # Carrying capacity for stock i = 1
-KK(2)           10000   # Carrying capacity for stock i = 2
+k_1plus(1)      10000   # Carrying capacity for stock i = 1
+k_1plus(2)      10000   # Carrying capacity for stock i = 2
 cv_n(1)         0.20    # CV(N_stock 1) , will be transformed to the standard deviation in log-space
 cv_n(2)         0.20    # CV(N_stock 2) , will be transformed to the standard deviation in log-space
 cv_mortality(1) 0.30    # Variability in mortality for stock 1, used to generate random normal deviate with mean = PBR
 cv_mortality(2) 0.30    # Variability in mortality for stock 2, used to generate random normal deviate with mean = PBR
 theta           1.0     # Density dependence shape parameter
-R_max           0.04    # Default for cetaceans 
+r_max           0.04    # Default for cetaceans 
 F_r(1)          0.50    # Base case recovery factor for stock 1
 F_r(2)          0.50    # Base case recovery factor for stock 2
-init_depl(1)    0.3    # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-init_depl(2)    0.00001 # DEBUGGING: Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
+init_depl(1)    0.3     # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
+init_depl(2)    0.1     # DEBUGGING: Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
 lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
-B_max           0.5     # Maximum birth rate (in the absence of density dependence)
-B_sex_ratio     0.50    # Sex ratio at birth
+b_max           0.5     # Maximum birth rate (in the absence of density dependence)
+b_sex_ratio     0.50    # Sex ratio at birth
 S_adult         0.95    # Adult (mature) survival rate
-S_juv           0.75   # Juvenile (immature) survival rate
-a_m             3       # Age at sexual maturity  
+S_juv           0.75    # Juvenile (immature) survival rate
+a_t             4       # Age at transition to mature survival rate
+a_m             4       # Age at sexual maturity  
+age_x           4       # Plus-group (self-loop) age
 a_r             2       # Age at recruitment (first vulnerability) to human caused mortality
 p_a1_s1         0.75    # Percentage of stock_1 in subarea_1
 p_a2_s1         0.25    # Percentage of stock_1 in subarea_2
