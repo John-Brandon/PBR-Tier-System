@@ -5,7 +5,7 @@ Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 cseed           Y       # Y = Yes, provide a seed (iseed) to the random number generator, N = seed with CPU clock instead           
 iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
 n_sims          2000    # Number of simulated population trajectories
-n_stocks        2       # Number of stocks (one or two)
+n_stocks        1       # Number of stocks (one or two)
 yr_max          100     # Number of years to project over
 surv_freq(1)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 1
 surv_freq(2)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 2
