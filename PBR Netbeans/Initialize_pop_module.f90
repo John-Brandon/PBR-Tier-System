@@ -107,7 +107,7 @@ MODULE initialize_pop
         sum_mature = 0.0d0
         
         N_age_tmp(0) = N_recruits                               ! Fraction of female offspring per recruit, assuming 50:50 sex ratio at birth
-        print *, "N_age_tmp: ", N_age_tmp
+!        print *, "N_age_tmp: ", N_age_tmp
         
 ! Loop over ages 
         do ii = 1, (age_x - 1)                                              ! NPR calculations from Age 1 to Age x-1
@@ -267,7 +267,8 @@ MODULE initialize_pop
         Call assign_par_vectors(a_r, a_m, a_t, age_x, s_adult, s_juv_tmp, &  ! Slightly repetitious, but need to re-assign temporary juvenile survival rate
                     S_age_tmp, selectivity, prop_mat_age)   
         
-!        transition_matrix_tmp = assign_transition_matrix(a_m, a_t, age_x, b_max, S_age_tmp, prop_mat_age)
+! fecundity_max is in units of female calves per female, e.g. 0.50 * birth rate (b_max) for eigen analysis of projection matrix
+! Need to use fecundity instead of birth rate to get eigenvalue (lambda) in terms of population (males & female) growth rate                     
         transition_matrix_tmp = assign_transition_matrix(a_m, a_t, age_x, fecundity_max, S_age_tmp, prop_mat_age)                    
 
         call eigen(transition_matrix_tmp, (age_x + 1), lambda_tmp)    ! Calculate dominant real eigenvalue   
