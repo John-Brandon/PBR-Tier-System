@@ -26,7 +26,7 @@ module PBR_FileIO_Module
 
 801    FORMAT(16X, I6) ! move these into Format_module?
 802    FORMAT(16X, F8.0)
-803    FORMAT(16X, A6)
+!803    FORMAT(16X, A6)
 804    FORMAT(16X, A1)
 
 !     Read in model parameters/options, checking they are within allowed range
@@ -38,6 +38,7 @@ module PBR_FileIO_Module
        read (input_file, *) ! Each read statement in Fortran moves to next line before reading
        read (input_file, 804) cseed    ! Will the user be supplying a seed for the random number generator (RNG)?
        read (input_file, 801) iseed    ! Seed for RNG, ignored if cseed = N
+       read (input_file, 801) n_sims
        read (input_file, 801) n_stocks
        read (input_file, 801) yr_max 
        read (input_file, 801) surv_freq(1)
@@ -60,9 +61,10 @@ module PBR_FileIO_Module
        read (input_file, 802) b_sex_ratio       
        read (input_file, 802) S_adult
        read (input_file, 802) S_juv
-       read (input_file, 801) a_m       
+       read (input_file, 801) a_t       
+       read (input_file, 801) a_m
+       read (input_file, 801) age_x
        read (input_file, 801) a_r
-       
        read (input_file, 802) p_a1_s1
        read (input_file, 802) p_a2_s1       
        read (input_file, 802) p_a2_s2
@@ -72,6 +74,7 @@ module PBR_FileIO_Module
 ! Output to screen for checking
        write(*,*) "cseed: ", cseed ! DEBUGGING
        write(*,*) "iseed: ", iseed ! DEBUGGING
+       write(*,*) "n_sims", n_sims
        write(*,*) "n_stocks", n_stocks
        write(*,*) "YR_MAX", YR_MAX
        write(*,*) "SURV_FREQ", SURV_FREQ
@@ -87,7 +90,9 @@ module PBR_FileIO_Module
        write(*,*) "b_max", b_max
        write(*,*) "S_adult", S_adult
        write(*,*) "S_juv", S_juv       
-       write(*,*) "a_m", a_m       
+       write(*,*) "a_t", a_t
+       write(*,*) "a_m", a_m
+       write(*,*) "age_x", age_x
        write(*,*) "a_r", a_r        
        write(*,*) "p_a1_s1", p_a1_s1               
        write(*,*) "p_a2_s1", p_a2_s1               
@@ -101,29 +106,3 @@ module PBR_FileIO_Module
       end subroutine read_inits
 
 end module PBR_FileIO_Module
-!# Input parameters for PBR Tier system simulations
-!cseed           Y       # Y = Yes, provide a seed (iseed) to the random number generator, N = seed with CPU clock instead           
-!iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
-!n_stocks        2       # Number of stocks (one or two)
-!yr_max          100     # Number of years to project over
-!surv_freq(1)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 1
-!surv_freq(2)    4       # interval (yrs) between abundance surveys (first abundance survey in year 1) for stock i = 2
-!KK(1)           10000   # Carrying capacity for stock i = 1
-!KK(2)           10000   # Carrying capacity for stock i = 2
-!cv_n(1)         0.20    # CV(N_stock 1) , will be transformed to the standard deviation in log-space
-!cv_n(2)         0.20    # CV(N_stock 2) , will be transformed to the standard deviation in log-space
-!cv_mortality(1) 0.30    # Variability in mortality for stock 1, used to generate random normal deviate with mean = PBR
-!cv_mortality(2) 0.30    # Variability in mortality for stock 2, used to generate random normal deviate with mean = PBR
-!theta           1.0     # Density dependence shape parameter
-!R_max           0.04    # Default for cetaceans 
-!F_r(1)          0.50    # Base case recovery factor for stock 1
-!F_r(2)          0.50    # Base case recovery factor for stock 2
-!init_depl(1)    0.30    # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-!init_depl(2)    0.50    # Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-!lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
-!B_max           0.5     # Maximum birth rate (in the absence of density dependence)
-!B_sex_ratio     0.50    # Sex ratio at birth
-!S_adult         0.95    # Adult (mature) survival rate
-!S_juv           0.75    # Juvenile (immature) survival rate
-!a_m             3       # Age at sexual maturity  
-!a_r             2       # Age at recruitment (first vulnerability) to human caused mortality 
