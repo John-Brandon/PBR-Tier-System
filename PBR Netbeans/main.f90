@@ -37,44 +37,53 @@ program main
     use PBR_FileIO_Module              ! Reading initial values from files, and for writing output : PBR_FileIO_Module.f90
     use initialize_pop                 ! Initialization of life history and age structure : Initialize_pop_module.f90
     use calcs                          ! Routines for various calculations (e.g. calculating N_min) : PBRmodule.f
-    use Format_module                  ! Fortran format statements (everyone's favorite) declared as type character (bit of a hack): Format_module.f90
+    !use Format_module                  ! Fortran format statements (everyone's favorite) declared as type character (bit of a hack): Format_module.f90
     use random, only : random_normal   ! Routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : Random_module.f90
     use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): Generate_random_numbers_module.f90
     use PBR_Errorcheck_module          ! Contains function 'error_check_input' to do error checking on input values [Very Beta]
+    use eigen_module                   ! Contains calls to DGEEV for calculating the eigenvalues and eigenvectors of the projection matrix
     ! use debug
 !====== +++ === === +++ === === +++ === ! Turns off implicit typing by Fortran; all variables must be explicitly declared by type
     implicit none 
 !====== +++ === === +++ === === +++ ===                 ! Constant parameters
     integer(kind = 4), parameter :: stock_1 = 1         ! Indexes for stock structure array
-    integer(kind = 4), parameter :: stock_2 = 2
+    integer(kind = 4), parameter :: stock_2 = 2         ! TODO? Move parameters into Main_pars_module?
     integer(kind = 4), parameter :: all_areas = 0
     integer(kind = 4), parameter :: area_1 = 1
     integer(kind = 4), parameter :: area_2 = 2
     integer(kind = 4), parameter :: area_3 = 3    
     integer(kind = 4), parameter :: area_4 = 4 
-    integer(kind = 4), parameter :: n_area = 4       ! For counters
+    integer(kind = 4), parameter :: n_area = 4          ! Counter for do loops
     integer(kind = 4), parameter :: female = 1          
-    integer(kind = 4), parameter :: male = 2   
+    integer(kind = 4), parameter :: male = 2            ! TODO : Move this list of variable declarations into a module (e.g. main_vars_module)
 !====== +++ === === +++ === === +++ ===                 ! Local variables 
-    real(kind = 8), allocatable :: f_init_ii(:)         ! Initial human caused mortality rates for each stock   
+    real(kind = 8), allocatable :: f_init_ii(:)         ! Initial human caused mortality rates for each stock  
+    real(kind = 8), allocatable :: f_yr_stock(:,:)      ! Human caused mortality rate each year (rows) by stock (columns)
     real(kind = 8), allocatable :: b_init_ii(:)         ! Initial birth rate for each stock 
-! Array of numbers-at-sex and age for each stock in each sub-area by year of projection    
-    real(kind = 8), allocatable :: N_yr_ii_jj_mf_age(:,:,:,:,:)  ! (yr, stock, sub-area, sex, age) 
-    real(kind = 8), allocatable :: N_age_mf_jj_ii_yr(:,:,:,:,:)  ! (age, sex, sub-area, stock, yr
+    real(kind = 8), allocatable :: b_yr_stock(:,:)      ! Birth rate each year (rows) by stock (columns)    
+    real(kind = 8), allocatable :: depl_yr_stock(:,:) ! Depletion each year (rows) by stock (columns)
+    real(kind = 8), allocatable :: transition_matrix_tmp(:, :) ! Tmp matrix to pass to eigen function (is changed by eigen on return)
+    real(kind = 8), allocatable :: movement_matrix(:, :, :) ! rows = ages x cols = areas x stock. Values = proportion of stock in each area
+! Array of numbers-at-sex and age for each stock in each sub-area by year of projection        
+    real(kind = 8), allocatable :: N_age_sex_area_stock_yr(:,:,:,:,:)  ! Main pop array: age, sex, sub-area, stock, yr
     real(kind = 8), allocatable :: area_stock_prop(:,:)    ! Percentage of each stock in each area
-    real(kind = 8), allocatable :: transition_matrix(:, :) ! Transition matrix (with survival and birth rates)
-    real(kind = 8), allocatable :: eigv(:)                 ! Eigen vector of transition matrix, returned by power_method()    
+    real(kind = 8), allocatable :: eigv(:)                 ! Eigen vector of transition matrix, e.g. returned by power_method()
+    integer(kind = 4), allocatable :: seq_yrs(:)           ! Used to create a consecutive sequence of year numbers, e.g. 1-100 
+    integer(kind = 4), allocatable :: is_surv_yr(:, :)     ! Matrix containing 1s if element is survey year, zeros otherwise
+    real(kind = 8), allocatable :: pbr_yr_stock(:, :)  ! PBR each year (rows) for each stock (columns)
+    real(kind = 8), allocatable :: foo_vector(:)      ! DEBUGGING
     real(kind = 8) :: NPR_mature                        ! Numbers mature per female recruit. Used to calculate b_eq (birth rate at K)
 !    real(kind = 8) :: sum_1plus_tmp                     ! DEBUGGING
     real(kind = 8) :: foo, foo1                         ! DEBUGGING
-    real(kind = 8) :: start, finish                     ! For timing / optimizing code
+!    real(kind = 8) :: start, finish                     ! For timing / optimizing code
+    real(kind = 8) :: objf_lambda                       ! Objective function for finding juvenile survival that results in R_max
     real(kind = 8) :: objf_f_init                       ! Objective function for finding f_init resulting in stable age structure
     real(kind = 8) :: brent    ! Function brent() :: file = Brent.f90 (TODO? : Create and add this to a Roots_and_Mins_module.f90)
     real(kind = 8) :: lambda                            ! Dominant real eigen value of the transition matrix
     integer(kind = 4) :: io_error                       ! Error flag for checking initial values in input.par
-    integer(kind = 4) :: ii, jj, kk, aa, yr, ss         ! Counters for indexing loops  
-    integer(kind = 4) :: it_num                         ! Iteration number returned from power_method() for calculating lambda
-    character(len = 10) :: stock_name                   ! For printing output tables
+    integer(kind = 4) :: ii, jj, aa, ss, yr             ! Counters for indexing loops  
+!    integer(kind = 4) :: it_num                         ! Iteration number returned from power_method() for calculating lambda
+!    character(len = 10) :: stock_name                   ! For printing output tables
 !====== +++ === === +++ === === +++ === ! Read initial values and do error checking
     call read_inits()              ! Read initial values from 'input.par' file. PBR_FileIO_Module contains subroutine 'read_inits()' 
     io_error = 0                   ! Check for input value errors (values out of bounds, etc) 
@@ -84,16 +93,22 @@ program main
         stop                       ! If error, exit program
     end if                         ! TODO? Move this error checking to be called at the end of read_inits() procedure? 
 !====== +++ === === +++ === === +++ === ! Initialize
-    age_x = a_m + 1                     ! Might eventually want to change this to take user input for age_x (?)                   
+!    age_x = a_m + 1                     ! Might eventually want to change this to take user input for age_x (?)                   
 !====== +++ === === +++ === === +++ === ! Given input, allocate array dimensions at run-time (local variables)
-    allocate(f_init_ii(1:n_stocks))     ! Stock specific initial human caused mortality rates (can have stock specific init_depl's) 
-    allocate(b_init_ii(1:n_stocks))     ! Stock specific initial birth rate, given stock specific initial depletion levels
-!    allocate(N_yr_ii_jj_mf_age(0:yr_max, 1:n_stocks, 0:4, 1:2, 0:age_x)) ! Array of numbers-at-age and sex for each stock by year of projection
-    allocate(N_age_mf_jj_ii_yr(0:age_x, 1:2, 0:4, 1:n_stocks, 0:yr_max))
-    allocate(area_stock_prop(1:4, 1:n_stocks))  ! Hard-coded four areas here, not great
+    allocate(f_init_ii(1:n_stocks))     ! Stock specific initial human caused mortality rates (can have stock specific init_depl's)
+    allocate(f_yr_stock(0:yr_max, 1:n_stocks)) ! Human caused mortality rate each year (rows) by stock (columns)
+    allocate(b_init_ii(1:n_stocks))        ! Stock specific initial birth rate, given stock specific initial depletion levels
+    allocate(b_yr_stock(0:yr_max, 1:n_stocks)) ! Birth rate each year (rows) by stock (columns)
+    allocate(depl_yr_stock(0:yr_max, 1:n_stocks)) ! Depletion each year (rows) by stock (columns)
+    allocate(N_age_sex_area_stock_yr(0:age_x, 1:2, 0:4, 1:n_stocks, 0:yr_max)) ! Main pop array
+    allocate(area_stock_prop(1:4, 1:n_stocks))  ! TODO: Hard-coded four areas here - TODO: soft-code
     allocate(transition_matrix(0:age_x, 0:age_x))! Transition matrix, added here while developing methods for population projections and solving for juvenile survival (given lamda_max)
-    allocate(eigv(0:age_x))         ! Eigen vector of transition matrix, returned by power_method()    
-!====== +++ === === +++ === === +++ === ! Given input, allocate array dimensions at run-time (global variables)    
+    allocate(transition_matrix_tmp(0:age_x, 0:age_x)) ! Place-holder for transition matrix. Gets sent to eigen and is changed on return
+    allocate(movement_matrix(0:age_x, 0:n_area, 0:n_stocks))
+    allocate(eigv(0:age_x))         ! Eigen vector of transition matrix, returned by power_method()  
+!    allocate(seq_yrs(0:yr_max))                  ! Used to create a consecutive sequence of year numbers, e.g. 1-100 
+    allocate(is_surv_yr(0:yr_max, 1:n_stocks))     ! Matrix containing 1s if element is survey year, zeros otherwise 
+    allocate(pbr_yr_stock(0:yr_max, 1:n_stocks))  
     allocate(S_age(0:age_x))       ! Survival at age vector
     allocate(prop_mat_age(0:age_x))! Proportion mature at age
     allocate(selectivity(0:age_x)) ! Selectivity at age -- currently assuming knife-edge selectivity at age a_r (same selectivity for each stock)
@@ -109,172 +124,208 @@ program main
     allocate(N_calf(0:yr_max))     ! Vector of calf production for each projection year
     allocate(Female_age(0:age_x))  ! Females at age vector
     allocate(Male_age(0:age_x))    ! Males at age vector
-!   allocate(depl_ii_tt(0:yr_max, 1:n_stocks))     ! Depletion in year t (row) of stock i (column) 
+    allocate(foo_vector(0:age_x))  ! DEBUGGING
+!   allocate(depl_yr_stock(0:yr_max, 1:n_stocks))  ! Depletion in year t (row) of stock i (column) 
 !   allocate(NPR_age_ii(0:age_x, 1:n_stocks))      ! Numbers at age per female recruit (row) for stock i (column)
 !   allocate(NPR_oneplus_ii(1:n_stocks))           ! Total number of age 1+ per female recruit for stock i 
+!====== +++ === === +++ === === +++ === ! Initialize those variables declared in Declare_variables_module 
+    Call initialize_global_vars()       ! Does not initialize ('rewrite') those variables with values read from input.par file
+!====== +++ === === +++ === === +++ === ! Initialize those variables declared in main program (above) 
+    call initialize_local_vars()        ! This subroutine is contained in the main program (at bottom)
 !====== +++ === === +++ === === +++ === ! Set seed for RNG -- see comment after 'use Generate_random_numbers_module' statement above
-    Call set_random_seed() ! Uses input from read_inits() to set seed based on user input (reproducible), or based on CPU clock
+    Call set_random_seed() ! Set seed based on input.par, either: (a) given # (reproducible results), or (b) based on CPU clock
 !====== +++ === === +++ === === +++ === ! Initialize vectors: survival, selectivity and proportion mature at age   
-    Call assign_par_vectors(a_r, a_m, age_x, S_adult, S_juv, &  
-                            S_age, selectivity, prop_mat_age) ! Currently these three vectors are identical for each stock                        
-!====== +++ === === +++ === === +++ === ! Solve for juvenile survival rate that results in specified r_max
-    transition_matrix = assign_transition_matrix(a_m, age_x, b_max, S_age, prop_mat_age) ! Assign values to transition matrix
-    print *, "transition_matrix: "
-    do aa = 0, age_x
-        write (*,"(100f4.3)") (transition_matrix(aa, jj), jj = 0, age_x)    ! The 100f... is a bit of a hack. Works if <= 100 columns to be printed
-    end do
-!====== +++ === === +++ === === +++ === ! Test power method for calculating dominant eigen value (and eigen vector -- is this right evector, i.e. stable age distribution??)
-    print *, 
-    print *, "Calling power method to calculate Lambda and eigv: "
-    eigv = 1.d0
-    eigv = eigv / sum(eigv) ! Debugging: See if this helps with occasional "sticky" cycle in trying to solve for lambda below
-    print *, "eigv: "
-    print *, eigv
-    print *, "size(transition_matrix): "
-    print *, size(transition_matrix)
-    Call power_method(n =(age_x + 1), a = transition_matrix, y = eigv, & ! n, a, y, it_max, tol, lambda, it_num 
-            it_max = 200, tol = 0.00000001d0, lambda = lambda, it_num = it_num) 
-    print *, "Power method iterations: ", it_num
-    print *, "Eigen Vector: "
-    print *, eigv
-    print *, "Lambda: ", lambda
+    Call assign_par_vectors(a_r, a_m, a_t, age_x, s_adult, s_juv, &  
+                            S_age, selectivity, prop_mat_age) ! Currently these three vectors are identical for each stock  
+!!====== +++ === === +++ === === +++ === ! Solve for juvenile survival rate that results in specified r_max
+    transition_matrix = 0.0d0       ! Need to initialize this matrix to zero, because evidently, if we don't, LAPACK(?) is not nice.
+! Specifically, I (JRB) had horrible buggy trouble with Mac OS X's 'accelerate' framework (LAPACK library call to function DGEEV).    
+    fecundity_max = b_max * b_sex_ratio ! Define fecundity in terms of female calves per female for eigen analysis of matrix
+    transition_matrix = assign_transition_matrix(a_m, a_t, age_x, fecundity_max, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
     print *,
-    if (it_num > 200) then
-        print *, "Error with power method finding Lambda"
-        stop
-    end if
-!====== +++ === === +++ === === +++ === ! Assign percentage of each stock to areas 
+    print *, "Initial transition matrix: "  ! Check
+    do aa = 0, age_x
+        write (*, "(100f8.3)") (transition_matrix(aa, jj), jj = 0, age_x)    ! The 100f... is a bit of a hack. Works if <= 100 columns to be printed
+    end do
+!====== +++ === === +++ === === +++ === ! Test LAPACK procedure DGEEV for finding eigenvalues and eigenvectors of real nonsymetric matrix
+    transition_matrix_tmp = transition_matrix ! Assign transition matrix to temp matrix, destroyed on return from eigen()
+!
+    print *, "Calling eigen() for initial transition matrix: "
+!    
+    call eigen(transition_matrix_tmp, (age_x + 1), lambda) ! Calculate Lambda_max for input life history values: s_juv, etc.
+    print *, "Initial lambda: ", lambda
+!====== +++ === === +++ === === +++ === ! Solve for juvenile survival rate that corresponds with the user specified lambda_max
+    objf_lambda = BRENT(ax = 0.01d0, bx = 0.98d0, cx = 0.99d0, func = calc_lambda, & ! See Brent.f90 for details on arguments
+                            tol = 0.0000001d0, xmin = s_juv)                         ! Note calc_lambda() assigns projection matrix
+!
+    print *, "objf_lambda: ", objf_lambda ! Check, should be very close to "tol", i.e. nearly zero within machine precision
+    print *, "Solution for juvenile survival: ", s_juv    ! Check
+!====== +++ === === +++ === === +++ === ! Initialize vectors: survival, selectivity and proportion mature at age   
+    Call assign_par_vectors(a_r, a_m, a_t, age_x, s_adult, s_juv, &  ! Slightly repetitious, but need to re-assign s_juv rates
+                            S_age, selectivity, prop_mat_age)        ! Currently these three vectors are identical for each stock   
+!====== +++ === === +++ === === +++ === ! Re-assign s_juv (etc) to transition matrix and output for checking
+    transition_matrix = assign_transition_matrix(a_m, a_t, age_x, b_max, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
+    print *, "New transition matrix: "
+    do aa = 0, age_x ! Print the transition matrix with lambda_max = 1.04 (Check above) to the screen
+        write (*, "(100f8.3)") (transition_matrix(aa, jj), jj = 0, age_x)    ! The 100f format is a hack. Works if <= 100 columns to be printed
+    end do
+    print *, ""
+!====== +++ === === +++ === === +++ === ! Initialize the matrix with percentage of each stock in each area 
+    area_stock_prop = 0.0d0 ! Initialize the movement matrix, before assigning values in next line
     area_stock_prop = assign_area_stock_prop(p_a1_s1, p_a2_s1, p_a2_s2, p_a3_s2, p_a4_s2) 
-!    print *, "area_stock_prop: "
-!    do jj=1, n_area
-!        print *, (area_stock_prop(jj,ii), ii = 1, n_stocks)
-!    end do
 !====== +++ === === +++ === === +++ === ! Calculate Numbers per female recruit, with no human caused mortality (f_init = 0.0)
-    Call calc_NPR_age(f_rate = 0.0d0, &                         ! d0 suffix for double precision to match argument type                                             
-        N_recruits = b_sex_ratio, N_age = NPR_age, &            ! Calc NPR_age, NPR_oneplus and NPR_mature (F = 0)
+    NPR_age = 0.0d0
+    NPR_oneplus = 0.0d0
+    NPR_mature = 0.0d0
+    print *, "NPR_age: ", NPR_age
+    print *, "b_sex_ratio: ", b_sex_ratio
+    foo_vector = NPR_age
+! THIS NEXT CALL IS CAUSING A SEGMENTATION FAULT WHEN n_stocks = 1, using NetBeans IDE - John    
+    Call calc_NPR_age(f_rate = 0.0d0, &                        ! d0 suffix for double precision to match argument type in function                                             
+        N_recruits = b_sex_ratio, N_age_tmp = NPR_age, &       ! Calc NPR_age, NPR_oneplus and NPR_mature (F = 0)
         sum_1plus = NPR_oneplus, sum_mature = NPR_mature) 
+    print *, "Finished calling, calc_NPR_age(): " 
+    print *, "NPR_age :", NPR_age
 !====== +++ === === +++ === === +++ === ! Calculate equilibrium birth rate (at carrying capacity)
     b_eq = 1 / NPR_mature               ! Equilibrium birth rate. Equal for both stocks under assumption of identical life histories                
 !====== +++ === === +++ === === +++ === ! Calculate the initial age structure for each stock         
+! TODO : Move this loop into a subroutine in Initialize_pop_module 
     do ii = 1, n_stocks                 ! Initial age structures for each stock can differ, e.g. initial depletion may not be equal
         init_depl_i = init_depl(ii)     ! New value for global variable init_depl_i. Used by Initial_F(), as called from brent()
         b_init = b_eq + (b_max - b_eq) * (1 - (init_depl_i ** theta))  ! Initial birth rate for stock i
         b_init_ii(ii) = b_init                                         ! Storing initial birth rates in vector by stock 
-! Calculate initial human caused mortality rate (f_init) that results in stable age-structure at initial depletion        
+        b_yr_stock(0, ii) = b_init          ! Store initial birth rate 
+        depl_yr_stock(0, ii) = init_depl_i  ! Store initial depletion level 
         print *, 
         print *, "Stock: ", ii                        ! DEBUGGING  
-        print *, "b_init: ", b_init
-        print *, "prop_NPR: "
+!        print *, "init_depl_i", init_depl_i
+!        print *, "b_init: ", b_init
+        print *, "prop_NPR :", prop_NPR
+        print *, "NPR_age :", NPR_age
+        print *, "sum(NPR_age) :", sum(NPR_age)
+        print *, "NPR_age / sum(NPR_age) :", NPR_age / sum(NPR_age)
         prop_NPR = NPR_age / sum(NPR_age)
         print *, prop_NPR
+! Calculate initial human caused mortality rate (f_init) that results in stable age-structure at initial depletion                
         objf_f_init = BRENT(ax = 0.0d0, bx = 0.10d0, cx = 1.0d0, func = initial_F, & ! See Brent.f90 for details on arguments
                             tol = 0.0000001d0, xmin = f_init_ii(ii)) 
-        print *, "f_init_ii: ", f_init_ii(ii)        ! DEBUGGING
-        Call rescale_NPR(k_1plus_tmp = k_1plus(ii), initial_oneplus_tmp = NPR_oneplus, & ! Could turn this into a function
+!        
+!        print *, "f_init_ii: ", f_init_ii(ii)        ! DEBUGGING
+!        print *, "NPR_age_tmp: ", NPR_age_tmp
+        print *, "NPR_oneplus: ", NPR_oneplus        
+        Call rescale_NPR(k_1plus_tmp = k_1plus(ii), initial_oneplus_tmp = NPR_oneplus, & ! Scale NPR to Numbers at age
                         N_age_unscaled = NPR_age_tmp, N_age_scaled = N_age) ! N_age returned as scaled numbers of females at age 
-!        N_yr_ii_jj_mf_age(0, ii, 0, female, :) = N_age ! Numbers(yr, stock, sub-area, sex, age) 
-!        N_yr_ii_jj_mf_age(0, ii, 0, male,  :) = N_age   ! Assuming a 50:50 sex ratio at birth
-        N_age_mf_jj_ii_yr(:, female, 0, ii, 0) = N_age  ! This approach to accessing array (with ":" on left) should be faster
-        N_age_mf_jj_ii_yr(:, male, 0, ii, 0) = N_age  ! This approach to accessing array (with ":" on left) should be faster        
-        print *, "init_depl_i: ", init_depl_i        ! DEBUGGING        
-        print *, "N_age female 1+ after scaling"            ! DEBUGGING
-        print *, sum(N_age(1 : age_x))               ! DEBUGGING
-        do jj = 1, n_area                            ! Allocate stock abundance across areas
-            N_age_mf_jj_ii_yr( : , female, jj, ii, 0) = N_age_mf_jj_ii_yr( : , female, all_areas, ii, 0) * area_stock_prop(jj, ii)
-            N_age_mf_jj_ii_yr( : , male, jj, ii, 0) = N_age_mf_jj_ii_yr( : , male, all_areas, ii, 0) * area_stock_prop(jj, ii)
-!            N_yr_ii_jj_mf_age(0, ii, jj, female, :) = N_age ! Numbers(yr, stock, sub-area, sex, age) 
-!            N_yr_ii_jj_mf_age(0, ii, jj, male,  :) = N_age   ! Assuming a 50:50 sex ratio at birth
-        end do 
-    end do  
-    
-    print *, "prop_mat_age: " 
-    print *, prop_mat_age
-    print *, "S_age: "
-    print *, S_age
-!====== +++ === === +++ === === +++ === ! Start projections over years
-    do yr = 1, yr_max
-        
-    end do
-    
-!====== +++ === === +++ === === +++ ===    
-! Test writing results to a formatted output file 
-! Eventually move this into the File IO module    
-!====== +++ === === +++ === === +++ ===    
-    open(unit = 1, file = "Ntest.out")
-    write(1, "(7(a10))") "stock", "age", "all_areas", "area_1", "area_2", "area_3", "area_4"
-30  format(i10, i10, 5(f10.4))  
-    do ii = 1, n_stocks
-        do kk = 0, age_x
-            write(1, 30) ii, kk, (N_age_mf_jj_ii_yr( kk , female, jj , ii, 0), jj = 0, n_area)
-        end do  
-    end do
-    write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
-    close(unit = 1) ! close output file
-!====== +++ === === +++ === === +++ ===
-    
-    print *, "Sum stock 1 ages 1+ across areas: "
-    print *, sum(N_age_mf_jj_ii_yr(1:age_x, 1:n_area, 1, 1, 0)) 
-! Take a look with some output
-    
-!    print *, "N_age:"
-!    print *, N_age
-!    print *, "area_stock_prop(1,1): "
-!    print *, area_stock_prop(1,1)
-!    print *, "N_age_mf_jj_ii_yr(:, female, 1, 1, 0): "
-!    print *, N_age_mf_jj_ii_yr(:, female, 1, 1, 0)
-    !! DO PROJECTION from year 0 to year 1
-    
-!    print *, "N_yr_ii_jj_mf_age(0, 1, male, 0, :)"
-!    print *, N_yr_ii_jj_mf_age(all_areas, stock_1, 0, male, :)
-!    print *, "N_yr_ii_jj_mf_age(0, 2, male, 0, :)"
-!    print *, N_yr_ii_jj_mf_age(all_areas, stock_2, 0, male, :)    
-    
-!    Call rescale_NPR(k_1plus_tmp = k_1plus(1), initial_oneplus_tmp = NPR_oneplus, &
-!                     N_age_unscaled = NPR_age_tmp, N_age_scaled = N_age)
-!    print *, "NPR_oneplus"           ! DEBUGGING
-!    print *, NPR_oneplus                               ! DEBUGGING        
-!    print *, "init_depl(1)"           ! DEBUGGING
-!    print *, init_depl(1)                               ! DEBUGGING    
-!    print *, "N_age, after scaling"           ! DEBUGGING
-!    print *, N_age                               ! DEBUGGING
-    
-!    print *, "Initial depletion by stock"            ! DEBUGGING
-!    print *, init_depl                               ! DEBUGGING
-!    print *, "Initial birth rate by stock"           ! DEBUGGING
-!    print *, b_init_ii                               ! DEBUGGING
-!    print *, "Carrying capacity for each stock"           ! DEBUGGING
-!    print *,  k_1plus                              ! DEBUGGING
-!    print *, "NPR_age from main: " ! DEBUGGING
-!    print *, NPR_age ! DEBUGGING
-!    print *, "NPR_oneplus from main: " ! DEBUGGING
-!    print *, NPR_oneplus ! DEBUGGING
-!    print *, "sum_mature_tmp from main: " ! DEBUGGING
-!    print *, sum_mature_tmp ! DEBUGGING 
-       
-!   print *, "Calling rescale_NPR()"
-!   Call rescale_NPR(k_1plus(1), init_depl(1), initial_oneplus(1)) ! Rescale the numbers per recruit to initial population size, i.e. scale up to the initial numbers at age vector
+                        
+!        print *, "N_age: ", N_age                
+        print *, "Debugging"
+        N_age_sex_area_stock_yr(:, female, 0, ii, 0) = N_age  ! Assign scaled numbers at age for this stock to main array
+        N_age_sex_area_stock_yr(:, male, 0, ii, 0) = N_age    ! Note: area = 0 represents the sum of numbers across all areas
 
-!   print *, "Calling BRENT" ! DEBUGGING 
-!!   ! ax,bx,cx,func,tol,xmin
-!   call cpu_time(start)
-!   objf_brent = BRENT(ax = 0.0d0, bx = 0.10d0, cx = 1.0d0, func = initial_F, &
-!        tol = 0.0000001D0, xmin = f_init_tmp(1)) ! Calculate the initial human caused mortality rate 
-!   call cpu_time(finish)
-!   print '("Time with calc_NPR_age = ",f8.7," seconds.")',finish-start   
-!    print *, "f_init_tmp(1): "
-!    print *, f_init_tmp(1)
+        do jj = 1, n_area                             ! Allocate stock abundance across areas
+            N_age_sex_area_stock_yr( : , female, jj, ii, 0) = &
+              N_age_sex_area_stock_yr( : , female, all_areas, ii, 0) * area_stock_prop(jj, ii)
+              
+            N_age_sex_area_stock_yr( : , male, jj, ii, 0) = & 
+              N_age_sex_area_stock_yr( : , male, all_areas, ii, 0) * area_stock_prop(jj, ii)
+        end do 
+!        print *, "N_age_sex_area_stock_yr( : , male, 4 , ii, 0)", N_age_sex_area_stock_yr( : , male, 4 , ii, 0)  ! DEBUGGING
+    end do  ! end loop over stocks
+    
+!====== +++ === === +++ === === +++ === ! Try with characteristic equation from Punt (1999)
+!    foo = characteristic_eq(lambda_tmp = 1.04d0)   ! Broken function. Do not use unless fixed.
+!====== +++ === === +++ === === +++ === Check
+!    print *, "Sum stock 1 ages 1+ across areas: "
+!    print *, sum(N_age_sex_area_stock_yr(1:age_x, :, 0, 1, 0)) 
+!    print *, "N_age_sex_area_stock_yr(1:age_x, :, :, 1, 0)"
+!    print *, N_age_sex_area_stock_yr(1:age_x, :, 0, 1, 0)
+!====== +++ === === +++ === === +++ === Generate random variates before start looping over years    
+!    seq_yrs = (/(yr, yr = 1, yr_max)/) ! Create a sequence of years, e.g. 1 - 100 (cf, seq_yrs = 1:100 in R)  
 !
-!   call cpu_time(start)
-!   objf_brent = BRENT(ax = 0.0d0, bx = 0.10d0, cx = 1.0d0, func = initial_F_oldcode, &
-!        tol = 0.0000001D0, xmin = f_init_tmp(1)) ! Calculate the initial human caused mortality rate 
-!   call cpu_time(finish)
-!   print '("Time with initial_F_oldcode = ",f8.7," seconds.")',finish-start 
-!    print *, "f_init_tmp(1): "
-!    print *, f_init_tmp(1)   
-!   
-!   print *, "f_init_tmp(1): ", f_init_tmp(1)
-!   print *, "objf_brent: ", objf_brent    
+    is_surv_yr = assign_surv_yrs_stock(yr_max, n_stocks, surv_freq) ! Function in PBR_calcs_module
+
+!    print *, 
+!    do yr = 0, yr_max
+!        print *, yr, (is_surv_yr(yr, jj), jj = 1, n_stocks) 
+!    end do
+!    print *, "Number of surveys planned for stock 1: ", sum(is_surv_yr(:, 1))
+!    print *, "Number of surveys planned for stock 2: ", sum(is_surv_yr(:, 2))
+
+!====== +++ === === +++ === === +++ === Do projections through time with no human caused mortality as reference case    
+    yr = 1 ! DEBUGGING
+!    b_t = b_eq+(b_max-b_eq)*(1-pow(depl(Year),z))
+    b_yr_stock(yr, :) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, :)**theta) ! Annual birth rate for each stock
+
+    print *, "b_yr_stock(0, :) : ", b_yr_stock(0, :)
+    print *, "b_yr_stock(1, :) : ", b_yr_stock(1, :)
+!    print *, "depl_yr_stock(yr, :) : ", depl_yr_stock(yr - 1, :)
+    print *, "theta: ", theta
+    print *, "k_1plus: ", k_1plus
+!    Call pop_projection(f_rate = 0.0d0, b_rate = 0.50d0, &
+!        N_age_old = N_age_sex_area_stock_yr(:, female, 0, 1, 0),  &
+!        N_age_new = N_age_sex_area_stock_yr(:, female, 0, 1, 1))
+ 
+!    print *, "prop_mat_age: "
+!    print *, prop_mat_age
+!====== +++ === === +++ === === +++ === Do projections through time with no human caused mortality as reference case        
+    do yr = 1, yr_max ! Years -- starting at year one, because year zero is in the books and pop has been initialized
         
+        do ii = 1, n_stocks ! Stocks
+            
+            b_yr_stock(yr, ii) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, ii)**theta) ! Annual birth rate for each stock
+!            do jj = 1, n_area ! Areas
+                
+                do ss = 1, 2  ! Sexes
+        
+                    Call pop_projection(f_rate = 0.0d0, b_rate = b_yr_stock(yr, ii), &
+                      N_age_old = N_age_sex_area_stock_yr(:, ss, 0, ii, yr - 1),  &
+                      N_age_new = N_age_sex_area_stock_yr(:, ss, 0, ii, yr))                    
+!                    Call pop_projection(f_rate = 0.0d0, b_rate = 0.50d0, &
+!                      N_age_old = N_age_sex_area_stock_yr(:, ss, 0, ii, yr - 1),  &
+!                      N_age_new = N_age_sex_area_stock_yr(:, ss, 0, ii, yr))                    
+                      
+                    do aa = 0, age_x ! Ages
+                        
+                        
+                    end do ! End loop over ages
+                depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr(1:age_x, :, 0, ii, yr)) / k_1plus(ii)        
+                end do ! End loop over sexes
+                
+!            end do ! End loop over areas
+! Determine if this is a survey year and generate abundance estimate if so (surveys assumed to occur at end of year, after birth/death)
+! This checks if it's a survey year for each stock, because they are allowed to have different survey intervals            
+        ! If(is_surv_yr(yr, n_stocks) == 1) n_best = gen_survey_estimate(true_abundance = 1000.0d0, cv_n = 0.20d0)
+        
+        end do     ! End loop over stocks 
+        
+    end do        ! End loop over years
+                  ! End loop over number of simulations
+!====== +++ === === +++ === === +++ ===    
+! DEBUGGING: Look at calculated depletion through time
+!====== +++ === === +++ === === +++ === 
+    print *, "Depletion_yr  : "
+    do yr = 0, yr_max
+        print *, (depl_yr_stock(yr, ii), ii = 1, n_stocks)
+    end do 
+    
+    
+!====== +++ === === +++ === === +++ ===    
+! Writing results of main population array with spatial-temporal age structure to output file 
+!====== +++ === === +++ === === +++ === TODO: Move this into a function in the File IO module       
+    open(unit = 1, file = "N_array.out")
+    write(1, "(9(a15))") "yr", "stock", "age", "sex", "all_areas", "area_1", "area_2", "area_3", "area_4"  
+30  format(4(i15), 5(f15.4)) !       
+    do yr = 0, yr_max
+        do ii = 1, n_stocks
+            do ss = 1, 2
+                do aa = 0, age_x ! Note the implicit do loop over areas in next line
+                    write(1, 30) yr, ii, aa, ss, (N_age_sex_area_stock_yr( aa , ss, jj , ii, yr), jj = 0, n_area)
+                end do  ! End ouput over ages
+            end do ! End ouput over sex
+        end do ! End output over stock
+    end do ! End ouput over years
+    !write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
+    close(unit = 1) ! close output file
+!====== +++ === === +++ === === +++ ===        
 ! DEVELOPING
 ! Test some random number generation
 !   open(unit = 1, file = "z_variate.out")
@@ -291,6 +342,42 @@ program main
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
          
     print *, "Closing down"
-    return      
+    return     
+!====== +++ === === +++ === === +++ ===   
+!###### +++ ### ### +++ ### ### +++ ###             
+    contains
+!====== +++ === === +++ === === +++ ===   
+!###### +++ ### ### +++ ### ### +++ ###             
+    subroutine initialize_local_vars()
+        f_init_ii = 0.d0
+        f_yr_stock = 0.d0
+        b_init_ii = 0.d0
+        b_yr_stock = 0.d0
+        depl_yr_stock = 0.d0
+        transition_matrix_tmp = 0.d0
+        movement_matrix = 0.d0
+        N_age_sex_area_stock_yr = 0.d0
+        area_stock_prop = 0.d0
+        eigv = 0.d0
+        seq_yrs = 0
+        is_surv_yr = 0
+        pbr_yr_stock = 0.d0
+        foo_vector = 0.d0 
+        NPR_mature = 0.d0 
+        foo = 0.d0 
+        foo1 = 0.d0 
+        objf_lambda = 0.d0 
+        objf_f_init = 0.d0 
+        lambda = 0.d0 
+        io_error = 0
+        ii = 0
+        jj = 0
+        aa = 0
+        ss = 0
+        yr = 0
+        !
+        return
+    end subroutine initialize_local_vars
+
 end program main
 
