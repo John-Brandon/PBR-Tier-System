@@ -66,13 +66,12 @@ program main
     real(kind = 8), allocatable :: N_age_sex_area_stock_yr(:,:,:,:,:)  ! Main pop array: age, sex, sub-area, stock, yr
     real(kind = 8), allocatable :: area_stock_prop(:,:)    ! Percentage of each stock in each area
     real(kind = 8), allocatable :: eigv(:)                 ! Eigen vector of transition matrix, e.g. returned by power_method()
-    integer(kind = 4), allocatable :: seq_yrs(:)           ! Used to create a consecutive sequence of year numbers, e.g. 1-100 
     integer(kind = 4), allocatable :: is_surv_yr(:, :)     ! Matrix containing 1s if element is survey year, zeros otherwise
     real(kind = 8), allocatable :: pbr_yr_stock(:, :)  ! PBR each year (rows) for each stock (columns)
     real(kind = 8), allocatable :: foo_vector(:)      ! DEBUGGING
     real(kind = 8) :: NPR_mature                        ! Numbers mature per female recruit. Used to calculate b_eq (birth rate at K)
 !    real(kind = 8) :: sum_1plus_tmp                     ! DEBUGGING
-    real(kind = 8) :: foo, foo1                         ! DEBUGGING
+    real(kind = 8) :: foo, foo1, foo2                         ! DEBUGGING
 !    real(kind = 8) :: start, finish                     ! For timing / optimizing code
     real(kind = 8) :: objf_lambda                       ! Objective function for finding juvenile survival that results in R_max
     real(kind = 8) :: objf_f_init                       ! Objective function for finding f_init resulting in stable age structure
@@ -104,7 +103,6 @@ program main
     allocate(transition_matrix_tmp(0:age_x, 0:age_x)) ! Place-holder for transition matrix. Gets sent to eigen and is changed on return
     allocate(movement_matrix(0:age_x, 0:n_area, 0:n_stocks))
     allocate(eigv(0:age_x))         ! Eigen vector of transition matrix, returned by power_method()  
-!    allocate(seq_yrs(0:yr_max))                  ! Used to create a consecutive sequence of year numbers, e.g. 1-100 
     allocate(is_surv_yr(0:yr_max, 1:n_stocks))     ! Matrix containing 1s if element is survey year, zeros otherwise 
     allocate(pbr_yr_stock(0:yr_max, 1:n_stocks))  
     allocate(S_age(0:age_x))       ! Survival at age vector
@@ -305,7 +303,11 @@ program main
         print *, (depl_yr_stock(yr, ii), ii = 1, n_stocks)
     end do 
     
-    
+!====== +++ === === +++ === === +++ ===    
+! DEBUGGING: Test function to calculate N_min
+!====== +++ === === +++ === === +++ ===  
+    foo2 = calc_n_min(n_best = 100.0d0, cv_n = 0.30d0, z_score = 0.842d0)
+    print *, "N_min: ", foo2
 !====== +++ === === +++ === === +++ ===    
 ! Writing results of main population array with spatial-temporal age structure to output file 
 !====== +++ === === +++ === === +++ === TODO: Move this into a function in the File IO module       
@@ -315,8 +317,9 @@ program main
     do yr = 0, yr_max
         do ii = 1, n_stocks
             do ss = 1, 2
-                do aa = 0, age_x ! Note the implicit do loop over areas in next line
-                    write(1, 30) yr, ii, aa, ss, (N_age_sex_area_stock_yr( aa , ss, jj , ii, yr), jj = 0, n_area)
+                do aa = 0, age_x ! Note the implicit do loop over areas in next line -- and advance = 'no' for suppressing new line 
+                    write(1, 30,  advance='no') yr, ii, aa, ss, (N_age_sex_area_stock_yr( aa , ss, jj , ii, yr), jj = 0, n_area) 
+                    write(1, "(a15)") "Hello" ! TODO ADD OTHER VARIABLES OF INTEREST HERE, E.G. DEPLETION, PBR, N_BEST, N_MIN etc...
                 end do  ! End ouput over ages
             end do ! End ouput over sex
         end do ! End output over stock
@@ -336,6 +339,7 @@ program main
 !       if (jj .eq. 1) print *, jj, z_variate
 !    end do
 ! END DEVELOPING    
+!====== +++ === === +++ === === +++ ===     
     
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
          
@@ -347,6 +351,7 @@ program main
 !====== +++ === === +++ === === +++ ===   
 !###### +++ ### ### +++ ### ### +++ ###             
     subroutine initialize_local_vars()
+        print *, "Hello from initialize_local_vars()"
         f_init_ii = 0.d0
         f_yr_stock = 0.d0
         b_init_ii = 0.d0
@@ -357,13 +362,13 @@ program main
         N_age_sex_area_stock_yr = 0.d0
         area_stock_prop = 0.d0
         eigv = 0.d0
-        seq_yrs = 0
+!        seq_yrs = 0
         is_surv_yr = 0
         pbr_yr_stock = 0.d0
         foo_vector = 0.d0 
         NPR_mature = 0.d0 
         foo = 0.d0 
-        foo1 = 0.d0 
+        foo1 = 0.d0  
         objf_lambda = 0.d0 
         objf_f_init = 0.d0 
         lambda = 0.d0 
@@ -373,6 +378,7 @@ program main
         aa = 0
         ss = 0
         yr = 0
+        print *, "Goodbye from initialize_local_vars()"
         !
         return
     end subroutine initialize_local_vars
