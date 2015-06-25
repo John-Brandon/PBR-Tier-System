@@ -1,10 +1,11 @@
 module calcs
-
+! *
   use random, only : random_normal   ! Routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : Random_module.f90
   use Declare_variables_module       ! Access to some global variables, like selectivity patterns
   implicit none
-         
+! *         
   contains
+! *  
 !====== +++ === === +++ === === +++ ===   
 !###### +++ ### ### +++ ### ### +++ ###         
   subroutine pop_projection(f_rate, b_rate, N_age_old, N_age_new)
@@ -66,6 +67,7 @@ module calcs
     end do     ! End loop over stocks
     return
   end function assign_surv_yrs_stock
+! *  
 !====== +++ === === +++ === === +++ === 
 !###### +++ ### ### +++ ### ### +++ ###       
   real(kind = 8) function gen_survey_estimate(true_abundance, cv_n)
@@ -78,31 +80,58 @@ module calcs
 !====== +++ === === +++ === === +++ === 
         real(kind = 8), intent(in) :: true_abundance ! 'True' abundance from operating model 
         real(kind = 8), intent(in) :: cv_n           ! Coefficient of variation of survey sampling error
+        real(kind = 8) :: surv_tmp                   ! Temporary variable for calculations
         real(kind = 8) :: z_variate                  ! Standard normal random variate 
         
-        z_variate = random_normal(mean = 0., sd = 1.)
+        z_variate = random_normal(mean = 0., sd = 1.) ! Generate standard normal deviate
+        surv_tmp = cv_n * cv_n
+        surv_tmp = log(1 + surv_tmp)
+        surv_tmp = sqrt(surv_tmp)
+        surv_tmp = z_variate * surv_tmp
+        gen_survey_estimate = true_abundance / sqrt(1 + cv_n * cv_n)
+        gen_survey_estimate = log(gen_survey_estimate)
+        gen_survey_estimate = gen_survey_estimate + surv_tmp
+        gen_survey_estimate = exp(gen_survey_estimate)
         
-        gen_survey_estimate = z_variate
         return
     end function gen_survey_estimate
-        
-! *************************************************************************      
-! Function to calculate N_min, given (i) CV of abundance estimate (ii) N_best and (iii) standard normal variate, z
+! *
+!###### +++ ### ### +++ ### ### +++ ### 
+!====== +++ === === +++ === === +++ ===    
+  real(kind = 8) function calc_n_min(n_best, cv_n, z_score)
+!   real(kind = 8) function calc_nn_min(foo)
+!###### +++ ### ### +++ ### ### +++ ### 
+!====== +++ === === +++ === === +++ === 
+! Function to calculate N_min, given (i) CV of abundance estimate (ii) N_best and (iii) standard normal z_score
 ! Uses equation (4) of Wade(1998 Mar Mamm Sci)
-! Note that N_best is the expectation (mean) of a log-normal distribution, not the median.        
-! *************************************************************************            
-  REAL(kind = 8) FUNCTION CALC_N_min(N_best, CV_N, z_variate)
-
-    real(kind = 8) :: CV_N, N_best, z_variate ! Argument declarations	
-
-    CALC_N_min = log(1 + CV_N * CV_N) ! start by calculating denominator
-    CALC_N_min = sqrt(CALC_N_min)
-    CALC_N_min = z_variate * CALC_N_min
-    CALC_N_min = exp(CALC_N_min)
-    CALC_N_min = N_best / CALC_N_min ! divide N_best by denominator
+! Notes: 
+! N_best is the expectation (mean) of a log-normal distribution, not the median.  
+! CV is the coefficient of variation of the abundance estimate, gets transformed to the standard deviation in log-space
+! Positive values for z-score return lower tail the way that Eqn 4 of Wade (1998) is derived. 
+! For example, for the lower 2.5th percentile, z_score = 1.96 (not -1.96) 
+! If you're more familiar with R, this function is equivalent to:
+!  <- qlnorm(p = z_score, meanlog = log(n_best), sdlog = sqrt(log(1 + cv_n * cv_n)))  
+!====== +++ === === +++ === === +++ === 
+    real(kind = 8), intent(in) :: n_best
+    real(kind = 8), intent(in) :: cv_n
+    real(kind = 8), intent(in) :: z_score
+!   real(kind = 8), intent(in) :: foo
+    
+    print *, "Hello from calc_n_min"
+    print *, "n_best: ", n_best
+    print *, "cv_n: ", cv_n
+    print *, "z_score: ", z_score
+    
+    calc_n_min = log(1 + cv_n * cv_n)   ! Start by calculating denominator
+    calc_n_min = sqrt(calc_n_min)       ! calc_n_min is now the standard deviation in log-space
+    calc_n_min = z_score * calc_n_min   ! z_score of -1.96 for lower 2.5th percentile; -0.842 for lower 20th percentile
+    calc_n_min = exp(calc_n_min)
+    calc_n_min = n_best / calc_n_min ! divide N_best by denominator
 
     return
-  end function CALC_N_min
-
+    end function calc_n_min
+! *
+!###### +++ ### ### +++ ### ### +++ ### 
+!====== +++ === === +++ === === +++ ===    
 end module calcs
 
