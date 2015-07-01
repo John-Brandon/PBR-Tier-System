@@ -41,13 +41,11 @@ module PBR_FileIO_Module
        read (input_file, 801) n_sims
        read (input_file, 801) n_stocks
        read (input_file, 801) yr_max 
-       read (input_file, 801) surv_freq(1)
-       read (input_file, 801) surv_freq(2)       
+       read (input_file, 801) surv_freq
        read (input_file, 802) k_1plus(1)  ! Carrying capacity for stock 1
        read (input_file, 802) k_1plus(2)  ! Carrying capacity for stock 2       
        
-       read (input_file, 802) cv_N(1) 
-       read (input_file, 802) cv_N(2)       
+       read (input_file, 802) cv_N        
        read (input_file, 802) cv_mortality(1)
        read (input_file, 802) cv_mortality(2)       
        read (input_file, 802) theta 
@@ -77,7 +75,7 @@ module PBR_FileIO_Module
        write(*,*) "n_sims", n_sims
        write(*,*) "n_stocks", n_stocks
        write(*,*) "YR_MAX", YR_MAX
-       write(*,*) "SURV_FREQ", SURV_FREQ
+       write(*,*) "SURV_FREQ", surv_freq
        write(*,*) "k_1plus(1)", k_1plus(1)
        write(*,*) "k_1plus(2)", k_1plus(2)       
        write(*,*) "CV_N", CV_N
