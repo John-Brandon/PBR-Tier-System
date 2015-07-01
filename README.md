@@ -7,7 +7,7 @@ This repository includes preliminary FORTRAN code. The code is being developed i
 The code that is being developed is currently located in the `PBR Netbeans` folder; it is being developed using the Netbeans 8.0 integrated development environment (IDE), which produces the associated make files in that directory.  
 
 # Status of code development
-The two-stock operating model is nearly complete. There is also R code being developed for reading output files and creating plots, but I haven't added that code to this repository (yet).
+The two-stock operating model is nearly complete. There is also R code being developed for reading output files and creating plots, but I haven't added that code to this repository (yet)...
 
 
 
