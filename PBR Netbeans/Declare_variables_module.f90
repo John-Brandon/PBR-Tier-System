@@ -24,9 +24,9 @@ MODULE Declare_variables_module
     integer(kind = 4) :: n_sims         ! Number of simulated population projections
     integer(kind = 4) :: n_stocks       ! Number of stocks to model (at present, either 1 or 2 stocks) 
     integer(kind = 4) :: yr_max         ! Number of years to project over   
-    integer(kind = 4) :: surv_freq(2)   ! Interval (yrs) between abundance surveys (first abundance survey in year 1)    
+    integer(kind = 4) :: surv_freq   ! Interval (yrs) between abundance surveys (first abundance survey in year 1)    
     real(kind = 8) :: k_1plus(2)        ! Carrying capacity (in terms of the age 1+ component of the population)    
-    real(kind = 8) :: cv_n(2)             ! The coefficient of variation (CV) associated with sampling error in abundance estimates
+    real(kind = 8) :: cv_n                ! The coefficient of variation (CV) associated with sampling error in abundance estimates
     real(kind = 8) :: cv_mortality(2)     ! The CV associated with sampling error for human caused mortality of marine mammals
     real(kind = 8) :: theta               ! The shape parameter for density dependence (assumed to act through birth rates)
     real(kind = 8) :: r_max               ! The maximum annual growth rate of the population
@@ -67,7 +67,7 @@ MODULE Declare_variables_module
     integer(kind = 4) :: stock_i            ! Stock ID number   
 
     real(kind = 8) :: N_best                ! Mean of the abundance estimate 
-    real(kind = 8) :: N_min                 ! 
+    real(kind = 8), allocatable :: N_min_yr_sim(:, :)                 ! 
     
 !    real(kind = 8) :: z_variate             ! Standard normal random variate, i.e. ~ N(mu = 0, sigma = 1)
 
@@ -89,8 +89,8 @@ MODULE Declare_variables_module
     real(kind = 8), allocatable :: Nage_mat_0(:)        ! numbers-at-age that are mature
     real(kind = 8), allocatable :: prop_NPR(:)          ! Proportions in each age of the NPR vector
     
-    real(kind = 8), allocatable :: Nplus(:)    ! Vector of 1+ population size for stock 'i' across all years 
-    real(kind = 8), allocatable :: Ntot(:)        ! Total (0+) population size each year for stock 'i' 
+    real(kind = 8), allocatable :: N_plus(:)    ! Vector of 1+ population size for stock 'i' across all years 
+    real(kind = 8), allocatable :: N_tot(:)        ! Total (0+) population size each year for stock 'i' 
     real(kind = 8), allocatable :: N_calf(:)       ! Vector of calf production for stock 'i' across all years
 !    real(kind = 8), allocatable :: depl_i_t(:, :)         ! Depletion for each stock each year
     real(kind = 8), allocatable :: N_age(:)       ! Numbers-at-age
@@ -117,7 +117,7 @@ MODULE Declare_variables_module
         stock_i = 0                  ! Stock ID number (integer)
         
         N_best = 0.0d0               ! Expectation of an abundance estimate
-        N_min = 0.0d0                ! See above for remaining variable definitions
+        N_min_yr_sim = 0.0d0                ! See above for remaining variable definitions
 
         sum_NPR = 0.0d0
         Female_age = 0.0d0
@@ -125,8 +125,8 @@ MODULE Declare_variables_module
         Nage_imm_0 = 0.0d0        
         Nage_mat_0 = 0.0d0        
         prop_NPR = 0.0d0        
-        Nplus = 0.0d0 
-        Ntot = 0.0d0
+        N_plus = 0.0d0 
+        N_tot = 0.0d0
         N_calf = 0.0d0
         print *, "Hello from initialize_global_vars"
 !        depl_i_t = 0.0d0 ! This has not been allocated or used
