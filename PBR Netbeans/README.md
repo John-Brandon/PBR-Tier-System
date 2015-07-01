@@ -22,6 +22,8 @@ PBR-Tier-System
 
   * `Eigen_module.f90` Module with wrapper functions for eigen analysis (calculating lambda_max).
 
+* `input.par` This file contains the list of input variables for running the model. 
+
 
 
 
