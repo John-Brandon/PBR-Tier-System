@@ -24,6 +24,8 @@ PBR-Tier-System
 
 * `input.par` This file contains the list of input variables for running the model. 
 
+* `nbproject` Contains Makefiles created by the Netbeans IDE (warning: likely outdated)
+
 
 
 
