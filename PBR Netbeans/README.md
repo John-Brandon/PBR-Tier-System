@@ -20,7 +20,7 @@ PBR-Tier-System
 
 * `Generate_random_numbers_module.f90` Module with random number generating procedures
 
-* `Eigen_module.f90` Module with wrapper functions for eigen analysis (calculating $\lambda_{max}$).
+* `Eigen_module.f90` Module with wrapper functions for eigen analysis (calculating lambda_max).
 
 
 
