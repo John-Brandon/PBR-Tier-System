@@ -2,7 +2,7 @@ PBR-Tier-System
 ===============
 
 # Brief file descriptions:
-* `main.f90` This is the main program file. At the top of the file are a list of "use" statements. The use statements include the following modules of code. 
+* `main.f90` This is the main program file. At the top of the file are a list of "use" statements. The use statements include the following modules of code: 
 
 * `Declare_variables_module.f90` Module containing variable declarations, which are potentially global in scope.
 
@@ -16,11 +16,11 @@ PBR-Tier-System
 
 * `PBR_calcs_module.f90` Module containing routines for calculating PBR
 
-* `Random_module.f90` Module that seeds random number generator (given user input)
+* `A_Random_module.f90` Module that seeds random number generator (given user input)
 
 * `Generate_random_numbers_module.f90` Module with random number generating procedures
 
-* 
+* `Eigen_module.f90` Module with wrapper functions for eigen analysis (calculating $$lambda_{max}$$).
 
 
 
