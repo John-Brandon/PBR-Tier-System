@@ -9,7 +9,7 @@ The code is being developed under Mac OS 10.9.5, using [the *gfortran* 4.2 compi
 The Fortran code is currently located in the `PBR Netbeans` folder of this repository.
 
 # Status of code development
-The operating model is nearly complete. I'm testing the code to allocate spatial bycatch (the population dynamics and Tier 2 (Wade, 1998) survey estiamtes of abundance have been tested). There is also R code being developed for reading output files and creating plots, but I haven't added that code to this repository (yet)...
+The operating model is nearly complete. I'm testing the code to allocate spatial bycatch (the population dynamics and Tier 2 (Wade, 1998) survey estimates of abundance have been tested). There is also R code being developed for reading output files and creating plots, but I haven't added that code to this repository (yet)...
 
 
 
