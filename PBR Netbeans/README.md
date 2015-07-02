@@ -1,7 +1,6 @@
-PBR-Tier-System
+Brief file descriptions: PBR-Tier-System
 ===============
 
-# Brief file descriptions:
 * `main.f90` This is the main program file. At the top of the file are a list of "use" statements. The use statements include the following modules of code: 
 
   * `Declare_variables_module.f90` Module containing variable declarations, which are potentially global in scope.
