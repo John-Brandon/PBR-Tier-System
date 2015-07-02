@@ -21,7 +21,7 @@ Brief file descriptions: PBR-Tier-System
 
   * `Eigen_module.f90` Module with wrapper functions for eigen analysis (calculating lambda_max).
 
-* `input.par` This file contains the list of input variables for running the model. 
+* `input.par` __This file contains the list of input variables for running the simulations__. 
 
 * `nbproject` Contains Makefiles created by the Netbeans IDE (warning: likely outdated).
 
