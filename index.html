@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">PBR Tier System</h1>
-      <h2 class="project-tagline">An open source project for researching the Potential Biological Removal framework of the U.S. Marine Mammal Protection Act. </h2>
+      <h2 class="project-tagline">An open source project for simulation research on the Potential Biological Removal framework of the U.S. Marine Mammal Protection Act. </h2>
       <a href="https://github.com/John-Brandon/PBR-Tier-System" class="btn">View on GitHub</a>
       <a href="https://github.com/John-Brandon/PBR-Tier-System/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/John-Brandon/PBR-Tier-System/tarball/master" class="btn">Download .tar.gz</a>
@@ -24,23 +24,29 @@
 
 <p>This repository includes Fortran 90/95 code for a multi-stock population dynamics model. Initial code development is occurring  under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran">the free, open source, GNU Fortran 95, <em>gfortran</em> 4.2 compiler</a>.   </p>
 
-<h1>
-<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
+<h2>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h2>
 
-<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act</a> contains rules that seek to limit the number of human caused mortalities to marine mammal stocks. The legislation mandates that the limit, termed "Potential Biological Removal", be the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate" (N<sub>MIN</sub>); (2) One half of the maximum population growth rate (R<sub>MAX</sub>)(in the absence of density dependence); and (3) A recovery factor between 0.1 and 1.0 (F<sub>R</sub>). </p>
+<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act (MMPA)</a> contains rules to limit the number of human caused mortalities to individual stocks of marine mammals. The legislation mandates that the limit, termed "Potential Biological Removal" (PBR), be the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate (in the absence of density dependence); and (3) A recovery factor between 0.1 and 1.0. </p>
 
-<h1>
-<a id="previous-work-on-pbr" class="anchor" href="#previous-work-on-pbr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous work on PBR</h1>
+<p>PBR can be written as the simple equation: 
+PBR = N<sub>MIN</sub> 0.50 (R<sub>MAX</sub>) (F<sub>R</sub>) </p>
 
-<p>Taylor (1993) and Wade(1998): TODO add a couple of sentences </p>
+<p>The goal of PBR, as outlined in the MMPA and quantified by the U.S. National Marine Fisheries Science Service, is to a allow stocks of marine mammals to reach or exceed 50% of the carrying capacity of their environment. </p>
 
-<h1>
-<a id="management-strategy-evaluation-mse" class="anchor" href="#management-strategy-evaluation-mse" aria-hidden="true"><span class="octicon octicon-link"></span></a>Management strategy evaluation (MSE)</h1>
+<h2>
+<a id="previous-simulation-research-on-pbr" class="anchor" href="#previous-simulation-research-on-pbr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research on PBR</h2>
+
+<p>Taylor (1993) used simulation to explore the impact of assigning alternative percentiles of an abundance estimate to N<sub>MIN</sub>, given sampling error (e.g. assigning the mean vs lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub>). The conceptual approach to this simulation testing followed the 
+Wade (1998) expanded on earlier simulation studies by Taylor (1993),  and : TODO add a couple of sentences </p>
+
+<h2>
+<a id="management-strategy-evaluation-mse" class="anchor" href="#management-strategy-evaluation-mse" aria-hidden="true"><span class="octicon octicon-link"></span></a>Management strategy evaluation (MSE)</h2>
 
 <p>MSE involves three key steps: (i) development of a model (referred to as the operating model) which represents the system being managed; (ii) identification of candidate management strategies (in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used), and (iii) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to management objectives. In this case, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark.</p>
 
-<h1>
-<a id="operating-model-synopsis" class="anchor" href="#operating-model-synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Operating model synopsis</h1>
+<h2>
+<a id="operating-model-synopsis" class="anchor" href="#operating-model-synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Operating model synopsis</h2>
 
 <p>The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).</p>
 
@@ -52,7 +58,7 @@
 <h3>
 <a id="funding-and-contributors" class="anchor" href="#funding-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Funding and Contributors</h3>
 
-<p>This project is funded by the <a href="http://www.wpcouncil.org/about-us/">U.S. Western Pacific Fisheries Management Council</a>. Drs. John R. Brandon, <a href="http://fish.washington.edu/people/punt/index.html">André E. Punt</a>, Paula Moreno and <a href="http://www.nebhalloffame.org/inductee.php?hofid=257&amp;type=name">Randall R. Reeves</a> are co-authors. They are working together as <a href="http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php">the Independent Advisory Team on marine mammal stock assessment</a>. The team is funded through <a href="http://scemfis.org/aboutus.html">Science Center for Marine Fisheries</a>. The center is run under the <a href="http://www.nsf.gov/eng/iip/iucrc/program.jsp">U.S. National Science Foundation's Industry and University Cooperative Research Program</a> </p>
+<p>This project is funded by the <a href="http://www.wpcouncil.org/about-us/">U.S. Western Pacific Fisheries Management Council</a>. Drs. John R. Brandon, <a href="http://fish.washington.edu/people/punt/index.html">André E. Punt</a>, Paula Moreno and  are co-authors. They are working together as <a href="http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php">the Independent Advisory Team on marine mammal stock assessment</a>. The team is funded through <a href="http://scemfis.org/aboutus.html">Science Center for Marine Fisheries</a>. The center is run under the <a href="http://www.nsf.gov/eng/iip/iucrc/program.jsp">U.S. National Science Foundation's Industry and University Cooperative Research Program</a> </p>
 
 <h3>
 <a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
