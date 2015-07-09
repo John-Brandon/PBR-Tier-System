@@ -19,15 +19,28 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="welcome-to-the-pbr-tier-system-code-repository" class="anchor" href="#welcome-to-the-pbr-tier-system-code-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the PBR Tier System Code Repository.</h3>
+      <h1>
+<a id="welcome-to-the-pbr-tier-system-code-repository" class="anchor" href="#welcome-to-the-pbr-tier-system-code-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the PBR Tier System Code Repository.</h1>
 
-<p>This repository includes Fortran 90/95 code for a multi-stock population dynamics model. The code is being developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran">the free, open source, GNU Fortran 95, <em>gfortran</em> 4.2 compiler</a>.   </p>
-
-<p>TODO: Add a couple sentences on goals</p>
+<p>This repository includes Fortran 90/95 code for a multi-stock population dynamics model. Initial code development is occurring  under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran">the free, open source, GNU Fortran 95, <em>gfortran</em> 4.2 compiler</a>.   </p>
 
 <h1>
-<a id="model-synopsis" class="anchor" href="#model-synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model synopsis</h1>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
+
+<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act</a> contains rules that seek to limit the number of human caused mortalities to marine mammal stocks. The legislation mandates that the limit, termed "Potential Biological Removal", be the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate" (N<sub>MIN</sub>); (2) One half of the maximum population growth rate (R<sub>MAX</sub>)(in the absence of density dependence); and (3) A recovery factor between 0.1 and 1.0 (F<sub>R</sub>). </p>
+
+<h1>
+<a id="previous-work-on-pbr" class="anchor" href="#previous-work-on-pbr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous work on PBR</h1>
+
+<p>Taylor (1993) and Wade(1998): TODO add a couple of sentences </p>
+
+<h1>
+<a id="management-strategy-evaluation-mse" class="anchor" href="#management-strategy-evaluation-mse" aria-hidden="true"><span class="octicon octicon-link"></span></a>Management strategy evaluation (MSE)</h1>
+
+<p>MSE involves three key steps: (i) development of a model (referred to as the operating model) which represents the system being managed; (ii) identification of candidate management strategies (in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used), and (iii) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to management objectives. In this case, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark.</p>
+
+<h1>
+<a id="operating-model-synopsis" class="anchor" href="#operating-model-synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Operating model synopsis</h1>
 
 <p>The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).</p>
 
@@ -39,7 +52,20 @@
 <h3>
 <a id="funding-and-contributors" class="anchor" href="#funding-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Funding and Contributors</h3>
 
-<p>This project is funded by the Western Pacific Fisheries Management Council. Drs. Paula Moreno, André E. Punt and Randall R. Reeves are co-authors. </p>
+<p>This project is funded by the <a href="http://www.wpcouncil.org/about-us/">U.S. Western Pacific Fisheries Management Council</a>. Drs. John R. Brandon, <a href="http://fish.washington.edu/people/punt/index.html">André E. Punt</a>, Paula Moreno and <a href="http://www.nebhalloffame.org/inductee.php?hofid=257&amp;type=name">Randall R. Reeves</a> are co-authors. They are working together as <a href="http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php">the Independent Advisory Team on marine mammal stock assessment</a>. The team is funded through <a href="http://scemfis.org/aboutus.html">Science Center for Marine Fisheries</a>. The center is run under the <a href="http://www.nsf.gov/eng/iip/iucrc/program.jsp">U.S. National Science Foundation's Industry and University Cooperative Research Program</a> </p>
+
+<h3>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
+
+<p>IWC. 2012. International Whaling Commission. 2012. Report of the Scientific Committee. Annex E. Report of the Standing Working Group on an Aboriginal Subsistence Whaling Management Procedure. J. Cetacean Res. Manage. (Suppl.) 13:130-53. </p>
+
+<p>Punt, A. E. (1999). A full description of the standard Baleen II model and some variants thereof. J. Cet. Res. Manage. 1:267-276</p>
+
+<p>Taylor, B.L. 1993. “Best” abundance estimates and best management: Why they are not the same. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-188. 20 pp.</p>
+
+<p>Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.</p>
+
+<p>Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. </p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/John-Brandon/PBR-Tier-System">PBR Tier System</a> is maintained by <a href="https://github.com/John-Brandon">John-Brandon</a>.</span>
