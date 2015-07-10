@@ -20,44 +20,52 @@
 
     <section class="main-content">
       <h1>
-<a id="welcome-to-the-pbr-tier-system-code-repository" class="anchor" href="#welcome-to-the-pbr-tier-system-code-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the PBR Tier System Code Repository.</h1>
+<a id="welcome-to-the-pbr-tier-system-code-repository" class="anchor" href="#welcome-to-the-pbr-tier-system-code-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the PBR Tier System Code Repository</h1>
 
 <p>This repository includes Fortran 90/95 code for a multi-stock population dynamics model. Initial code development is occurring  under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran">the free, open source, GNU Fortran 95, <em>gfortran</em> 4.2 compiler</a>.   </p>
 
-<p>Motivation and background for this project is provided below. Links are provided above for the code repository, and to download the code files therein. </p>
+<h2>
+<a id="motivation-and-background-for-this-project-is-provided-below-links-are-provided-at-the-top-of-this-page-to-view-the-code-repository-as-well-as-to-download-the-code-files-therein-" class="anchor" href="#motivation-and-background-for-this-project-is-provided-below-links-are-provided-at-the-top-of-this-page-to-view-the-code-repository-as-well-as-to-download-the-code-files-therein-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation and background for this project is provided below. Links are provided at the top of this page to view the code repository, as well as to download the code files therein. </h2>
 
 <h2>
 <a id="the-us-marine-mammal-protection-act-and-potential-biological-removal" class="anchor" href="#the-us-marine-mammal-protection-act-and-potential-biological-removal" aria-hidden="true"><span class="octicon octicon-link"></span></a>The U.S. Marine Mammal Protection Act and Potential Biological Removal</h2>
 
-<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act (MMPA)</a> contains rules to limit the number of human caused mortalities to individual stocks of marine mammals. The legislation mandates that the limit, termed "Potential Biological Removal" (PBR), be the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate (in the absence of density dependence); and (3) A recovery factor between 0.1 and 1.0. </p>
+<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act (MMPA)</a> contains rules to limit the number of human caused mortalities to individual stocks of marine mammals. In particular, the legislation mandates a "Potential Biological Removal" limit (PBR), and that this limit should be calculated as the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate; and (3) A recovery factor between 0.1 and 1.0. </p>
 
 <p>PBR can therefore be written as the equation: 
 PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> </p>
 
-<p>The management objective of PBR, as outlined in the MMPA and quantified by the U.S. National Marine Fisheries Science Service (NMFS), is to a allow stocks of marine mammals to be maintained at an abundance that is 50% or more of the carrying capacity of their environment. </p>
+<p>The management objective of PBR, as outlined in the MMPA and quantified by the U.S. National Marine Fisheries Science Service (NMFS), is to allow stocks of marine mammals to be maintained at an abundance that is 50% or more of the carrying capacity of their environment. </p>
 
 <h2>
-<a id="previous-simulation-research-catch-control-rules" class="anchor" href="#previous-simulation-research-catch-control-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research catch control rules</h2>
+<a id="previous-simulation-research-on-catch-control-rules" class="anchor" href="#previous-simulation-research-on-catch-control-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research on catch control rules</h2>
 
-<p>The conceptual approach to simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee (SC) of the International Whaling Commission during the 1980s and early 1990s (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html">see Punt and Donavon, 2007, for a review</a>). This approach takes into account scientific uncertainties as represented by a range of scenarios, and uses simulation to quantify the performance of alternative management strategies (e.g. catch control rules), given management objectives. It has found increasingly popular application in commercial fisheries in recent years, and the approach is now known in fisheries science as "Management Strategy Evaluation" (MSE). Initial work by NMFS scientists on simulation testing of PBR was born from the procedures developed by the SC (perhaps not too surprising, given NMFS scientists are sitting members of the SC).</p>
+<p>The conceptual approach to simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee of the International Whaling Commission (the SC) during the 1980s and early 1990s (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html">see Punt and Donavon, 2007, for a review</a>). This approach takes into account scientific uncertainties as represented by a range of scenarios, and uses simulation to evaluate the performance of alternative management strategies (e.g. catch control rules), given quantified management objectives. It has found increasingly popular application in commercial fisheries in recent years, and the approach is now known in fisheries science as "Management Strategy Evaluation" (MSE). </p>
 
 <h2>
 <a id="management-strategy-evaluation" class="anchor" href="#management-strategy-evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Management strategy evaluation</h2>
 
-<p>MSE involves three key steps: (i) development of a model (referred to as the operating model) which represents the system being managed; (ii) identification of candidate management strategies (in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used), and (iii) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to management objectives. In this case, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark.</p>
+<p>MSE involves three key steps: (i) development of a model (referred to as the operating model) which represents the system being managed; (ii) identification of candidate management strategies, and (iii) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to management objectives. In this case, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark.</p>
 
 <h2>
 <a id="previous-simulation-research-on-pbr" class="anchor" href="#previous-simulation-research-on-pbr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research on PBR</h2>
 
-<p><a href="https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF">Taylor (1993)</a> used simulation to explore the impact of assigning to N<sub>MIN</sub> alternative percentiles of an abundance estimate, given sampling error (e.g. assigning the mean vs lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub>). 
-Wade (1998) expanded on the earlier simulation studies by Taylor (1993). In essence, Wade (1998) iterated over a set of scenarios which represented key uncertainties (bias in abundance estimates, etc.) and solved for the percentile of abundance estimates (in combination with values of F_r) that resulted in meeting the management objective of the MMPA in 95% of the simulations across scenarios. The results of Wade's simulation testing form the basis for the values NMFS currently uses when calculating PBR for different stocks of marine mammals. </p>
+<p>Initial work by NMFS scientists on simulation testing of PBR was born from the procedures developed by the SC (perhaps not too surprising, given NMFS scientists are active members of the SC).</p>
+
+<p><a href="https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF">Taylor (1993)</a> used simulation to explore the impact of assigning to N<sub>MIN</sub> alternative percentiles of an abundance estimate, given sampling error (e.g. assigning the mean vs lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub>). </p>
+
+<p>Wade (1998) expanded on the earlier simulation studies by Taylor (1993) and considered a much larger set of scenarios. In essence, Wade (1998) iterated over a set of scenarios which represented key uncertainties (bias in abundance estimates, etc.) and solved for the percentile of the sampling error distribution of an abundance estimate (in combination with values of F_r) that resulted in meeting the management objective of the MMPA in 95% of the simulations across scenarios. The results of Wade's simulation testing form the basis for the values NMFS currently uses when calculating PBR for different stocks of marine mammals. </p>
+
+<p>Below, we describe how this study aims to expand on previous approaches. We also provide some rationale for the importance of doing so. </p>
 
 <h2>
 <a id="operating-model-synopsis" class="anchor" href="#operating-model-synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Operating model synopsis</h2>
 
 <p>The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).</p>
 
-<p>The modeling approach differs from the age-aggregated model used in previous PBR research (e.g., Taylor 1993; Wade 1998). For simple scenarios, the two approaches should result in equivalent dynamics. However, the more complex population dynamics model developed here allows a wider spectrum of scenarios to be evaluated (e.g., spatial overlap of stocks of the same species, and non-uniform age- and sex-specific human caused mortality.</p>
+<p>The modeling approach differs from the age-aggregated model used in previous PBR research (e.g., Taylor 1993; Wade 1998). For simple scenarios, the two approaches should result in equivalent dynamics. However, the more complex population dynamics model developed here allows a wider spectrum of scenarios to be evaluated (e.g., spatial overlap of stocks of the same species, and non-uniform age- and sex-specific human caused mortality).</p>
+
+<p>(in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used)</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/31861309/SpatialFig.png" alt="Spatial Structure of the Model">
 <em>Figure 1.</em> The ranges and overlap of the two stocks are shown over the four areas. The surveyed area comprises areas 1, 2, and 3. Estimates of abundance include all animals (both stocks) in the survey area. The ranges of the two stocks overlap in area 2. </p>
