@@ -12,11 +12,11 @@ __A1:__
 
 You have the power to fix the typo in __Q1__. 
 
-All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank">Here's a nice video if you're new to Git and version control and are looking for an example of how you can collaborate through GitHub</a>. As a first exercise, you could access the markdown text for this webpage through <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/gh-pages target="_blank">the Readme.md file located in the `gh-pages` branch of this repository</a>. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing.
+All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank">Here's a nice video if you're new to Git and version control, and are looking for an example tututorial of how you can collaborate through GitHub</a>. As a first exercise, you could access the markdown text for this webpage through <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/gh-pages target="_blank">the Readme.md file located in the `gh-pages` branch of this repository</a>. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing.
 
 Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. 
 
-Legally speaking, open source means that the files in this repository are licensed under the <a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/LICENSE.md" target="_blank">MIT License</a>. You can use them however you want, even for profit, but you can't hold us liable for any damages. 
+Legally speaking, for this repository, open source means that the files here are licensed under the <a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/LICENSE.md" target="_blank">MIT License</a>. You can use them however you want, even for profit, but you can't hold us liable for any damages. 
 
 __Q2__: 
 
@@ -26,9 +26,9 @@ __A2__:
 
 One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (*aka* PBR. More on PBR below). We've decided to use GitHub as an open-source platform to ensure research transparency and reproducibility. 
 
-We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies, which haven't been formally tested yet. 
+We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. 
 
-PBR is also a useful concept for scientists in other countries, so an open-source repository also engenders international collaboration. Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all the author knows, the reader might be a brilliant computer scientist working for a tech company, with a desire to improve an algorithm used to set limits on human caused mortality of marine mammals. Making this open source allows anyone with an internet connection to contribute to the code and algorithm development.
+PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice, so an open-source repository also engenders international collaboration and sustainable management of human caused mortality of marine mammals. Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire to improve an algorithm used to set limits on human caused mortality of marine mammals. Making this open source allows anyone with an internet connection to contribute to the code and development of algorithms.
 
 With all of that said, let's get into the fun, starting with some background...
 
@@ -57,7 +57,7 @@ Wade (1998) expanded on the simulation studies by Taylor (1993). As a first step
 
 Below, we describe how the PBR Tier System study aims to expand on previous research. We also provide some rationale for doing so. 
 
-TODO: Add some general rationale before getting into modeling. 
+TODO: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here: 
 
 ## Operating model synopsis
 The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
@@ -77,9 +77,6 @@ TODO?: Add image from slides showing hierarchy of tiers.
 
 TODO: Add preliminary image showing population trajectories. 
 
-*last updated: 10 Jun 2015
-*contact: jbrandon@gmail.com
-
 ### Funding and Contributors
 This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt](http://fish.washington.edu/people/punt/index.html), Paula Moreno and Randall R. Reeves are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
 
@@ -93,3 +90,6 @@ Punt, A. E. (1999). A full description of the standard Baleen II model and some 
 Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
+
+*last updated: 10 Jun 2015*
+*contact: jbrandon@gmail.com*
