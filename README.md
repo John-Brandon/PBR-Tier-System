@@ -12,7 +12,7 @@ __A1:__
 
 You have the power to fix the typo in __Q1__. 
 
-All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank">Here's a nice video if you're new to Git and version control, and are looking for an example tututorial of how you can collaborate through GitHub</a>. As a first exercise, you could access the markdown text for this webpage through <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/gh-pages target="_blank">the Readme.md file located in the `gh-pages` branch of this repository</a>. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing.
+All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank">Here's a nice video if you're new to Git and version control, and are looking for an example tututorial of how you can collaborate through GitHub</a>. As a first exercise, you could access the markdown text for this webpage through <a href=https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md target="_blank">the Readme.md file located in the `gh-pages` branch of this repository</a>. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing.
 
 Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. 
 
@@ -28,12 +28,12 @@ One of the goals of this project is to provide an opportunity to engage and grow
 
 We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. 
 
-PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice, so an open-source repository also engenders international collaboration and sustainable management of human caused mortality of marine mammals. Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire to improve an algorithm used to set limits on human caused mortality of marine mammals. Making this open source allows anyone with an internet connection to contribute to the code and development of algorithms.
+PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire learn more about computational applications in natural resource science. Making this project open source allows anyone with an internet connection to contribute to the code and development of algorithms.
 
 With all of that said, let's get into the fun, starting with some background...
 
 ## The U.S. Marine Mammal Protection Act and Potential Biological Removal
-The [U.S. Marine Mammal Protection Act (MMPA)](http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm) contains rules to limit the number of human caused mortalities to individual stocks (management units) of marine mammals. In particular, the legislation mandates a "Potential Biological Removal" limit (PBR) to human caused mortality. Further, the MMPA prescribes that this limit should be calculated as the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate; and (3) A recovery factor between 0.1 and 1.0. 
+The [U.S. Marine Mammal Protection Act (MMPA)](http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm) contains rules to limit the number of human caused mortalities to individual stocks of marine mammals (stocks are the unit to be managed). In particular, the legislation mandates a "Potential Biological Removal" limit (PBR) to human caused mortality. Further, the MMPA prescribes that this limit should be calculated as the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate; and (3) A recovery factor between 0.1 and 1.0. 
 
 PBR can therefore be written as the equation: 
 PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> 
@@ -92,4 +92,5 @@ Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of c
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
 
 *last updated: 10 Jun 2015*
+
 *contact: jbrandon@gmail.com*
