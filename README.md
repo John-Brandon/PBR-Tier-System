@@ -92,6 +92,6 @@ Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of c
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
 
-*last updated: 10 Jun 2015
+*last updated: 10 Jun 2015*
 
-*contact: jbrandon@gmail.com
+*contact: jbrandon@gmail.com*
