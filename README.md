@@ -6,7 +6,7 @@ Links are provided at the top of this page to view the files in this repository,
 ## FAQ
 __Q1:__ 
 
-What does open source meen?
+What does "open source" meen?
 
 __A1:__ 
 
@@ -14,7 +14,7 @@ You have the power to fix the typo in __Q1__.
 
 All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. 
 
-If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md target="_blank"> the markdown text for this webpage </a> following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
+If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/master target="_blank"> the markdown text for this webpage in the README.md file </a>, following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
 
 Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. 
 
@@ -63,7 +63,7 @@ Wade (1998) expanded on the simulation studies by Taylor (1993). As a first step
 
 Below, we describe how the PBR Tier System study aims to expand on previous research. We also provide some rationale for doing so. 
 
-TODO: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here: 
+TODO: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here: https://github.com/John-Brandon/PBR-Tier-System/blob/gh-pages/poker.md
 
 ## Operating model synopsis
 The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
