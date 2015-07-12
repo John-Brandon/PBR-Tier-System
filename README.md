@@ -14,7 +14,7 @@ You have the power to fix the typo in __Q1__.
 
 All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. 
 
-If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial.</a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md target="_blank"> the markdown text for this webpage </a> following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
+If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md target="_blank"> the markdown text for this webpage </a> following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
 
 Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. 
 
@@ -96,6 +96,8 @@ Punt, A. E. (1999). A full description of the standard Baleen II model and some 
 Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
+
+---------------------------
 
 *last updated: 10 Jun 2015*
 
