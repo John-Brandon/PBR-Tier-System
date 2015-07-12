@@ -37,7 +37,9 @@
 
 <p>You have the power to fix the typo in <strong>Q1</strong>. </p>
 
-<p>All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank">Here's a nice video if you're new to Git and version control, and are looking for an example tututorial of how you can collaborate through GitHub</a>. As a first exercise, you could access the markdown text for this webpage through <a href="https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md" target="_blank">the Readme.md file located in the <code>gh-pages</code> branch of this repository</a>. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing.</p>
+<p>All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. </p>
+
+<p>If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href="https://github.com/John-Brandon/PBR-Tier-System/edit/master/README.md" target="_blank"> the markdown text for this webpage </a> following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. </p>
 
 <p>Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. </p>
 
@@ -49,18 +51,20 @@
 
 <p><strong>A2</strong>: </p>
 
-<p>One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (<em>aka</em> PBR. More on PBR below). We've decided to use GitHub as an open-source platform to ensure research transparency and reproducibility. </p>
+<p>One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (<em>aka</em> PBR -- More on PBR below). We've decided to use GitHub as an open-source platform to ensure that this research is transparent and reproducible. </p>
 
 <p>We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. </p>
 
-<p>PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire learn more about computational applications in natural resource science. Making this project open source allows anyone with an internet connection to contribute to the code and development of algorithms.</p>
+<p>PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. </p>
+
+<p>Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire learn more about computational applications in natural resource science. Making this project open source allows anyone with an internet connection to contribute to the code and development of algorithms.</p>
 
 <p>With all of that said, let's get into the fun, starting with some background...</p>
 
 <h2>
 <a id="the-us-marine-mammal-protection-act-and-potential-biological-removal" class="anchor" href="#the-us-marine-mammal-protection-act-and-potential-biological-removal" aria-hidden="true"><span class="octicon octicon-link"></span></a>The U.S. Marine Mammal Protection Act and Potential Biological Removal</h2>
 
-<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act (MMPA)</a> contains rules to limit the number of human caused mortalities to individual stocks of marine mammals (stocks are the unit to be managed). In particular, the legislation mandates a "Potential Biological Removal" limit (PBR) to human caused mortality. Further, the MMPA prescribes that this limit should be calculated as the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate; and (3) A recovery factor between 0.1 and 1.0. </p>
+<p>The <a href="http://www.nmfs.noaa.gov/pr/laws/mmpa/text.htm">U.S. Marine Mammal Protection Act (MMPA)</a> contains rules to limit the number of human caused mortalities to individual stocks of marine mammals (stocks are the unit to be managed). In particular, the legislation prescribes a "Potential Biological Removal" limit to human caused mortality. Further, the MMPA mandates that this limit should be calculated as the product of three values: (1) An estimate of abundance that "provides reasonable assurance that the stock size is equal to or greater than the estimate"; (2) One half of the maximum intrinsic population growth rate; and (3) A recovery factor between 0.1 and 1.0. </p>
 
 <p>PBR can therefore be written as the equation: 
 PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> </p>
@@ -70,19 +74,21 @@ PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> </p>
 <h2>
 <a id="previous-simulation-research-on-catch-control-rules" class="anchor" href="#previous-simulation-research-on-catch-control-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research on catch control rules</h2>
 
-<p>Simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html">see Punt and Donavon, 2007, for a review</a>). Generally speaking, the procedures that have been developed take into account scientific uncertainties as represented by a range of 'what if' scenarios. For example, "What if abundance estimates are biased? How would that impact the performance of the catch control rule?". These scenarios are also known as trials. Simulation modeling is used to evaluate the performance of alternative management strategies (e.g. catch control rules), across a set of trials, given quantified management objectives. </p>
+<p>Simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html">see Punt and Donavon, 2007, for a review</a>). </p>
 
-<p>This approach for providing scientific advice to fisheries management has also become increasingly popular in recent years for evaluating management systems of traditional commercial fisheries. The procedures originally developed by the SC are now known in fisheries science as "Management Strategy Evaluation" (MSE). </p>
+<p>Generally speaking, the procedures that have been developed take into account scientific uncertainties as represented by a range of 'what if' scenarios. For example, "What if abundance estimates are biased?" Would the catch control rule still meet the management objectives? Each scenario is known as a "trial". Simulation modeling is used to evaluate the performance of alternative management strategies (e.g. catch control rules), across a set of trials, given quantified management objectives. </p>
+
+<p>This approach for providing scientific advice to fisheries management has also become increasingly popular in recent years, and is now also used for evaluating management systems of commercial fisheries for fin- and shell-fish. The procedures originally developed by the SC are now known in fisheries science as "Management Strategy Evaluation" (MSE). </p>
 
 <h2>
 <a id="management-strategy-evaluation" class="anchor" href="#management-strategy-evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Management strategy evaluation</h2>
 
-<p>MSE involves a few key steps, including: (i) development of an "operating" model, which represents the system being managed (the 'true' state of nature), and how data are generated; (ii) identification of a candidate management strategy, which also includes a data collection strategy;  (iii) developing trials that span the range of key uncertainties about the true state of nature, including trials where data are biased or imprecise; and (iv) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to the quantified management objectives (e.g., maintaining abundance above some level with 95% certainty). In the context of this project, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark. </p>
+<p>MSE involves a few key steps, including: (i) development of an "operating model", which represents the system being managed (the 'true' state of nature) and how observable data are generated; (ii) identification of a candidate management strategy, which also includes a data collection strategy;  (iii) developing a set of trials that span the range of key uncertainties about the true state of nature, including trials where data are biased and/or imprecise; and (iv) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to the quantified management objectives (e.g., maintaining abundance above some level with 95% certainty). In the context of this project, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark. </p>
 
 <h2>
 <a id="previous-simulation-research-on-pbr" class="anchor" href="#previous-simulation-research-on-pbr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous simulation research on PBR</h2>
 
-<p>Initial work by NMFS scientists on simulation testing of PBR was born from the MSE procedures developed by the SC (NMFS scientists are also active members of the SC).</p>
+<p>Initial work by NMFS scientists on simulation testing of PBR was born from the MSE procedures developed by the SC. NMFS scientists are also active members of the SC. </p>
 
 <p><a href="https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF">Taylor (1993)</a> used simulation to explore the impact of assigning to N<sub>MIN</sub> alternative percentiles of an abundance estimate, given survey sampling error (e.g. assigning the mean vs lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub>). Taylor (1993) demonstrated that a strategy of assigning the point estimate of abundance to N<sub>MIN</sub> resulted in poor performance when biase existed in the abundance data. A strategy of assigning the lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub> was relatively robust to the biases that were explored. </p>
 
@@ -129,6 +135,8 @@ PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> </p>
 <p>Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.</p>
 
 <p>Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. </p>
+
+<hr>
 
 <p><em>last updated: 10 Jun 2015</em></p>
 
