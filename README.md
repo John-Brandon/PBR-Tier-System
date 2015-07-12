@@ -77,8 +77,6 @@ TODO?: Add image from slides showing hierarchy of tiers.
 
 TODO: Add preliminary image showing population trajectories. 
 
-*last updated: 10 Jun 2015
-*contact: jbrandon@gmail.com
 
 ### Funding and Contributors
 This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt](http://fish.washington.edu/people/punt/index.html), Paula Moreno and Randall R. Reeves are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
@@ -93,3 +91,7 @@ Punt, A. E. (1999). A full description of the standard Baleen II model and some 
 Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
+
+*last updated: 10 Jun 2015
+
+*contact: jbrandon@gmail.com
