@@ -6,7 +6,7 @@ Links are provided at the top of this page to view the files in this repository,
 ## FAQ
 __Q1:__ 
 
-What does open source meen?
+What does "open source" meen?
 
 __A1:__ 
 
