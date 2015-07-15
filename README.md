@@ -66,12 +66,11 @@ Below, we describe how the PBR Tier System study aims to expand on previous rese
 TODO: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here: https://github.com/John-Brandon/PBR-Tier-System/blob/gh-pages/poker.md
 
 ## Operating model synopsis
-The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model is an extension of single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
+The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model mirrors single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
 
 ![Spatial Structure of the Model](https://dl.dropboxusercontent.com/u/31861309/SpatialFig.png)
 
 *Figure 1.* The ranges and overlap of the two stocks are shown over the four areas. The surveyed area comprises areas 1, 2, and 3. Estimates of abundance include all animals (both stocks) in the survey area. The ranges of the two stocks overlap in area 2. 
-
 The modeling approach differs from the age-aggregated model used in previous PBR research (e.g., Taylor 1993; Wade 1998). For simple scenarios, the two approaches should result in equivalent dynamics. However, the more complex population dynamics model developed here allows a wider spectrum of trials to be evaluated (e.g., spatial overlap of stocks of the same species, and non-uniform age- and sex-specific human caused mortality).
 
 The Tier System aspect of this research involves different levels of data availability. Previous PBR research has largely  assumed that PBR would be calculated based on a single absolute estimate of abundance. 
@@ -91,10 +90,9 @@ IWC. 2012. International Whaling Commission. 2012. Report of the Scientific Comm
 
 [NMFS. 2005. Revisions to Guidelines for Assessing Marine Mammal Stocks. 24 pp. Available at: http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf](http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf)
 
-Punt, A. E. (1999). A full description of the standard Baleen II model and some variants thereof. J. Cet. Res. Manage. 1:267-276
+Punt, A. E. 1999. A full description of the standard Baleen II model and some variants thereof. J. Cet. Res. Manage. 1:267-276
 
 [Taylor, B.L. 1993. “Best” abundance estimates and best management: Why they are not the same. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-188. 20 pp.](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)
-
 
 [Taylor, B.L., Scott, M., Heyning, J. and Barlow, J. 2003. Suggested guidelines for recovery factors for endangered
 marine mammals. U.S. Dep. Commer., NOAA Tech. Memo. NOAA-TM-NMFS-SWFSC-354, 6 pp.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf)
@@ -104,6 +102,7 @@ Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of c
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
 
 Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abundance surveys. Marin Mammal Survey and Assessment Methods, Garner *et al. (eds)*. Balkema, Rotterdam
+
 ---------------------------
 
 *last updated: 14 July 2015*
