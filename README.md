@@ -28,7 +28,7 @@ __A2__:
 
 One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (*aka* PBR -- More on PBR below). We've decided to use GitHub as an open-source platform to ensure that this research is transparent and reproducible. 
 
-We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999) and setting recovery factors for endangered species (Taylor et al. 2003). 
+We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999; [NMFS 2005](http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf)) and setting recovery factors for endangered species ([Taylor et al. 2003](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)). 
 
 PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. 
 
@@ -89,12 +89,15 @@ This project is funded by the [U.S. Western Pacific Fisheries Management Council
 ### References 
 IWC. 2012. International Whaling Commission. 2012. Report of the Scientific Committee. Annex E. Report of the Standing Working Group on an Aboriginal Subsistence Whaling Management Procedure. J. Cetacean Res. Manage. (Suppl.) 13:130-53. 
 
+[NMFS. 2005. Revisions to Guidelines for Assessing Marine Mammal Stocks. 24 pp. Available at: http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf](http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf)
+
 Punt, A. E. (1999). A full description of the standard Baleen II model and some variants thereof. J. Cet. Res. Manage. 1:267-276
 
 [Taylor, B.L. 1993. “Best” abundance estimates and best management: Why they are not the same. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-188. 20 pp.](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)
 
 
-Taylor, B.L., Scott,
+[Taylor, B.L., Scott, M., Heyning, J. and Barlow, J. 2003. Suggested guidelines for recovery factors for endangered
+marine mammals. U.S. Dep. Commer., NOAA Tech. Memo. NOAA-TM-NMFS-SWFSC-354, 6 pp.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf)
 
 Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
 
