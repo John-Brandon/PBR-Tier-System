@@ -28,7 +28,7 @@ __A2__:
 
 One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (*aka* PBR -- More on PBR below). We've decided to use GitHub as an open-source platform to ensure that this research is transparent and reproducible. 
 
-We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. 
+We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999) and setting recovery factors for endangered species (Taylor et al. 2003). 
 
 PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. 
 
@@ -93,12 +93,16 @@ Punt, A. E. (1999). A full description of the standard Baleen II model and some 
 
 [Taylor, B.L. 1993. “Best” abundance estimates and best management: Why they are not the same. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-188. 20 pp.](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)
 
+
+Taylor, B.L., Scott,
+
 Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
 
+Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abundance surveys. Marin Mammal Survey and Assessment Methods, Garner *et al. (eds)*. Balkema, Rotterdam
 ---------------------------
 
-*last updated: 10 Jun 2015*
+*last updated: 14 July 2015*
 
 *contact: jbrandon@gmail.com*
