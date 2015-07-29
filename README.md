@@ -14,7 +14,7 @@ You have the power to fix the typo in __Q1__.
 
 All of the files in this repository (Fortran, R, markdown, or otherwise) are available to the public, including the markdown text file underlying this webpage. Git provides us a formal process of version control for collaborating on these files. 
 
-If you're new to Git and version control, and interesting in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/master target="_blank"> the markdown text for this webpage in the README.md file </a>, following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
+If you're new to Git and version control, and interested in learning how to collaborate on GitHub, <a href="https://www.youtube.com/watch?v=SCZF6I-Rc4I" target="_blank"> here's a nice video (6min 33s) with an example tututorial. </a> As a first exercise, you could access  <a href=https://github.com/John-Brandon/PBR-Tier-System/tree/master target="_blank"> the markdown text for this webpage in the README.md file </a>, following the instructions in the video. Once you've edited the typo above, submit your first pull request. There's no better way to learn than by doing. 
 
 Regardless of whether you know how to use Git, if you see something that is not factually correct; important information is missing; find a bug in the code; have a better way of doing something -- let us know (<a href="https://guides.github.com/features/issues/" target="_blank">here's one avenue through GitHub</a>). You can also contact the maintainer of this repository, listed at the end of this page. 
 
@@ -30,7 +30,7 @@ One of the goals of this project is to provide an opportunity to engage and grow
 
 We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999; [NMFS 2005](http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf)) and setting recovery factors for endangered species ([Taylor et al. 2003](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)). 
 
-PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice. 
+PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice.  
 
 Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire learn more about computational applications in natural resource science. Making this project open source allows anyone with an internet connection to contribute to the code and development of algorithms.
 
@@ -48,7 +48,6 @@ The management objective of PBR, as outlined in the MMPA and quantified by the U
 Simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing ([see Punt and Donavon, 2007, for a review](http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html)). 
 
 Generally speaking, the procedures that have been developed take into account scientific uncertainties as represented by a range of 'what if' scenarios. For example, "What if abundance estimates are biased?" Would the catch control rule still meet the management objectives? Each scenario is known as a "trial". Simulation modeling is used to evaluate the performance of alternative management strategies (e.g. catch control rules), across a set of trials, given quantified management objectives. 
-
 This approach for providing scientific advice to fisheries management has also become increasingly popular in recent years, and is now also used for evaluating management systems of commercial fisheries for fin- and shell-fish. The procedures originally developed by the SC are now known in fisheries science as "Management Strategy Evaluation" (MSE). 
 
 ## Management strategy evaluation 
@@ -71,9 +70,10 @@ The underlying population dynamics were represented using an age-, sex-, and spa
 ![Spatial Structure of the Model](https://dl.dropboxusercontent.com/u/31861309/SpatialFig.png)
 
 *Figure 1.* The ranges and overlap of the two stocks are shown over the four areas. The surveyed area comprises areas 1, 2, and 3. Estimates of abundance include all animals (both stocks) in the survey area. The ranges of the two stocks overlap in area 2. 
+
 The modeling approach differs from the age-aggregated model used in previous PBR research (e.g., Taylor 1993; Wade 1998). For simple scenarios, the two approaches should result in equivalent dynamics. However, the more complex population dynamics model developed here allows a wider spectrum of trials to be evaluated (e.g., spatial overlap of stocks of the same species, and non-uniform age- and sex-specific human caused mortality).
 
-The Tier System aspect of this research involves different levels of data availability. Previous PBR research has largely  assumed that PBR would be calculated based on a single absolute estimate of abundance. 
+The Tier System aspect of this research involves different levels of data availability. Previous PBR research has largely  assumed that PBR would be calculated based on a single estimate of absolute abundance. 
 
 (although see Wade and DeMaster 1998, for an example of a PBR simulation study where multiple estimates were averaged: TODO Add this reference and wrap up the remaining last bits of text)
 
