@@ -101,7 +101,7 @@ Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of c
 
 Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
 
-Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abundance surveys. Marin Mammal Survey and Assessment Methods, Garner *et al. (eds)*. Balkema, Rotterdam
+Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abundance surveys. Marine Mammal Survey and Assessment Methods, Garner *et al. (eds)*. Balkema, Rotterdam
 
 ---------------------------
 
