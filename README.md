@@ -62,7 +62,7 @@ Wade (1998) expanded on the simulation studies by Taylor (1993). As a first step
 
 Below, we describe how the PBR Tier System study aims to expand on previous research. We also provide some rationale for doing so. 
 
-TODO: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here: https://github.com/John-Brandon/PBR-Tier-System/blob/gh-pages/poker.md
+__TODO__: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here (draft a flight simulator analogy, poker might be esoteric?): https://github.com/John-Brandon/PBR-Tier-System/blob/gh-pages/poker.md
 
 ## Operating model synopsis
 The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model mirrors single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
@@ -77,10 +77,10 @@ The Tier System aspect of this research involves different levels of data availa
 
 (although see Wade and DeMaster 1998, for an example of a PBR simulation study where multiple estimates were averaged: TODO Add this reference and wrap up the remaining last bits of text)
 
-TODO?: Add image from slides showing hierarchy of tiers. 
+__TODO__: Add image from slides showing hierarchy of tiers. 
 (in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used)
 
-TODO: Add preliminary image showing population trajectories. 
+__TODO__: Add preliminary image showing population trajectories. 
 
 ### Funding and Contributors
 This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt](http://fish.washington.edu/people/punt/index.html), Paula Moreno and Randall R. Reeves are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
