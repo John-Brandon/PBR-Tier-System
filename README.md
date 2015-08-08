@@ -42,10 +42,12 @@ The [U.S. Marine Mammal Protection Act (MMPA)](http://www.nmfs.noaa.gov/pr/laws/
 PBR can therefore be written as the equation: 
 PBR = N<sub>MIN</sub> 0.50 R<sub>MAX</sub> F<sub>R</sub> 
 
-The management objective of PBR, as outlined in the MMPA and quantified by the U.S. National Marine Fisheries Science Service (NMFS), is to allow stocks of marine mammals to be maintained at an abundance that is 50% or more of the carrying capacity of their environment. 
+The relevant management objective of PBR for this project, as outlined in the MMPA and quantified by the U.S. National Marine Fisheries Science Service (NMFS), is to allow stocks of marine mammals to be maintained at an abundance that is 50% or more of the carrying capacity of their environment. 
 
-## Previous simulation research on catch control rules 
-Simulation testing of catch control rules was introduced to fisheries science by the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing ([see Punt and Donavon, 2007, for a review](http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html)). 
+## Previous simulation research on fisheries management strategies 
+The earliest examples of simulation research on fisheries management strategies were by Southward (1968) and Hilborn (1979). 
+
+The concept later gained traction and made significant strides through the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing ([see Punt and Donavon, 2007, for a review](http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html)). 
 
 Generally speaking, the procedures that have been developed take into account scientific uncertainties as represented by a range of 'what if' scenarios. For example, "What if abundance estimates are biased?" Would the catch control rule still meet the management objectives? Each scenario is known as a "trial". Simulation modeling is used to evaluate the performance of alternative management strategies (e.g. catch control rules), across a set of trials, given quantified management objectives. 
 This approach for providing scientific advice to fisheries management has also become increasingly popular in recent years, and is now also used for evaluating management systems of commercial fisheries for fin- and shell-fish. The procedures originally developed by the SC are now known in fisheries science as "Management Strategy Evaluation" (MSE). 
@@ -54,7 +56,7 @@ This approach for providing scientific advice to fisheries management has also b
 MSE involves a few key steps, including: (i) development of an "operating model", which represents the system being managed (the 'true' state of nature) and how observable data are generated; (ii) identification of a candidate management strategy, which also includes a data collection strategy;  (iii) developing a set of trials that span the range of key uncertainties about the true state of nature, including trials where data are biased and/or imprecise; and (iv) evaluation, using simulation, of the candidate management strategies. Candidate management strategies are evaluated based on their performance relative to the quantified management objectives (e.g., maintaining abundance above some level with 95% certainty). In the context of this project, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark. 
 
 ## Previous simulation research on PBR
-Initial work by NMFS scientists on simulation testing of PBR was born from the MSE procedures developed by the SC. NMFS scientists are also active members of the SC. 
+NMFS scientists are active members of the SC. There is cross-pollination of ideas (when things work well) between scientists from different countries working together within the SC. Initial work on simulation testing of PBR fruited from the MSE procedures being developed by the SC during the late 1980s and early 1990s. 
 
 [Taylor (1993)](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF) used simulation to explore the impact of assigning to N<sub>MIN</sub> alternative percentiles of an abundance estimate, given survey sampling error (e.g. assigning the mean vs lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub>). Taylor (1993) demonstrated that a strategy of assigning the point estimate of abundance to N<sub>MIN</sub> resulted in poor performance when biase existed in the abundance data. A strategy of assigning the lower 95th confidence interval of the abundance estimate to N<sub>MIN</sub> was relatively robust to the biases that were explored. 
 
@@ -86,11 +88,15 @@ __TODO__: Add preliminary image showing population trajectories.
 This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt](http://fish.washington.edu/people/punt/index.html), Paula Moreno and Randall R. Reeves are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
 
 ### References 
-IWC. 2012. International Whaling Commission. 2012. Report of the Scientific Committee. Annex E. Report of the Standing Working Group on an Aboriginal Subsistence Whaling Management Procedure. J. Cetacean Res. Manage. (Suppl.) 13:130-53. 
+Hilborn, R. 1979. Comparison of fisheries control-systems that utilize catch and effort data. *J. Fish. Res. Board. Can.* 36:1477–1489. 
+
+IWC. 2012. International Whaling Commission. 2012. Report of the Scientific Committee. Annex E. Report of the Standing Working Group on an Aboriginal Subsistence Whaling Management Procedure. *J. Cet. Res. Manage.* (Suppl.) 13:130-53. 
 
 [NMFS. 2005. Revisions to Guidelines for Assessing Marine Mammal Stocks. 24 pp. Available at: http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf](http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf)
 
-Punt, A. E. 1999. A full description of the standard Baleen II model and some variants thereof. J. Cet. Res. Manage. 1:267-276
+Punt, A. E. 1999. A full description of the standard Baleen II model and some variants thereof. *J. Cet. Res. Manage.* 1:267-276
+
+Southward, G. M. 1968. A simulation of management strategies in the Pacific halibut fishery. Technical Report 47, International Pacific Halibut Committee, Seattle, WA.
 
 [Taylor, B.L. 1993. “Best” abundance estimates and best management: Why they are not the same. U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-188. 20 pp.](https://swfsc.noaa.gov/publications/TM/SWFSC/NOAA-TM-NMFS-SWFSC-188.PDF)
 
