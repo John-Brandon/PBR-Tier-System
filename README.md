@@ -64,23 +64,26 @@ Wade (1998) expanded on the simulation studies by Taylor (1993). As a first step
 
 Below, we describe how the PBR Tier System study aims to expand on previous research. We also provide some rationale for doing so. 
 
+### Alternative tiers of data availability <-> alternative management strategies
+
 __TODO__: Add some general rationale for a tier system, before getting into modeling. Could link the poker example here (draft a flight simulator analogy, poker might be esoteric?): https://github.com/John-Brandon/PBR-Tier-System/blob/gh-pages/poker.md
+
+The Tier System aspect of this research involves different levels of data availability. Previous PBR research has largely  assumed that PBR would be calculated based on a single estimate of absolute abundance. 
+
+(although see Wade and DeMaster 1998, for an example of a PBR simulation study where multiple estimates were averaged: __TODO__ Add this reference and wrap up the remaining last bits of text)
+
+In this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used.
+
+__TODO__: Add image from slides showing hierarchy of tiers. 
 
 ## Operating model synopsis
 The underlying population dynamics were represented using an age-, sex-, and space-structured multiple-stock model (which also allows single-stock scenarios to be evaluated). The age-structured component of the model mirrors single-stock assessment models employed by the NMFS scientists and the SC of the IWC (e.g., Punt 1999, Wade 2002). The single-stock model is expanded here to allow for two spatially overlapping stocks of the same species (Fig 1). This approach is similar to multi-stock models developed by the SC of the IWC for MSEs under more complicated scenarios, involving overlapping stocks, and uncertainties in stock identity with respect to catch limits (e.g. IWC 2012).
 
 ![Spatial Structure of the Model](https://dl.dropboxusercontent.com/u/31861309/SpatialFig.png)
 
-*Figure 1.* The ranges and overlap of the two stocks are shown over the four areas. The surveyed area comprises areas 1, 2, and 3. Estimates of abundance include all animals (both stocks) in the survey area. The ranges of the two stocks overlap in area 2. 
+*Figure 1. The ranges and overlap of the two stocks are shown over the four areas. The surveyed area comprises areas 1, 2, and 3. Estimates of abundance include all animals (both stocks) in the survey area. The ranges of the two stocks overlap in area 2. If the operating model is run as a single stock, the model collapses to the box joining areas A and B.* 
 
 The modeling approach differs from the age-aggregated model used in previous PBR research (e.g., Taylor 1993; Wade 1998). For simple scenarios, the two approaches should result in equivalent dynamics. However, the more complex population dynamics model developed here allows a wider spectrum of trials to be evaluated (e.g., spatial overlap of stocks of the same species, and non-uniform age- and sex-specific human caused mortality).
-
-The Tier System aspect of this research involves different levels of data availability. Previous PBR research has largely  assumed that PBR would be calculated based on a single estimate of absolute abundance. 
-
-(although see Wade and DeMaster 1998, for an example of a PBR simulation study where multiple estimates were averaged: TODO Add this reference and wrap up the remaining last bits of text)
-
-__TODO__: Add image from slides showing hierarchy of tiers. 
-(in this case, features of the proposed tier system might include how historical abundance estimates are weighted, how trends are estimated, and whether abundance data older than 8 years are used)
 
 __TODO__: Add preliminary image showing population trajectories. 
 
@@ -103,9 +106,9 @@ Southward, G. M. 1968. A simulation of management strategies in the Pacific hali
 [Taylor, B.L., Scott, M., Heyning, J. and Barlow, J. 2003. Suggested guidelines for recovery factors for endangered
 marine mammals. U.S. Dep. Commer., NOAA Tech. Memo. NOAA-TM-NMFS-SWFSC-354, 6 pp.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf)
 
-Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Mar Mamm Sci. 14: 1-37.
+Wade, P.R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. *Mar. Mamm. Sci.* 14: 1-37.
 
-Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. J. Cet. Res. Manage. 4: 85-98. 
+Wade, P.R. 2002. A Bayesian stock assessment of the eastern Pacific gray whale using abundance and harvest data from 1967-1996. *J. Cet. Res. Manage.* 4: 85-98. 
 
 Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abundance surveys. Marine Mammal Survey and Assessment Methods, Garner *et al. (eds)*. Balkema, Rotterdam
 
