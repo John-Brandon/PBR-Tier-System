@@ -10,8 +10,8 @@
 !====== +++ === === +++ === === +++ === ===
 ! Purpose : Declare variables for PBR Tier System code
 !  These variables will be available to any routine that "uses" this module
-!  This approach is analagous with declaring global variables (or a common block in Fortran 77). 
-!  It is not necessarily great programming practice, but while lazy, it does make the program code easier to develop in some cases.
+!  This approach is analogous with an "import" statement in Python (except variables, rather than functions), not global per se.
+!  It is not necessarily great programming practice. Could be improved, I'm sure. #OpenSource #SorryNotSorry 
 !====== +++ === === +++ === === +++ === ===
 MODULE Declare_variables_module
     implicit none
@@ -46,6 +46,7 @@ MODULE Declare_variables_module
     real(kind = 8) :: p_a2_s2           ! Percentage of stock_2 in subarea_2
     real(kind = 8) :: p_a3_s2           ! Percentage of stock_2 in subarea_3
     real(kind = 8) :: p_a4_s2           ! Percentage of stock_2 in subarea_4  
+    real(kind = 8) :: omega(3)          ! Relative vulnerability of animals by area (regardless of stock ID)
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
     real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)  
