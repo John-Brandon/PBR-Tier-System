@@ -121,6 +121,6 @@ Wade, P.R. and DeMaster, D. P. 1999. Determining the optimimum interval for abun
 
 ---------------------------
 
-*last updated: 14 July 2015*
+*last updated: 08 Aug 2015*
 
 *contact: jbrandon@gmail.com*
