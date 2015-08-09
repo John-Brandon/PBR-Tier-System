@@ -28,9 +28,8 @@ __A2__:
 
 One of the goals of this project is to provide an opportunity to engage and grow the scientific community for simulation research on "Potential Biological Removal" (*aka* PBR -- More on PBR below). We've decided to use GitHub as an open source platform to ensure that this research is transparent and reproducible. 
 
-We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999; <a href="http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf" target="_blank">NMFS 2005</a>)) 
+We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999; <a href="http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf" target="_blank">NMFS 2005</a>)) and setting recovery factors for endangered species (<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf" target="_blank">Taylor et al. 2003</a>).
 
-and setting recovery factors for endangered species ([Taylor et al. 2003](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf)). 
 
 PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice.  
 
