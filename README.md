@@ -33,7 +33,7 @@ One of the goals of this project is to provide an opportunity to engage and grow
 We hope this project excites ideas and methodological approaches for reducing scientific uncertainty in the context of meeting the management objectives of the U.S. Marine Mammal Protection Act, or other related conservation objectives. We also offer this as a platform to test existing strategies to calculate PBR, which haven't been formally tested yet. For example, averaging abundance and mortality estimates (Wade and Demaster 1999; <a href="http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf" target="_blank">NMFS 2005</a>) and setting recovery factors for endangered species (<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.221.9577&rep=rep1&type=pdf" target="_blank">Taylor et al. 2003</a>).
 
 
-PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice on sustainable levels of human caused mortality. An open-source repository engenders international collaboration and improvements in scientific advice.  
+PBR is also a useful concept for scientists outside the U.S., who are looking to provide management advice. Likewise, PBR can be applied to other species protected species (e.g. sea-birds, sea-turtles, etc.). An open-source repository engenders international collaboration and improvements in scientific advice on sustainable levels of human caused mortality for wildlife.  
 
 Finally, you just never know who might be reading this and want to collaborate on a scientifically interesting and challenging problem. For all we know, the reader might be a curious computer scientist working for a tech company, with a desire to learn more about, and perhaps engage in computational applications in natural resource science. Making this project open source allows anyone with an internet connection to contribute to the code and development of algorithms.
 
@@ -50,7 +50,7 @@ The relevant management objective of PBR for this project, as outlined in the MM
 ## Previous simulation research on fisheries management strategies 
 The earliest examples of using computer simulation to evaluate fisheries management strategies were by Southward (1968) and Hilborn (1979). 
 
-The concept gained traction and made significant strides through the work of the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development started during the 1980s and is ongoing (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html" target=_blank>see Punt and Donavon, 2007</a>, for a review). 
+The concept gained traction and made significant strides through the work of the Scientific Committee of the International Whaling Commission (the SC). The SC's research and development, on the Catch Limit Algorithm of the Revised Management Procedure for commercial whaling, started during the 1980s and is ongoing (<a href="http://icesjms.oxfordjournals.org/content/64/4/603.full.pdf+html" target=_blank>see Punt and Donavon, 2007</a>, for a review). Similarly, the SC has developed Strike Limit Algorithms for aboriginal subsistence whaling based on extensive simulation research on sustainably managing human caused mortality given the feedback systems at play (underlying population dynamics, imperfect surveys of abundance, etc.). 
 
 This approach for providing scientific advice to fisheries management has become increasingly popular in recent decades. It is now used for evaluating management systems across a number of commercial fisheries for fin- and shell-fish. The process has become known in fisheries science as "Management Strategy Evaluation" (MSE). 
 
@@ -61,7 +61,9 @@ MSE involves a few key steps, including: (i) development of an "operating model"
 
 Candidate management strategies are evaluated based on their performance relative to the quantified management objectives (e.g., maintaining abundance above some level with 95% certainty). In the context of this project, the management objectives of the U.S. Marine Mammal Protection Act are the benchmark. 
 
+<!---
 <a href="http://www.fao.org/fishery/eaf-net/eaftool/eaf_tool_50" target=_blank>The Food and Agricultural Organization of the United Nations provides a summary here of the MSE approach,</a> including some pros and cons.
+-->
 
 ## Previous simulation research on PBR
 NMFS scientists are active members of the SC. There is cross-pollination of ideas (when things work well) between scientists from different countries working together under the auspices of the SC. Initial work on simulation testing of PBR followed from the MSE procedures being developed by the SC during the late 1980s and early 1990s. 
