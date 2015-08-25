@@ -74,9 +74,18 @@ MODULE initialize_pop
     
         transition_matrix(0, :) = b_rate * prop_mat_age     ! Assign birth rates to mature ages in first row of matrix
         
-        do ii = 0, (age_x - 1)
-            transition_matrix(ii+1, ii) = S_age(ii)         ! Assign juvenile survival rates
-        end do
+        if (a_t == age_x) then
+          do ii = 0, (age_x - 1)
+            transition_matrix(ii + 1, ii) = S_age(ii)       ! Assign juvenile survival rates
+          end do        
+        else
+          do ii = 0, a_t  
+            transition_matrix(ii + 1, ii) = S_age(ii)       ! Assign juvenile survival rates              
+          end do
+          do ii = (a_t + 1), (age_x - 1) 
+            transition_matrix(ii+1, ii) = S_age(ii)         ! Assign adult survival rates              
+          end do
+        end if
         
         transition_matrix(age_x, age_x) = S_age(age_x)      ! Adult survival assumed for plus-group
           
@@ -191,11 +200,11 @@ MODULE initialize_pop
 !====== +++ === === +++ === === +++ ===     
 ! Rescale numbers at age per-recruit to initial numbers at age vector, given initial depletion 
 !====== +++ === === +++ === === +++ ===             
-        real(kind = 8), intent(in) :: k_1plus_tmp                           ! Carrying capacity (in terms of age 1+) 
-        real(kind = 8), intent(in) :: initial_oneplus_tmp                   ! Initial one plus for stock i        
-        real(kind = 8) :: scale_pop                            ! Scalar to map numbers per recruit to initial numbers at age
+        real(kind = 8), intent(in) :: k_1plus_tmp             ! Carrying capacity (in terms of age 1+) 
+        real(kind = 8), intent(in) :: initial_oneplus_tmp     ! Initial one plus for stock i        
+        real(kind = 8) :: scale_pop                           ! Scalar to map numbers per recruit to initial numbers at age
         real(kind = 8), intent(in) :: N_age_unscaled(0:age_x) ! Unscaled numbers at age in initial year. Note: age_x is global variable
-        real(kind = 8), intent(out) :: N_age_scaled(0:age_x) ! Unscaled numbers at age in initial year. Note: age_x is global variable              
+        real(kind = 8), intent(out) :: N_age_scaled(0:age_x)  ! Unscaled numbers at age in initial year. Note: age_x is global variable              
 !====== +++ === === +++ === === +++ ===                     
         scale_pop = b_sex_ratio * k_1plus_tmp / initial_oneplus_tmp ! Assume 50:50 birth rate (so same re-scaling factor used for each sex)  
         N_age_scaled = N_age_unscaled * scale_pop   ! This now in terms of females - so, just assign another vector equal to this one to initialize males
@@ -280,7 +289,7 @@ MODULE initialize_pop
 ! *    
 !###### +++ ### ### +++ ### ### +++ ###         
 !====== +++ === === +++ === === +++ === 
-! THIS FUNCTION IS CURRENTLY BROKEN    
+! THIS FUNCTION IS CURRENTLY BROKEN -- NOT GETTING SAME RESULTS AS LAPACK CALLS (ALSO TESTED IN R)   
 !    real(kind = 8) function characteristic_eq(lambda_tmp)
 !! Calculate the characteristic (polynomial) equation of the projection matrix
 !! This is an attempt at the algebraic solution to the det(A-lambda*I) = 0
