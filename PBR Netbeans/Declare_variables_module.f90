@@ -20,7 +20,8 @@ MODULE Declare_variables_module
     integer(kind = 4) :: n_sims         ! Number of simulated population projections
     integer(kind = 4) :: n_stocks       ! Number of stocks to model (at present, either 1 or 2 stocks) 
     integer(kind = 4) :: yr_max         ! Number of years to project over   
-    integer(kind = 4) :: surv_freq      ! Interval (yrs) between abundance surveys (first abundance survey in year 1)    
+    integer(kind = 4) :: surv_freq      ! Interval (yrs) between abundance surveys (first abundance survey in year 1) 
+! TODO ? : Look into making the vectors in this list allocatable    
     real(kind = 8) :: k_1plus(2)        ! Carrying capacity (in terms of the age 1+ component of the population)    
     real(kind = 8) :: cv_n              ! The coefficient of variation (CV) associated with sampling error in abundance estimates
     real(kind = 8) :: cv_mortality(2)   ! The CV associated with sampling error for human caused mortality of marine mammals
@@ -42,7 +43,13 @@ MODULE Declare_variables_module
     real(kind = 8) :: p_a2_s2           ! Percentage of stock_2 in subarea_2
     real(kind = 8) :: p_a3_s2           ! Percentage of stock_2 in subarea_3
     real(kind = 8) :: p_a4_s2           ! Percentage of stock_2 in subarea_4  
-    real(kind = 8) :: omega(3)          ! Relative vulnerability of animals by area (regardless of stock ID)
+    real(kind = 8) :: omega(1:4)          ! Relative vulnerability of animals by area (regardless of stock ID)
+    real(kind = 8) :: m_bias            ! Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
+    real(kind = 8) :: n_bias            ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
+    real(kind = 8) :: r_bias            ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
+    real(kind = 8) :: cv_n_true         ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
+    real(kind = 8) :: cv_m_true         ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5    
+    
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
     real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)  
