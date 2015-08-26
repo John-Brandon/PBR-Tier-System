@@ -5,21 +5,64 @@ module calcs
   implicit none
 ! *         
   contains
-! *  
-!====== +++ === === +++ === === +++ ===   
-!###### +++ ### ### +++ ### ### +++ ### 
-  subroutine allocate_pbr(N_tot_area123, kills)
-      real(kind = 8), intent(in) :: N_tot_area123(:, :, :)
-      real(kind = 8), intent(in) :: kills
-      
-      print *, "Hello from allocate_pbr()"
-!      print *, "pbr_yr_sim(0,0,0): ", pbr_yr_sim(0,0,0)
-      
-      return
-  end subroutine allocate_pbr
-!###### +++ ### ### +++ ### ### +++ ### 
-!====== +++ === === +++ === === +++ ===       
-! *  
+!====== +++ === === +++ === === +++ ===
+!* subroutine pop_projection(f_rate, b_rate, N_age_old, N_age_new) *    
+!====== +++ === === +++ === === +++ ===
+! Project population one year into the future, given human caused mortality (f_rate), selectivity pattern etc.            
+! Assumes access to some global variables, like selectivity patterns at age (via, e.g. "use Declare_variables_module"      
+! Presently assumes sex ratio at birth (b_sex_ratio) is 50:50, if this is not true, then need to modify this code       
+!
+!====== +++ === === +++ === === +++ ===
+!* gen_survey_estimate(true_abundance, cv) *
+!====== +++ === === +++ === === +++ ===
+! Given 'true' (operating model) abundance, generate a survey estimate of abundance, given survey sampling error (CV)
+! The sampling error of the survey is assumed to be log-normally distributed, and the true abundance is assumed
+!    to be equal to the expectation (mean) of that sampling error.      
+! This function will use a standard normal random deviate, and is based on Eqn 3 of Wade(1998, Mar Mamm Sci)    
+!  
+!====== +++ === === +++ === === +++ ===
+!* function calc_n_min(n_hat, cv, z_score) * 
+!====== +++ === === +++ === === +++ ===  
+! Function to calculate N_min, given (i) CV of abundance estimate (ii) N_best and (iii) standard normal z_score
+! Uses equation (4) of Wade(1998 Mar Mamm Sci)
+! Notes: 
+! N_best is the expectation (mean) of a log-normal distribution, not the median.  
+! CV is the coefficient of variation of the abundance estimate, gets transformed to the standard deviation in log-space
+! Positive values for z-score return lower tail the way that Eqn 4 of Wade (1998) is derived. 
+! For example, for the lower 2.5th percentile, z_score = 1.96 (not -1.96) 
+! If you're more familiar with R, this function is equivalent to:
+!  <- qlnorm(p = z_score, meanlog = log(n_best), sdlog = sqrt(log(1 + cv_n * cv_n)))  
+!  
+!====== +++ === === +++ === === +++ ===
+!* subroutine  weight_avg(n_yrs, N_hat, CV_N, N_avg, CV_avg) *
+!====== +++ === === +++ === === +++ ===
+! Calculate a weighted average abundance estimate. 
+! Average is weighted by the precision (inverse of the variance) of each estimate.
+! Methods follow NMFS (2005) pp. 12-13 
+!  NMFS. 2005. Revisions to Guidelines for Assessing Marine Mammal Stocks. 24 pp.
+!   Available at: http://www.nmfs.noaa.gov/pr/pdfs/sars/gamms2005.pdf  
+!  
+!====== +++ === === +++ === === +++ ===  
+!* calc_n_mean(cv, n_hat, cv_mean, n_mean)
+!====== +++ === === +++ === === +++ ===  
+! Function to calculate the CV of weighted average. 
+! This is similar to the `weight_avg()` subroutine, but differs in calculation of N_mean
+! The assumption here for N_mean follows from the approach taken by,
+!   Wade and DeMaster. 1999. Determining the optimum interval for abundance surveys
+! That assumption is that the CV's are equal for the simulated survey estimates,
+!   so they just used the arithmetic mean (N_mean) to plug into calculations of N_min
+! I think the geometric mean might be a closer approximation, given assumption of log-normality? -jbrandon
+!  
+!====== +++ === === +++ === === +++ === 
+!* subroutine calc_pbr(tier, pbr, n_hat, cv_n)   
+!====== +++ === === +++ === === +++ ===    
+! Calculate PBR based on data tier
+!  
+!====== +++ === === +++ === === +++ ===      
+!* function assign_surv_yrs_stock(yr_max, n_stocks, surv_freq) *
+!====== +++ === === +++ === === +++ ===      
+! Not used. Assigns vector with dummy variables indicating if year is a survey year.  
+!  
 !====== +++ === === +++ === === +++ ===   
 !###### +++ ### ### +++ ### ### +++ ###         
   subroutine pop_projection(f_rate, b_rate, N_age_old, N_age_new)
@@ -49,39 +92,6 @@ module calcs
         return
     end subroutine pop_projection   
 ! *    
-!====== +++ === === +++ === === +++ ===
-!###### +++ ### ### +++ ### ### +++ ###       
-!  function assign_surv_yrs_stock(yr_max, n_stocks, surv_freq)
-!!###### +++ ### ### +++ ### ### +++ ###           
-!!====== +++ === === +++ === === +++ ===         
-!! Given the interval between surveys for each stock (surv_freq(1:n_stocks), 
-!!  Assign a value of 1 to the is_surv_yr(0:yr_max, 1_n_stocks) matrix, if the year (row) is
-!!  a survey year for that stock (each stock can have different survey intervals), 
-!!  or a zero to that element otherwise. 
-!!====== +++ === === +++ === === +++ === 
-!  ! TODO DECLARE VARIABLES, MAKE SURE FUNCTION DECLARED AS RETURNING A MATRIX
-!    integer(kind = 4):: ii, yr ! Counters
-!    integer(kind = 4), intent(in) :: yr_max
-!    integer(kind = 4), intent(in) :: n_stocks  
-!    integer(kind = 4), intent(in) :: surv_freq(1:n_stocks)
-!    integer(kind = 4) :: assign_surv_yrs_stock(0:yr_max, 1:n_stocks)
-!    
-!    assign_surv_yrs_stock = 0       ! Set all elements in this matrix to zero
-!
-!    do ii = 1, n_stocks ! Debugging. Can move this test for survey year inside main loop -- or a function call
-!        assign_surv_yrs_stock(1, :) = 1 ! Year one is first survey year
-!        do yr = 2, yr_max
-!            assign_surv_yrs_stock(yr, ii) = mod(yr - 1, surv_freq(ii))   ! See if this is a survey year for this stock (subtract one from year because first survey defined to be in year one)
-!            if(assign_surv_yrs_stock(yr, ii) == 0) then
-!                assign_surv_yrs_stock(yr, ii) = 1
-!            else
-!                assign_surv_yrs_stock(yr, ii) = 0
-!            end if
-!        end do ! End loop over years
-!    end do     ! End loop over stocks
-!    return
-!  end function assign_surv_yrs_stock
-! *  
 !====== +++ === === +++ === === +++ === 
 !###### +++ ### ### +++ ### ### +++ ###       
   real(kind = 8) function gen_survey_estimate(true_abundance, cv)
@@ -266,5 +276,38 @@ module calcs
     return
   end subroutine calc_pbr
 ! *
+!====== +++ === === +++ === === +++ ===
+!###### +++ ### ### +++ ### ### +++ ###       
+!  function assign_surv_yrs_stock(yr_max, n_stocks, surv_freq)
+!!###### +++ ### ### +++ ### ### +++ ###           
+!!====== +++ === === +++ === === +++ ===         
+!! Given the interval between surveys for each stock (surv_freq(1:n_stocks), 
+!!  Assign a value of 1 to the is_surv_yr(0:yr_max, 1_n_stocks) matrix, if the year (row) is
+!!  a survey year for that stock (each stock can have different survey intervals), 
+!!  or a zero to that element otherwise. 
+!!====== +++ === === +++ === === +++ === 
+!  ! TODO DECLARE VARIABLES, MAKE SURE FUNCTION DECLARED AS RETURNING A MATRIX
+!    integer(kind = 4):: ii, yr ! Counters
+!    integer(kind = 4), intent(in) :: yr_max
+!    integer(kind = 4), intent(in) :: n_stocks  
+!    integer(kind = 4), intent(in) :: surv_freq(1:n_stocks)
+!    integer(kind = 4) :: assign_surv_yrs_stock(0:yr_max, 1:n_stocks)
+!    
+!    assign_surv_yrs_stock = 0       ! Set all elements in this matrix to zero
+!
+!    do ii = 1, n_stocks ! Debugging. Can move this test for survey year inside main loop -- or a function call
+!        assign_surv_yrs_stock(1, :) = 1 ! Year one is first survey year
+!        do yr = 2, yr_max
+!            assign_surv_yrs_stock(yr, ii) = mod(yr - 1, surv_freq(ii))   ! See if this is a survey year for this stock (subtract one from year because first survey defined to be in year one)
+!            if(assign_surv_yrs_stock(yr, ii) == 0) then
+!                assign_surv_yrs_stock(yr, ii) = 1
+!            else
+!                assign_surv_yrs_stock(yr, ii) = 0
+!            end if
+!        end do ! End loop over years
+!    end do     ! End loop over stocks
+!    return
+!  end function assign_surv_yrs_stock
+! *    
 end module calcs
 
