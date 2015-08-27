@@ -313,8 +313,12 @@ program main
     
     do yr = 1, yr_max     ! Years -- starting at year one, because year zero is in the books and pop has been initialized     
       do ii = 1, n_stocks ! Stocks            
-      
-        b_yr_stock(yr, ii) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, ii)**theta) ! Annual birth rate for each stock
+        
+        if (depl_yr_stock(yr - 1, ii) <= 0.d0) then
+          b_yr_stock(yr, ii) = 0.d0
+        else
+          b_yr_stock(yr, ii) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, ii)**theta) ! Annual birth rate for each stock
+        end if
         
         do jj = 1, n_area ! Areas    
           do ss = 1, 2    ! Sexes
@@ -326,7 +330,7 @@ program main
                       
 !            do aa = 0, age_x ! Ages (Don't think actually need to loop over ages, have just inserted ":" into array instead
 !! Anything needed inside a loop over ages?       
-              
+
 ! Redistribute each stock (by age) across areas              
             N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = & 
                 N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr, sim_ii) * area_stock_prop(jj, ii)
@@ -338,49 +342,40 @@ program main
                 sum(N_age_sex_area_stock_yr_sim(0:age_x, ss, jj, ii, yr, sim_ii)) 
                 
           end do ! End loop over sexes
-        end do ! End loop over areas    
-
-!* Moving the calculations below, to occur after mortality has been subtracted, i.e. do this accounting at end of year instead        
-! ######################################       
-!        N_plus_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, ii, yr, sim_ii)) ! by stock 
-!        N_tot_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, ii, yr, sim_ii)) 
-!! *
-!! TODO : Don't think need to do the summing below. replace numerator with N_plus(yr, ii, sim_ii) = stock size summed over areas
-!! *           
-!        if (ii == 1) then      
-!          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
-!        else if (ii == 2) then
-!!              depl_yr_stock(yr, 1) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, 1, yr, sim_ii)) / k_1plus(1) ! In terms of ages 1+ 
-!          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
-!        end if
-!        depl_yr_stock_sim(yr, ii, sim_ii) = depl_yr_stock(yr, ii) ! keep track of annual depletion by simulation
-! ######################################        
+        end do ! End loop over areas         
       end do     ! End loop over stocks 
-        
-!* 
-! TODO : Move these summations to the end of the year after mortality has been subtracted, at present these are occuring mid-year, which doesn't seem of interest
-!*
-      N_plus_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)) ! yr, stock, sim
-      N_tot_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))  ! add abundance across stocks, this is abundance available to survey 
 
       is_surv_yr(yr) = mod(yr - 1, surv_freq) ! mod() is intrinsic function for the remainder. If zero, it's a survey year
 !        
       if (is_surv_yr(yr) == 0) then ! If this is a survey year, calculate PBR
-        n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
-          sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
-! *
+        foo = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))
+        
+        if (foo > 0.d0) then
+          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
+            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
+! *     
 ! TODO make z_score a parameter (not hard coded)                     
 ! This is using the lower 20th percentile of the abundance estimate 
 ! *         
-        N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = 0.842d0)
-! *
+          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = 0.842d0)
+
+          ! *
 ! TODO: Make this more general for Tier System           
 ! This is using status quo approach to calculate PBR (calc_n_min) above 
 ! *         
 !      e.g. call calc_pbr(tier, pbr, n_hat, cv_n)          
-        pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1) 
+          pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1) 
+        
+        else 
+          n_hat_yr_sim(yr, sim_ii) = 0.d0
+          N_min_yr_sim(yr, sim_ii) = 0.d0
+          pbr_yr_sim(yr, sim_ii) = 0.d0
+        end if
+
       else 
+        
         pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr - 1, sim_ii) ! If not a survey year, set PBR equal to previous year
+        
       end if      
         
       sigma_pbr_yr_sim(yr, sim_ii) = cv_mortality(1) * pbr_yr_sim(yr, sim_ii) ! Transform CV for uncertainty in human caused mortality to SD
@@ -388,53 +383,46 @@ program main
 ! Generate normal random deviate with PBR as expectation of human caused mortality -- follows approach of Wade (1998) p.9 step 4       
       M_yr_sim(yr, sim_ii) = random_normal(mean = real(pbr_yr_sim(yr, sim_ii),  4), & ! Need to convert from 8 to 4 bytes w real() : TODO modify random_normal() to 8 byte
         sd = real(sigma_pbr_yr_sim(yr, sim_ii), 4)) 
-
-! *
-! DEBUGGING        
-! *                
-      print *, "Here it's yr: ", yr, "and sim: ", sim_ii  
-      print *, "M_yr_sim(yr, sim_ii)", M_yr_sim(yr, sim_ii)
-
-      if (M_yr_sim(yr, sim_ii) < 0.0d0) then ! If populations reach low numbers, negative mortality (i.e. zombies) possible. Alert user.
+        
+! If populations reach low numbers, negative mortality (i.e. zombies) possible. Alert user.
+      if (M_yr_sim(yr, sim_ii) < 0.0d0) then 
           print *, "Negative mortality!: ", "yr: ", yr, "sim_ii: ", sim_ii, "M_yr_sim(yr, sim_ii): ", M_yr_sim(yr, sim_ii)
           print *, "Resetting human cause mortality to zero."
           M_yr_sim(yr, sim_ii) = 0.0d0
       end if
+     
 ! *
 ! DEBUGGING        
 ! *        
-      if (sim_ii == 0) then      
-        if (flag == 0) then
-          if (n_stocks == 2) then
-            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1), &
-                   "depl_yr_stock(yr=0, 2):", depl_yr_stock(0, 2)
-          else
-            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1)
-          end if 
-          flag = 1
-        end if
+!      if (sim_ii == 0) then      
+!        if (flag == 0) then
+!          if (n_stocks == 2) then
+!            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1), &
+!                   "depl_yr_stock(yr=0, 2):", depl_yr_stock(0, 2)
+!          else
+!            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1)
+!          end if 
+!          flag = 1
+!        end if
         
-        if (n_stocks == 2) then
-          print *, "Year:", yr, &
-          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
-          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
-  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
-          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1), &
-          "depl_yr_stock(yr, 2):", depl_yr_stock(yr, 2)
-        else
-          print *, "Year:", yr, &
-          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
-          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
-  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
-          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1)         
-        end if
-      end if
+!        if (n_stocks == 2) then
+!          print *, "Year:", yr, &
+!          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
+!          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
+!  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
+!          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1), &
+!          "depl_yr_stock(yr, 2):", depl_yr_stock(yr, 2)
+!        else
+!          print *, "Year:", yr, &
+!          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
+!          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
+!  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
+!          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1)         
+!        end if
+!      end if
 !====== +++ === === +++ === === +++ ===          
 !---> Allocate spatial sex- and age-structure human caused mortality      
-!====== +++ === === +++ === === +++ ===  
-!** TODO **
-!  Need to do accounting for sim_ii == 0 as well. Presently reference simulation not handled. 
-!* Could use if/then code above     
+!====== +++ === === +++ === === +++ ===   
       if (sim_ii > 0) then        ! First simulation do not (calculate?) or subtract mortality
 !  These loops needed for the summation in the denominator of spatial mortality allocation equation
         M_scale_yr_sim(yr, sim_ii) = 0.d0 ! Should be initialized already, but just to be sure...
@@ -457,40 +445,26 @@ program main
 
 ! Make another pass to (i) calculate mortality by stock, area, sex and age classes; and (ii) subtract spatial mortality by age/sex class        
         do ii = 1, n_stocks ! Stocks 
-          print *,
           do jj = 1, n_area ! Areas    
             do ss = 1, 2    ! Sexes
-              print *,
-              print *, "Here it's yr: ", yr, "and sim: ", sim_ii, "and area: ", jj, "and stock: ", ii, &
-                "and sex: ", ss
-                
-              M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
-                M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) / M_scale_yr_sim(yr, sim_ii)
-                
-              if ((ii.eq.1 .and. (jj.eq.1 .or. jj.eq.2)) .or. (ii.eq.2 .and. (jj.eq.2 .or. jj.eq.3))) then  ! Checking
-                print *,   
-                print *, "M_yr_sim(yr, sim_ii)", M_yr_sim(yr, sim_ii)        
-                print *, "M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)", &
-                              M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)                 
-                print *, "M_scale_yr_sim(yr, sim_ii)", M_scale_yr_sim(yr, sim_ii)
-                             
-                print *, "sum(M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)", & 
-                  sum(M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii))
+!---> Prevent division by zero with extinction (else get NaN)               
+              if ( M_scale_yr_sim(yr, sim_ii) == 0.d0) then 
+                M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = 0.d0
+              else  
+                M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
+                  M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) / M_scale_yr_sim(yr, sim_ii)
+              end if  
 
-                print *,               
-                print *, "N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)", &
-                              N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) 
-                              
-                print *, "Subtracting spatial mortality-at -age and -sex"
-                
-! Subtract spatial mortality for this stock in this area by age and sex class 
+! Subtract spatial mortality for this stock in this area by age and sex class
                 N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
                   N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) - M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
-
+                
 ! Check for negative abundance at age                  
                 do aa = 0, age_x
-                  if (N_age_sex_area_stock_yr_sim(aa, ss, jj, ii, yr, sim_ii) <= 0.d0) then
+                  if (N_age_sex_area_stock_yr_sim(aa, ss, jj, ii, yr, sim_ii) < 0.d0) then
+                      
                     N_age_sex_area_stock_yr_sim(aa, ss, jj, ii, yr, sim_ii) = 0.d0
+
 ! *
 ! TODO: Allocate surplus mortality at age 
 ! *                    
@@ -498,32 +472,18 @@ program main
                     ! Reset abundance for this age-class to zero
                     ! Redistribute additional unaccounted for mortality to age-class that have positive abundance 
                     
-                  end if 
-                end do 
-                
-                print *, "N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)", &
-                              N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)                   
-                 
-              end if
-              
-            end do ! Sexes
-          end do   ! Areas
-        end do     ! Stocks
-        
-        print *, "#####################"
-        print *, "M_yr_sim(yr, sim_ii)", M_yr_sim(yr, sim_ii)        
-                
-        print *, "sum(M_age_sex_area_stock_yr_sim(:, :, :, :, yr, sim_ii)", & 
-                  sum(M_age_sex_area_stock_yr_sim(:, :, :, :, yr, sim_ii))
-        print *, "#####################"                  
-        
-      end if         ! Finished allocating human caused mortality for sim_ii > 0
-
-    ! Total numbers at age and sex for each stock (i.e. sum across areas and assign totals to 'area 0'        
+                  end if ! Finished check on negative abundance
+                end do   ! Ages
+            end do       ! Sexes
+          end do         ! Areas
+        end do           ! Stocks      
+      end if             ! Finished allocating kills for sim_ii > 0
+   
+! Total numbers at age and sex for each stock (i.e. sum across areas and assign totals to 'area 0'        
       do ii = 1, n_stocks    ! Stocks 
           do ss = 1, 2       ! Sexes
             do aa = 0, age_x ! Ages
-              if (ii == 1) then
+              if (ii == 1) then             
                 N_age_sex_area_stock_yr_sim(aa, ss, 0, ii, yr, sim_ii) = &
                   sum(N_age_sex_area_stock_yr_sim(aa, ss, 1:2, ii, yr, sim_ii))
 
@@ -545,13 +505,14 @@ program main
             end do ! Ages
           end do   ! Sexes
 
-! ###################################### This bit of code has been moved from above (from mid- to end-of-year) needs to be tested / verified                     
+! ###################################### This bit of code between ## has been moved from above (from mid- to end-of-year) needs to be tested / verified                     
         N_plus_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, ii, yr, sim_ii)) ! by stock 
         N_tot_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, ii, yr, sim_ii)) 
+        
 ! *
 ! TODO : Don't think need to do the summing below. replace numerator with N_plus(yr, ii, sim_ii) = stock size summed over areas
 ! *           
-        if (ii == 1) then      
+        if (ii == 1) then   
           depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
         else if (ii == 2) then
           depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
@@ -561,7 +522,7 @@ program main
         
       end do       ! Stocks
       N_plus_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)) ! yr, stock, sim
-      N_tot_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))  ! add abundance across stocks, this is abundance available to survey 
+      N_tot_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))  ! add abundance across stocks, this is abundance available to survey       
 ! ######################################             
       
     end do           ! End loop over years
@@ -570,19 +531,14 @@ program main
     
   end do          ! End loop over number of simulations
 !====== +++ === === +++ === === +++ ===    
-! DEBUGGING: Collapse main array as intermediate step towards subtracting human caused mortality
-  print *, "Finished main loop"
-
-  print *, "N_tot_sex_area_stock_yr_sim(female, 1:3, 1, 0, 0): ", N_tot_sex_area_stock_yr_sim(female, 1:3, 1, 0, 0)    
-  print *, "N_tot_sex_area_stock_yr_sim(male, 1:3, 1, 0, 0): ", N_tot_sex_area_stock_yr_sim(male, 1:3, 1, 0, 0)    
-  print *, 
-  print *, "pbr_yr_sim(yr = 1, sim_ii = 0): ", pbr_yr_sim(1, 0)
-!    Call allocate_pbr(N_tot_area123(yr, 1:3, sim_ii), pbr_yr_sim(yr, sim_ii))
-!====== +++ === === +++ === === +++ ===        
-! DEBUGGING REVISED OUTPUT FILE FOR AGGREGATED NUMBERS  
+  print *, "Finished simulations"
+  print *, "Writing output to files"
 !====== +++ === === +++ === === +++ ===          
+!---> Start writing output to files
+!====== +++ === === +++ === === +++ ===   
   open(unit = 5, file = "N_aggregated.out")
-  write(5, "(7(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", "depl_yr_stock"
+  write(5, "(9(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", "depl_yr_stock", &
+    "pbr_yr_sim", "M_yr_sim"
 20  format(3(i15), 3(f15.4)) !       
   do sim_ii = 0, n_sims
     do yr = 0, yr_max
@@ -591,26 +547,15 @@ program main
         write(5, 20, advance = 'no') sim_ii, yr, ii, N_tot_area123(yr, ii, sim_ii), &
           N_plus_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii) 
         
-        write(5, "(f15.4)") depl_yr_stock_sim(yr, ii, sim_ii) ! In terms of 1+ abundance
+        write(5, "(f15.4)", advance = 'no') depl_yr_stock_sim(yr, ii, sim_ii) ! In terms of 1+ abundance
+        
+        write(5, "(f15.4)", advance = 'no') pbr_yr_sim(yr, sim_ii) ! In terms of 1+ abundance
+        
+        write(5, "(f15.4)") M_yr_sim(yr, sim_ii) ! In terms of 1+ abundance
         
       end do
     end do
   end do
-  
-!====== +++ === === +++ === === +++ ===    
-! Writing results of age aggregated abundance arrays with totals across the survey areas (1,2 and 3) to output file 
-!====== +++ === === +++ === === +++ === TODO ??: Move this into a function in the File IO module       
-!  open(unit = 2, file = "N_aggregated.out")
-!  write(2, "(6(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr"
-!20  format(3(i15), 3(f15.4)) !       
-!  do sim_ii = 0, n_sims
-!    do yr = 0, yr_max
-!      do ii = 0, n_stocks
-!        write(2, 20) sim_ii, yr, ii, N_tot_area123(yr, ii, sim_ii), &
-!          N_plus_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii)   
-!      end do
-!    end do
-!  end do
 !====== +++ === === +++ === === +++ ===    
 ! Writing results of major array with spatial-temporal age structure to output file 
 ! Also writing results of summing over ages in major array (i.e. the slightly smaller array that is pertinent to PBR_calcs)    
