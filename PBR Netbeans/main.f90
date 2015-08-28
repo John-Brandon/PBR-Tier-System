@@ -41,7 +41,7 @@ program main
   use PBR_FileIO_Module              ! Reading initial values from files, and for writing output : PBR_FileIO_Module.f90
   use initialize_pop                 ! Initialization of life history and age structure : Initialize_pop_module.f90
   use calcs                          ! Routines for various calculations (e.g. calculating N_min) : PBRmodule.f
-  use random, only : random_normal   ! Routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : Random_module.f90
+  use random, only : random_normal, qnorm   ! Routines for psuedo random number generators (RNG) -- only using random_normal() function at this stage : Random_module.f90
   use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): Generate_random_numbers_module.f90
   use PBR_Errorcheck_module          ! Contains function 'error_check_input' to do error checking on input values [Beta]
   use eigen_module                   ! Contains calls to DGEEV for calculating the eigenvalues and eigenvectors of the projection matrix
@@ -103,7 +103,8 @@ program main
   
   real(kind = 8), allocatable :: foo_vector(:)           ! DEBUGGING  
   real(kind = 8) :: foo, foo1, foo2                      ! DEBUGGING    
-
+  real(kind = 8) :: norm_deviate
+  integer(kind = 4) :: ifault
 !---> Read initial values and do error checking
   call read_inits()              ! Read initial values from 'input.par' file. PBR_FileIO_Module contains subroutine 'read_inits()' 
   io_error = 0                   ! Check for input value errors (values out of bounds, etc) 
@@ -348,18 +349,21 @@ program main
       is_surv_yr(yr) = mod(yr - 1, surv_freq) ! mod() is intrinsic function for the remainder. If zero, it's a survey year
 !        
       if (is_surv_yr(yr) == 0) then ! If this is a survey year, calculate PBR
+! *
+! TODO: Rename this from "foo" to a more meaningful word
+! *               
         foo = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))
         
         if (foo > 0.d0) then
           n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
             sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
-! *     
-! TODO make z_score a parameter (not hard coded)                     
-! This is using the lower 20th percentile of the abundance estimate 
-! *         
-          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = 0.842d0)
 
-          ! *
+          Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)  ! Return normal variate given lower tail (e.g. 1.96
+          norm_deviate = ABS(norm_deviate) ! Use absolute value to be consistent with calc_n_min() method from Wade (1998)
+          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = norm_deviate)
+!          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = 0.842d0)
+
+! *
 ! TODO: Make this more general for Tier System           
 ! This is using status quo approach to calculate PBR (calc_n_min) above 
 ! *         
@@ -375,7 +379,7 @@ program main
       else 
         
         pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr - 1, sim_ii) ! If not a survey year, set PBR equal to previous year
-        
+
       end if      
         
       sigma_pbr_yr_sim(yr, sim_ii) = cv_mortality(1) * pbr_yr_sim(yr, sim_ii) ! Transform CV for uncertainty in human caused mortality to SD
@@ -590,7 +594,10 @@ program main
   !write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
   close(unit = 3) ! close output file
 
-    
+! Testing qnorm(): routine that returns normal deviate given percentile P
+  Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)
+  print *, "norm_deviate", norm_deviate 
+  
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
 ! OpenMP not available for earlier versions of gfortran (including gfortran 4.2)
     
