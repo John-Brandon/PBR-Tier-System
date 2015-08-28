@@ -107,6 +107,86 @@ INTEGER, PARAMETER :: dp = SELECTED_REAL_KIND(12, 60)
 
 CONTAINS
 
+SUBROUTINE qnorm (p, normal_dev, ifault)
+
+! ALGORITHM AS241  APPL. STATIST. (1988) VOL. 37, NO. 3, 477- 484.
+
+! Produces the normal deviate Z corresponding to a given lower tail area of P;
+! Z is accurate to about 1 part in 10**7.
+
+! The hash sums below are the sums of the mantissas of the coefficients.
+! They are included for use in checking transcription.
+
+! This ELF90-compatible version by Alan Miller - 20 August 1996
+! N.B. The original algorithm is as a function; this is a subroutine
+
+! This subroutine was originally name "ppnd7". Renamed to "qnorm" to match R function - John Brandon 
+!  Also changed variables to double precision to match type used in main program.  
+IMPLICIT NONE
+
+!INTEGER, PARAMETER      :: sp = SELECTED_REAL_KIND(6, 30)
+REAL (dp), INTENT(IN)   :: p
+INTEGER, INTENT(OUT)    :: ifault
+REAL (dp), INTENT(OUT)  :: normal_dev
+
+! Local variables
+
+REAL (dp) :: zero = 0.0, one = 1.0, half = 0.5, split1 = 0.425,  &
+             split2 = 5.0, const1 = 0.180625, const2 = 1.6, q, r
+
+! Coefficients for P close to 0.5
+
+REAL (dp) :: a0 = 3.3871327179E+00, a1 = 5.0434271938E+01, &
+                   a2 = 1.5929113202E+02, a3 = 5.9109374720E+01, &
+                   b1 = 1.7895169469E+01, b2 = 7.8757757664E+01, &
+                   b3 = 6.7187563600E+01
+! HASH SUM AB          32.3184577772
+
+! Coefficients for P not close to 0, 0.5 or 1.
+
+REAL (dp) :: c0 = 1.4234372777E+00, c1 = 2.7568153900E+00, &
+             c2 = 1.3067284816E+00, c3 = 1.7023821103E-01, &
+             d1 = 7.3700164250E-01, d2 = 1.2021132975E-01
+! HASH SUM CD    15.7614929821
+
+! Coefficients for P near 0 or 1.
+
+REAL (dp) :: e0 = 6.6579051150E+00, e1 = 3.0812263860E+00, &
+             e2 = 4.2868294337E-01, e3 = 1.7337203997E-02, &
+             f1 = 2.4197894225E-01, f2 = 1.2258202635E-02
+! HASH SUM EF    19.4052910204
+
+ifault = 0
+q = p - half
+IF (ABS(q) <= split1) THEN
+  r = const1 - q * q
+  normal_dev = q * (((a3 * r + a2) * r + a1) * r + a0) / &
+               (((b3 * r + b2) * r + b1) * r + one)
+  RETURN
+ELSE
+  IF (q < zero) THEN
+    r = p
+  ELSE
+    r = one - p
+  END IF
+  IF (r <= zero) THEN
+    ifault = 1
+    normal_dev = zero
+    RETURN
+  END IF
+  r = SQRT(-LOG(r))
+  IF (r <= split2) THEN
+    r = r - const2
+    normal_dev = (((c3 * r + c2) * r + c1) * r + c0) / ((d2 * r + d1) * r + one)
+  ELSE
+    r = r - split2
+    normal_dev = (((e3 * r + e2) * r + e1) * r + e0) / ((f2 * r + f1) * r + one)
+  END IF
+  IF (q < zero) normal_dev = - normal_dev
+  RETURN
+END IF
+END SUBROUTINE qnorm
+
   
 FUNCTION random_normal(mean, sd) RESULT(fn_val)
 ! JRB added optional arguments :: mean, sd
