@@ -564,39 +564,43 @@ program main
 ! Writing results of major array with spatial-temporal age structure to output file 
 ! Also writing results of summing over ages in major array (i.e. the slightly smaller array that is pertinent to PBR_calcs)    
 !====== +++ === === +++ === === +++ === TODO: Move this into a function in the File IO module       
-  open(unit = 3, file = "N_array.out")
-  open(unit = 4, file = "N_tot_sex_area_stock_yr_sim.out")    
-  write(3, "(13(a15))") "sim", "yr", "stock", "age", "sex", "all_areas", "area_1", "area_2", "area_3", "area_4", &
-      "N_plus_area123", "N_tot_area123", "n_hat_yr"  
-  write(4, "(8(a15))") "sim", "yr", "stock", "sex", "area1", "area2", "area3", "area4"
-30  format(5(i15), 5(f15.4)) ! 
-40  format(4(i15), 5(f15.4))
-  do sim_ii = 0, n_sims
-    do yr = 0, yr_max
-      do ii = 1, n_stocks
-        do ss = 1, 2
-          do aa = 0, age_x ! Note the implicit do loop over areas in next line -- and advance = 'no' for suppressing new line 
-
-            write(3, 30,  advance='no') sim_ii, yr, ii, aa, ss, (N_age_sex_area_stock_yr_sim( aa , ss, jj , ii, yr, sim_ii), &
-                  jj = 0, n_area)
-
-            write(3, "(3(f15.4))") N_plus_area123(yr, ii, sim_ii), N_tot_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii)
-
-            write(4, 40) sim_ii, yr, ii, ss, (N_age_sex_area_stock_yr_sim( aa , ss, jj , ii, yr, sim_ii), &
-                  jj = 1, n_area)
-!           write(4, "(5(f15.4))") (N_tot_sex_area_stock_yr_sim(ss, jj, ii, 0, sim_ii), jj = 1, n_area) 
-
-          end do  ! End ouput for this age
-        end do ! End ouput for this sex
-      end do ! End output this stock
-    end do ! End ouput for this year
-  end do ! End output for this simulation
-  !write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
-  close(unit = 3) ! close output file
+!  open(unit = 3, file = "N_array.out")
+!  open(unit = 4, file = "N_tot_sex_area_stock_yr_sim.out")    
+!  write(3, "(13(a15))") "sim", "yr", "stock", "age", "sex", "all_areas", "area_1", "area_2", "area_3", "area_4", &
+!      "N_plus_area123", "N_tot_area123", "n_hat_yr"  
+!  write(4, "(8(a15))") "sim", "yr", "stock", "sex", "area1", "area2", "area3", "area4"
+!30  format(5(i15), 5(f15.4)) ! 
+!40  format(4(i15), 5(f15.4))
+!  do sim_ii = 0, n_sims
+!    do yr = 0, yr_max
+!      do ii = 1, n_stocks
+!        do ss = 1, 2
+!          do aa = 0, age_x ! Note the implicit do loop over areas in next line -- and advance = 'no' for suppressing new line 
+!
+!            write(3, 30,  advance='no') sim_ii, yr, ii, aa, ss, (N_age_sex_area_stock_yr_sim( aa , ss, jj , ii, yr, sim_ii), &
+!                  jj = 0, n_area)
+!
+!            write(3, "(3(f15.4))") N_plus_area123(yr, ii, sim_ii), N_tot_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii)
+!
+!            write(4, 40) sim_ii, yr, ii, ss, (N_age_sex_area_stock_yr_sim( aa , ss, jj , ii, yr, sim_ii), &
+!                  jj = 1, n_area)
+!!           write(4, "(5(f15.4))") (N_tot_sex_area_stock_yr_sim(ss, jj, ii, 0, sim_ii), jj = 1, n_area) 
+!
+!          end do  ! End ouput for this age
+!        end do ! End ouput for this sex
+!      end do ! End output this stock
+!    end do ! End ouput for this year
+!  end do ! End output for this simulation
+!  !write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
+!  close(unit = 3) ! close output file
+!  close(unit = 4) 
 
 ! Testing qnorm(): routine that returns normal deviate given percentile P
   Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)
-  print *, "norm_deviate", norm_deviate 
+  print *, "norm_deviate", norm_deviate
+  
+  print *, "Trial REF: ", REF  ! Reference case 
+!  print *, "Test concatenation:"
   
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
 ! OpenMP not available for earlier versions of gfortran (including gfortran 4.2)
