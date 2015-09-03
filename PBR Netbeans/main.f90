@@ -102,7 +102,8 @@ program main
   integer(kind = 4) :: flag
   
   real(kind = 8), allocatable :: foo_vector(:)           ! DEBUGGING  
-  real(kind = 8) :: foo, foo1, foo2                      ! DEBUGGING    
+  real(kind = 8) :: foo, foo1, foo2                      ! DEBUGGING 
+  character*4 :: percentile
   real(kind = 8) :: norm_deviate
   integer(kind = 4) :: ifault
 !---> Read initial values and do error checking
@@ -183,12 +184,15 @@ program main
 ! Assign non-zero values to transition matrix    
   transition_matrix = assign_transition_matrix(a_m, a_t, age_x, fecundity_max, S_age, prop_mat_age) 
   print *,
-  print *, "Initial transition matrix: "  ! Check
+  print *, "Initial transition matrix (showing fecundity): "  ! Check
   do aa = 0, age_x        
       write (*, "(400f8.3)") (transition_matrix(aa, jj), jj = 0, age_x)    
 ! The 400f... is a bit of a hack. Works if <= 400 columns, age / stage classes to be printed 
   end do
 
+!---> Take into account any bias in assumed R_max value, e.g. this where set value for Wade's (1998) trial 3  
+  r_max = r_bias * r_max
+  
 !---> Test LAPACK procedure DGEEV for finding eigenvalues and eigenvectors of real nonsymetric matrix
   transition_matrix_tmp = transition_matrix ! Assign transition matrix to temp matrix, destroyed on return from eigen()
   print *, "Calling eigen() for initial transition matrix: "
@@ -205,16 +209,23 @@ program main
   Call assign_par_vectors(a_r, a_m, a_t, age_x, s_adult, s_juv, &  ! Slightly repetitious, but need to assign s_juv solution to vector
                           S_age, selectivity, prop_mat_age)        ! Currently these three vectors are identical for each stock   
 
-!---> Re-assign s_juv (etc) to transition matrix and output for checking
-  transition_matrix = assign_transition_matrix(a_m, a_t, age_x, b_max, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
-  print *, "New transition matrix: "
+!---> Re-assign s_juv (etc) to transition matrix and output for checking -- assigning fecundity_max instead of b_max
+  transition_matrix = assign_transition_matrix(a_m, a_t, age_x, b_max * 0.50d0, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
+  print *, "New transition matrix (showing fecundity): "
   do aa = 0, age_x ! Print the transition matrix with lambda_max = 1.04 (Check above) to the screen
       write (*, "(400f8.3)") (transition_matrix(aa, jj), jj = 0, age_x) ! The 400f format is a hack. Works if <= 400 columns to be printed
   end do
+  Call eigen(transition_matrix, (age_x + 1), lambda)
+  print *, "Solution for lambda: ", lambda
+  print *, "r_max true: ", r_max
   print *, ""
 
+!---> Reset R_max for PBR calculations below
+  r_max = r_max / r_bias
+  print *, "Reset assumed R_max: ", r_max
+  
 !---> Assign values to the matrix with percentage of each stock in each area 
-    area_stock_prop = assign_area_stock_prop(p_a1_s1, p_a2_s1, p_a2_s2, p_a3_s2, p_a4_s2) 
+  area_stock_prop = assign_area_stock_prop(p_a1_s1, p_a2_s1, p_a2_s2, p_a3_s2, p_a4_s2) 
     
 !---> Calculate Numbers per female recruit, with no human caused mortality (f_init = 0.0)
   Call calc_NPR_age(f_rate = 0.0d0, &                        ! d0 suffix for double precision to match argument type in function                                             
@@ -224,7 +235,7 @@ program main
   print *, "NPR_age :", NPR_age
 
 !---> Calculate equilibrium birth rate (at carrying capacity)
-    b_eq = 1 / NPR_mature               ! Equilibrium birth rate. Equal for both stocks under assumption of identical life histories                
+  b_eq = 1 / NPR_mature               ! Equilibrium birth rate. Equal for both stocks under assumption of identical life histories                
     
 !---> Calculate the initial age structure and distribute across areas for each stock         
   do ii = 1, n_stocks                 ! Initial age structures for each stock can differ, e.g. initial depletion may not be equal
@@ -352,16 +363,31 @@ program main
 ! *
 ! TODO: Rename this from "foo" to a more meaningful word
 ! *               
-        foo = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))
+!        foo = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))
         
-        if (foo > 0.d0) then
-          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
-            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
+        if (sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)) > 0.d0) then
+          
+!          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
+!            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
 
+! Note cv = cv_n_true, and cv_true not necessarily equal to cv_n (the latter is "the estimate" used to calculate N_min)          
+          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
+            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n_true) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)  
+
+! Account for potential bias in abundance estimates. 
+! If n_bias = 1.0, then abundance estimates are unbiased. n_bias > 1.0 for scenario(s) where abundance estimates positively biased. 
+          n_hat_yr_sim(yr, sim_ii) = n_bias * n_hat_yr_sim(yr, sim_ii) ! n_bias specified in input.par file.            
+          
           Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)  ! Return normal variate given lower tail (e.g. 1.96
+          
+          if (ifault .ne. 0) then ! Check to make sure call to qnorm returns without error
+            print *, "ERROR from `qnorm()` during simulation: ", sim_ii, " and year: ", yr
+            stop  ! Stop program execution
+          end if
+          
           norm_deviate = ABS(norm_deviate) ! Use absolute value to be consistent with calc_n_min() method from Wade (1998)
+          
           N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = norm_deviate)
-!          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = 0.842d0)
 
 ! *
 ! TODO: Make this more general for Tier System           
@@ -369,7 +395,10 @@ program main
 ! *         
 !      e.g. call calc_pbr(tier, pbr, n_hat, cv_n)          
           pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1) 
-        
+!          print *, "pbr_yr_sim: ", pbr_yr_sim(yr, sim_ii)
+!          pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr, sim_ii) / r_bias 
+!          print *, "pbr_yr_sim / r_bias: ", pbr_yr_sim(yr, sim_ii)
+          
         else 
           n_hat_yr_sim(yr, sim_ii) = 0.d0
           N_min_yr_sim(yr, sim_ii) = 0.d0
@@ -387,7 +416,11 @@ program main
 ! Generate normal random deviate with PBR as expectation of human caused mortality -- follows approach of Wade (1998) p.9 step 4       
       M_yr_sim(yr, sim_ii) = random_normal(mean = real(pbr_yr_sim(yr, sim_ii),  4), & ! Need to convert from 8 to 4 bytes w real() : TODO modify random_normal() to 8 byte
         sd = real(sigma_pbr_yr_sim(yr, sim_ii), 4)) 
-        
+! Account for potential bias in mortality estimates. 
+! If m_bias = 1.0, then mortality estimates are unbiased. 
+! If m_bias > 1.0 then scenario(s) where mortality estimates negatively biased, e.g. actual mortality is twice PBR.       
+      M_yr_sim(yr, sim_ii) = m_bias * M_yr_sim(yr, sim_ii)
+      
 ! If populations reach low numbers, negative mortality (i.e. zombies) possible. Alert user.
       if (M_yr_sim(yr, sim_ii) < 0.0d0) then 
           print *, "Negative mortality!: ", "yr: ", yr, "sim_ii: ", sim_ii, "M_yr_sim(yr, sim_ii): ", M_yr_sim(yr, sim_ii)
@@ -540,10 +573,14 @@ program main
 !====== +++ === === +++ === === +++ ===          
 !---> Start writing output to files
 !====== +++ === === +++ === === +++ ===   
-  open(unit = 5, file = "N_aggregated.out")
+  write(percentile, '(f4.3)') lower_tail ! transfer from type real to type character 
+  print *, "percentile: ", percentile    ! check
+  
+!  open(unit = 5, file = "N_aggregated" // percentile // ".out")
+  open(unit = 5, file = "N_aggregated.out")  
   write(5, "(9(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", "depl_yr_stock", &
     "pbr_yr_sim", "M_yr_sim"
-20  format(3(i15), 3(f15.4)) !       
+20  format(3(i15), 3(f15.4)) !
   do sim_ii = 0, n_sims
     do yr = 0, yr_max
       do ii = 0, n_stocks
@@ -599,7 +636,17 @@ program main
   Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)
   print *, "norm_deviate", norm_deviate
   
+  Call qnorm(p = 0.10d0, normal_dev = norm_deviate, ifault = ifault)
+  print *, "norm_deviate; p = 0.10d0: ", norm_deviate
+  print *, "N_min; p = 0.10d0: ", calc_n_min(n_hat = 100.d0, cv = cv_n, z_score = norm_deviate)
+  
+  Call qnorm(p = 0.15d0, normal_dev = norm_deviate, ifault = ifault)
+  print *, "norm_deviate; p = 0.15d0: ", norm_deviate
+  print *, "N_min; p = 0.15d0: ", calc_n_min(n_hat = 100.d0, cv = cv_n, z_score = norm_deviate)
+  
+  
   print *, "Trial REF: ", REF  ! Reference case 
+  print *, "cv_n_true: ", cv_n_true
 !  print *, "Test concatenation:"
   
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
