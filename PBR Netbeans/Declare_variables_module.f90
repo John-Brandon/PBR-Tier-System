@@ -48,7 +48,8 @@ MODULE Declare_variables_module
     real(kind = 8) :: n_bias            ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
     real(kind = 8) :: r_bias            ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
     real(kind = 8) :: cv_n_true         ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-    real(kind = 8) :: cv_m_true         ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5    
+!    real(kind = 8) :: cv_m_true         ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5    
+    integer(kind = 4) :: tier           ! Data tier
     
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
