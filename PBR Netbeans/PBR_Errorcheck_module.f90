@@ -56,6 +56,13 @@ MODULE PBR_Errorcheck_module
             print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
+        if (tier < 0 .or. tier > 3) then
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print *, "ERROR : Condition (0 < tier < 3) not met. Check input file."
+            error_check_input = -6            
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        end if
+        
         return
     end function error_check_input
 
