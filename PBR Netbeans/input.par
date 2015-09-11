@@ -1,4 +1,4 @@
-MANAGEMENT PARAMETERS         CASE  Cet_0B
+MANAGEMENT PARAMETERS         CASE  Cet_0A
 Base Case: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 
 # Input parameters for PBR Tier system simulations
@@ -10,7 +10,7 @@ yr_max          100     # Number of years to project over
 surv_freq       4       # interval (yrs) between abundance surveys : Wade (1998) trial 6
 k_1plus(1)      10000   # Carrying capacity for stock i = 1
 k_1plus(2)      10000   # Carrying capacity for stock i = 2
-cv_n            0.80    # CV(N_stock 1) , will be transformed to the standard deviation in log-space
+cv_n            0.20    # CV(N_stock 1) , will be transformed to the standard deviation in log-space
 cv_mortality(1) 0.30    # Variability in mortality for stock 1, used to generate random normal deviate with mean = PBR
 cv_mortality(2) 0.30    # Variability in mortality for stock 2, used to generate random normal deviate with mean = PBR
 theta           1.0     # Density dependence shape parameter
@@ -19,8 +19,8 @@ F_r(1)          1.0     # Base case recovery factor for stock 1
 F_r(2)          1.0     # Base case recovery factor for stock 2
 init_depl(1)    0.3     # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
 init_depl(2)    0.3     # Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-lower_tail      0.15    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
-b_max           0.3     # Maximum birth rate (in the absence of density dependence)
+lower_tail      0.2     # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
+b_max           0.5     # Maximum birth rate (in the absence of density dependence)
 b_sex_ratio     0.50    # Sex ratio at birth
 S_adult         0.98    # Adult (mature) survival rate
 S_juv           0.75    # Juvenile (immature) survival rate
@@ -38,8 +38,8 @@ omega_2         1.0     # Relative vulnerability of animals in area 2 (independe
 omega_3         1.0     # Relative vulnerability of animals in area 3 (independent of stock ID)
 omega_4         0.0     # Relative vulnerability of animals in area 4 (independent of stock ID)
 m_bias          1.0     # Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
-n_bias          1.0     # Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
+n_bias          1.0     # Bias in abundance estimates (1.0 = no bias; > 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
 r_bias          1.0     # Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
 cv_n_true       0.2     # Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-cv_m_true       0.3     # True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5
+tier            1       # True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5
 
