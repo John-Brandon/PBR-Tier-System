@@ -41,5 +41,5 @@ m_bias          1.0     # Bias in mortality estimates (1.0 = no bias; > 1.0 = es
 n_bias          1.0     # Bias in abundance estimates (1.0 = no bias; > 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
 r_bias          1.0     # Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
 cv_n_true       0.2     # Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-tier            1       # True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5
+tier            1       # Data tier
 
