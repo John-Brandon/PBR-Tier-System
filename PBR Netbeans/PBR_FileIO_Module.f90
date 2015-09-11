@@ -76,7 +76,7 @@ module PBR_FileIO_Module
        read (input_file, 802) n_bias            ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
        read (input_file, 802) r_bias            ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
        read (input_file, 802) cv_n_true         ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-       read (input_file, 802) cv_m_true         ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5           
+       read (input_file, 801) tier              ! Data tier
 ! Output to screen for checking
        write(*,*) "cseed: ", cseed ! DEBUGGING
        write(*,*) "iseed: ", iseed ! DEBUGGING
@@ -109,11 +109,11 @@ module PBR_FileIO_Module
        write(*,*) "omega(2)", omega(2)
        write(*,*) "omega(3)", omega(3)
        write(*,*) "omega(4)", omega(4)
-       write(*,*) "m_bias", m_bias            ! Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
-       write(*,*) "n_bias", n_bias            ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
-       write(*,*) "r_bias", r_bias            ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
-       write(*,*) "cv_n_true", cv_n_true      ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-       write(*,*) "cv_m_true", cv_m_true      ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5                  
+       write(*,*) "m_bias", m_bias       ! Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
+       write(*,*) "n_bias", n_bias       ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
+       write(*,*) "r_bias", r_bias       ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
+       write(*,*) "cv_n_true", cv_n_true ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
+       write(*,*) "tier", tier           ! Data tier
        
        close(input_file)
        
