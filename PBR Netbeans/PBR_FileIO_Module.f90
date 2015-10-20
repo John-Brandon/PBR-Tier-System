@@ -77,43 +77,53 @@ module PBR_FileIO_Module
        read (input_file, 802) r_bias            ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
        read (input_file, 802) cv_n_true         ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
        read (input_file, 801) tier              ! Data tier
+       read (input_file, 801) n_yrs_avg         ! Window of years to average across
+       read (input_file, 804) determ_pbr
+       read (input_file, 802) prop_catch_fem    ! Proportion of catch that is female
+       read (input_file, 802) F_rate ! Constant fishing mortality rate (DEBUGGING)
+       read (input_file, 804) dd_component
 ! Output to screen for checking
        write(*,*) "cseed: ", cseed ! DEBUGGING
        write(*,*) "iseed: ", iseed ! DEBUGGING
-       write(*,*) "n_sims", n_sims
-       write(*,*) "n_stocks", n_stocks
-       write(*,*) "YR_MAX", YR_MAX
-       write(*,*) "SURV_FREQ", surv_freq
-       write(*,*) "k_1plus(1)", k_1plus(1)
-       write(*,*) "k_1plus(2)", k_1plus(2)       
-       write(*,*) "CV_N", CV_N
-       write(*,*) "CV_MORTALITY", CV_MORTALITY
-       write(*,*) "THETA", THETA
-       write(*,*) "R_MAX", R_MAX
-       write(*,*) "F_R", F_R
-       write(*,*) "INIT_DEPL", INIT_DEPL
-       write(*,*) "LOWER_TAIL", LOWER_TAIL
-       write(*,*) "b_max", b_max
-       write(*,*) "S_adult", S_adult
-       write(*,*) "S_juv", S_juv       
-       write(*,*) "a_t", a_t
-       write(*,*) "a_m", a_m
-       write(*,*) "age_x", age_x
-       write(*,*) "a_r", a_r        
-       write(*,*) "p_a1_s1", p_a1_s1               
-       write(*,*) "p_a2_s1", p_a2_s1               
-       write(*,*) "p_a2_s2", p_a2_s2               
-       write(*,*) "p_a3_s2", p_a3_s2               
-       write(*,*) "p_a4_s2", p_a4_s2                                    
-       write(*,*) "omega(1)", omega(1)
-       write(*,*) "omega(2)", omega(2)
-       write(*,*) "omega(3)", omega(3)
-       write(*,*) "omega(4)", omega(4)
-       write(*,*) "m_bias", m_bias       ! Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
-       write(*,*) "n_bias", n_bias       ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
-       write(*,*) "r_bias", r_bias       ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
-       write(*,*) "cv_n_true", cv_n_true ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
-       write(*,*) "tier", tier           ! Data tier
+       write(*,*) "n_sims: ", n_sims
+       write(*,*) "n_stocks: ", n_stocks
+       write(*,*) "YR_MAX: ", YR_MAX
+       write(*,*) "SURV_FREQ: ", surv_freq
+       write(*,*) "k_1plus(1): ", k_1plus(1)
+       write(*,*) "k_1plus(2): ", k_1plus(2)       
+       write(*,*) "CV_N: ", CV_N
+       write(*,*) "CV_MORTALITY: ", CV_MORTALITY
+       write(*,*) "THETA: ", THETA
+       write(*,*) "R_MAX: ", R_MAX
+       write(*,*) "F_R: ", F_R
+       write(*,*) "INIT_DEPL: ", INIT_DEPL
+       write(*,*) "LOWER_TAIL: ", LOWER_TAIL
+       write(*,*) "b_max: ", b_max
+       write(*,*) "S_adult: ", S_adult
+       write(*,*) "S_juv: ", S_juv       
+       write(*,*) "a_t: ", a_t
+       write(*,*) "a_m: ", a_m
+       write(*,*) "age_x: ", age_x
+       write(*,*) "a_r: ", a_r        
+       write(*,*) "p_a1_s1: ", p_a1_s1               
+       write(*,*) "p_a2_s1: ", p_a2_s1               
+       write(*,*) "p_a2_s2: ", p_a2_s2               
+       write(*,*) "p_a3_s2: ", p_a3_s2               
+       write(*,*) "p_a4_s2: ", p_a4_s2                                    
+       write(*,*) "omega(1): ", omega(1)
+       write(*,*) "omega(2): ", omega(2)
+       write(*,*) "omega(3): ", omega(3)
+       write(*,*) "omega(4): ", omega(4)
+       write(*,*) "m_bias: ", m_bias       ! Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
+       write(*,*) "n_bias: ", n_bias       ! Bias in abundance estimates (1.0 = no bias; < 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
+       write(*,*) "r_bias: ", r_bias       ! Bias in R_max (1.0 = no bias; < 1.0 = true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
+       write(*,*) "cv_n_true: ", cv_n_true ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
+       write(*,*) "tier: ", tier           ! Data tier
+       write(*,*) "n_yrs_avg: ", n_yrs_avg
+       write(*,*) "determ_pbr: ", determ_pbr
+       write(*,*) "prop_catch_fem: ", prop_catch_fem
+       write(*,*) "F_rate: ", F_rate
+       write(*,*) "dd_component: ", dd_component
        
        close(input_file)
        
