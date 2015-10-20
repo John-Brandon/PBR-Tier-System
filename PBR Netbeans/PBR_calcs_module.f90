@@ -249,7 +249,7 @@ module calcs
 ! this tier is for an index of abundance (not absolute abundance) ------------------------    
       case (1)    
 ! *         
-! TODO         
+! TODO fit linear regression to logarithm of abundance estimates        
 ! *                
 
 ! 
@@ -369,6 +369,21 @@ module calcs
     return
   end subroutine calc_n_hat
 
+! ----------------------------------------------------------------------------------------
+  subroutine linear_regression(x, y, a, b)
+! ----------------------------------------------------------------------------------------
+! Fit a simple univariate linear regression: y_hat = a + (b * x) + epsilon
+! x and y are input vectors
+! a = y-intercept
+! b = slope
+! ----------------------------------------------------------------------------------------  
+    real(kind = 8), intent(in) :: x(:)
+    real(kind = 8), intent(in) :: y(:)
+    real(kind = 8), intent(out) :: a
+    real(kind = 8), intent(out) :: b
+    
+    
+  end subroutine linear_regression
 ! ----------------------------------------------------------------------------------------
   subroutine avg_N(n_hat, cv_n, n_avg, cv_avg)
 ! ----------------------------------------------------------------------------------------
