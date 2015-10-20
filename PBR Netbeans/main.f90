@@ -66,6 +66,7 @@ program main
   real(kind = 8), allocatable :: b_yr_stock_sim(:,:,:)      ! Birth rate each year by stock and simulation
   real(kind = 8), allocatable :: depl_yr_stock_sim(:,:,:)   ! Depletion each year (rows) by stock (columns)
   real(kind = 8), allocatable :: depl_yr_stock(:,:)
+  real(kind = 8), allocatable :: sorted_final_depl(:)
   real(kind = 8), allocatable :: transition_matrix_tmp(:, :) ! Tmp matrix to pass to eigen function (is changed by eigen on return)
   real(kind = 8), allocatable :: movement_matrix(:, :, :) ! rows = ages; cols = areas & stock. Values = proportion of stock in each area
 
@@ -77,10 +78,12 @@ program main
 !  real(kind = 8), allocatable :: eigv(:)                 ! Eigen vector of transition matrix (not currently used)
   integer(kind = 4), allocatable :: is_surv_yr( : )      ! Matrix containing 1s if element is survey year, zeros otherwise
   real(kind = 8), allocatable :: n_hat_yr_sim(:, :)      ! Estimate of abundance each year
+  real(kind = 8), allocatable :: n_tier_yr_sim(:,:)      ! Estimate of abundance based on tier approach
   real(kind = 8), allocatable :: N_plus_area123(:, :, :) ! Total age 1+ abundance in the survey area, by stock and simulation.  
   real(kind = 8), allocatable :: N_tot_area123(:, :, :)  ! Total (age 0+) abundance in the survey area, by stock and simulation.
   real(kind = 8), allocatable :: N_plus_yr_stock_sim(:, :, :) ! Total age 1+ abundance by yr, stock, and simulation across all areas.  
   real(kind = 8), allocatable :: N_tot_yr_stock_sim(:, :, :) ! Total (age 0+) abundance by yr, stock, and simulation across all areas.  
+  real(kind = 8), allocatable :: N_mature_yr_stock_sim(:, :, :)
   
 ! Variables associated with human caused mortality   
   real(kind = 8), allocatable :: pbr_yr_sim(:, :)        ! PBR by year and simulation
@@ -91,7 +94,11 @@ program main
   real(kind = 8), allocatable :: omega_yr_area(:,:)      ! Relative vulnerability of animals in area j to human caused mortality each yr
   real(kind = 8), allocatable :: selectivity_norm(:)     ! Standardized selectivity at age: selectivity(age) / sum(selectivity(age))
 
+  real(kind = 8) :: cv_n_tier_out                        ! CV of N_hat returned from tier system calculations (e.g. weighted average)
   real(kind = 8) :: NPR_mature                           ! Numbers mature per female recruit. Used to calculate b_eq (birth rate at K)
+  real(kind = 8) :: NPR_0_F                              ! Recruits (age 0) as function of F {Left side: Eqn 16 Punt 1999}
+  real(kind = 8) :: NPR_sum_recd                         ! Total number of recruited animals per recruit
+  real(kind = 8) :: NPR_sum_unrecd                       ! Total number of unrecruited animals per recruit
   real(kind = 8) :: objf_lambda                          ! Objective function for finding juvenile survival that results in R_max
   real(kind = 8) :: objf_f_init                          ! Objective function for finding f_init resulting in stable age structure
   real(kind = 8) :: brent                                ! Function brent() :: file = Brent.f90 
@@ -99,12 +106,16 @@ program main
   integer(kind = 4) :: io_error                          ! Error flag for checking initial values in input.par
   integer(kind = 4) :: sim_ii, ii, jj, aa, ss, yr        ! Counters for indexing loops  
   integer(kind = 4) :: stock_ii
+  integer(kind = 4) :: lower_ii, upper_ii                ! index for 5th and 95th percentiles (elements of vector)
   integer(kind = 4) :: flag
   
   real(kind = 8), allocatable :: foo_vector(:)           ! DEBUGGING  
   real(kind = 8) :: foo, foo1, foo2                      ! DEBUGGING 
+  real(kind = 8) :: test_sort(1:100) 
+  
   character*4 :: percentile
   real(kind = 8) :: norm_deviate
+  real(kind = 8) :: lower_depl, median_depl, upper_depl
   integer(kind = 4) :: ifault
 !---> Read initial values and do error checking
   call read_inits()              ! Read initial values from 'input.par' file. PBR_FileIO_Module contains subroutine 'read_inits()' 
@@ -122,6 +133,7 @@ program main
   allocate(b_yr_stock_sim(0:yr_max, 1:n_stocks, 1:n_sims))
   allocate(depl_yr_stock_sim(0:yr_max, 0:n_stocks, 0:n_sims)) ! Depletion each year (rows) by stock (columns)
   allocate(depl_yr_stock(0:yr_max, 0:n_stocks))
+  allocate(sorted_final_depl(1:n_sims))
   allocate(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 0:4, 1:n_stocks, 0:yr_max, 0:n_sims)) ! Main pop array, sim = 0 is reference case with no mortality    
   allocate(N_tot_sex_area_stock_yr_sim(1:2, 1:n_area, 1:n_stocks, 0:yr_max, 0:n_sims)) ! 
   allocate(area_stock_prop(1:4, 1:n_stocks))   ! TODO: Hard-coded four areas here - TODO: soft-code
@@ -132,6 +144,8 @@ program main
   allocate(N_tot_area123(0:yr_max, 0:n_stocks, 0:n_sims))  ! Total (age 0+) abundance in the survey area, by stock and simulation. Stock = 0 will hold the sum of both stocks.   
   allocate(N_plus_yr_stock_sim(0:yr_max, 0:n_stocks, 0:n_sims))
   allocate(N_tot_yr_stock_sim(0:yr_max, 0:n_stocks, 0:n_sims))
+  allocate(N_mature_yr_stock_sim(0:yr_max, 0:n_stocks, 0:n_sims))
+  
   allocate(pbr_yr_sim(0:yr_max, 0:n_sims))       ! PBR each year for each simulation
   allocate(M_yr_sim(0:yr_max, 0:n_sims))         ! Realized human caused mortality each year ~N(mu = PBR, sigma = CV_mortality * PBR)
   allocate(M_age_sex_area_stock_yr_sim(0:age_x, 1:2, 0:4, 1:n_stocks, 0:yr_max, 0:n_sims)) ! Mortality array 
@@ -142,6 +156,7 @@ program main
 !  allocate(eigv(0:age_x))                       ! Eigen vector of transition matrix, not currently used
   allocate(is_surv_yr(0:yr_max))                 ! Matrix containing 1s if element is survey year, zeros otherwise 
   allocate(n_hat_yr_sim(0:yr_max, 0:n_sims))     ! Abundance estimates
+  allocate(n_tier_yr_sim(0:yr_max, 0:n_sims))! 
   allocate(N_min_yr_sim(0:yr_max, 0:n_sims))
 
   allocate(S_age(0:age_x))       ! Survival at age vector
@@ -178,9 +193,8 @@ program main
                           S_age, selectivity, prop_mat_age) ! Currently these three vectors are identical for each stock  
 
 !---> Solve for juvenile survival rate that results in specified r_max
-  transition_matrix(:,:) = 0.0d0        ! Need to initialize this matrix to zero, because evidently, if we don't, LAPACK(?) is not nice.
-! Specifically, I (JRB) had horrible buggy trouble with Mac OS X's 'accelerate' framework (LAPACK library call to function DGEEV).    
-  fecundity_max = b_max * b_sex_ratio  ! Define fecundity in terms of female calves per female for eigen analysis of matrix
+  transition_matrix(:,:) = 0.0d0        ! Need to initialize this matrix to zero, because evidently, if we don't, LAPACK is not nice.
+  fecundity_max = b_max * b_sex_ratio   ! Define fecundity in terms of female calves per female for eigen analysis of matrix
 ! Assign non-zero values to transition matrix    
   transition_matrix = assign_transition_matrix(a_m, a_t, age_x, fecundity_max, S_age, prop_mat_age) 
   print *,
@@ -210,35 +224,72 @@ program main
                           S_age, selectivity, prop_mat_age)        ! Currently these three vectors are identical for each stock   
 
 !---> Re-assign s_juv (etc) to transition matrix and output for checking -- assigning fecundity_max instead of b_max
-  transition_matrix = assign_transition_matrix(a_m, a_t, age_x, b_max * 0.50d0, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
-  print *, "New transition matrix (showing fecundity): "
+  transition_matrix = assign_transition_matrix(a_m, a_t, age_x, b_max * b_sex_ratio, S_age, prop_mat_age) ! Assign non-zero values to transition matrix
+  print *, "New transition matrix (showing max fecundity): "
   do aa = 0, age_x ! Print the transition matrix with lambda_max = 1.04 (Check above) to the screen
       write (*, "(400f8.3)") (transition_matrix(aa, jj), jj = 0, age_x) ! The 400f format is a hack. Works if <= 400 columns to be printed
   end do
   Call eigen(transition_matrix, (age_x + 1), lambda)
   print *, "Solution for lambda: ", lambda
-  print *, "r_max true: ", r_max
+  print *, "r_max true: ", r_max ! Check
   print *, ""
 
 !---> Reset R_max for PBR calculations below
   r_max = r_max / r_bias
   print *, "Reset assumed R_max: ", r_max
-  
+
+! Return normal variate given lower tail (e.g. 1.96 for the 2.5%-tile) used when calculating N_min
+  Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault) 
+          
+  if (ifault .ne. 0) then ! Check to make sure call to qnorm returns without error
+    print *, "ERROR from `qnorm()` during simulation: ", sim_ii, " and year: ", yr
+    stop  ! Stop program execution
+  end if
+
+! Use absolute value to be consistent with calc_n_min() method from Wade (1998) Eqn 4.          
+  norm_deviate = ABS(norm_deviate) 
+          
 !---> Assign values to the matrix with percentage of each stock in each area 
   area_stock_prop = assign_area_stock_prop(p_a1_s1, p_a2_s1, p_a2_s2, p_a3_s2, p_a4_s2) 
     
 !---> Calculate Numbers per female recruit, with no human caused mortality (f_init = 0.0)
   Call calc_NPR_age(f_rate = 0.0d0, &                        ! d0 suffix for double precision to match argument type in function                                             
       N_recruits = b_sex_ratio, N_age_tmp = NPR_age, &       ! Calc NPR_age, NPR_oneplus and NPR_mature (F = 0)
-      sum_1plus = NPR_oneplus, sum_mature = NPR_mature) 
-  print *, "Finished calling, calc_NPR_age(): " 
-  print *, "NPR_age :", NPR_age
+      sum_1plus = NPR_oneplus, sum_mature = NPR_mature, NPR_sum_recd = NPR_sum_recd, NPR_sum_unrecd = NPR_sum_unrecd) 
+  print *, "Finished calling, calc_NPR_age(f_rate = 0.0): " 
+  print *, "NPR_age (just females):" 
+  print *, NPR_age
+  print *, "NPR_age (females & males):"
+  print *, NPR_age * 2.d0
 
-!---> Calculate equilibrium birth rate (at carrying capacity)
+! *  
+! DEBUGGING - Comparing with Andre's `Yield Function.R` script - but this resets NPR_mature and hence b_eq incorrectly   
+!  print *, ""
+!  Call calc_NPR_age(f_rate = 0.01d0, &           ! d0 suffix for double precision to match argument type in function                                             
+!      N_recruits = b_sex_ratio, N_age_tmp = NPR_age, & ! Calc NPR_age, NPR_oneplus and NPR_mature (F = 0)
+!      sum_1plus = NPR_oneplus, sum_mature = NPR_mature, NPR_sum_recd = NPR_sum_recd, NPR_sum_unrecd = NPR_sum_unrecd) 
+!  print *, "Finished call #2, calc_NPR_age(f_rate = 0.0): " 
+!  print *, "NPR_age (just females):" 
+!  print *, NPR_age
+!  print *, "NPR_age (females & males):"
+!  print *, NPR_age * 2.d0
+!  print *, "MAXLOC(NPR_age): "
+!  print *, MAXLOC(NPR_age)   ! This is like the `which(ii == max(x))` function in R, for vector x and index ii
+! *
+  
+!---> Calculate pre-exploitation equilibrium birth rate (at carrying capacity when F = 0)
   b_eq = 1 / NPR_mature               ! Equilibrium birth rate. Equal for both stocks under assumption of identical life histories                
-    
+  print *, "Equilibrium birth rate"
+  print *, b_eq
+
+  ! * * * * * *
+  ! DEBUGGGING
+!  NPR_0_F = calc_recruit_F(NPR = NPR_age, b_eq = b_eq, selex_a = selectivity, surv_a = S_age)
+               
+  ! *
+  
 !---> Calculate the initial age structure and distribute across areas for each stock         
-  do ii = 1, n_stocks                 ! Initial age structures for each stock can differ, e.g. initial depletion may not be equal
+  do ii = 1, n_stocks    ! Initial age structures for each stock can differ, e.g. initial depletion may not be equal
 ! *
 ! TODO? : Move this loop into a subroutine in Initialize_pop_module 
 ! *        
@@ -248,17 +299,26 @@ program main
     b_yr_stock(0, ii) = b_init          ! Store initial birth rate 
     depl_yr_stock(0, ii) = init_depl_i  ! Store initial depletion level        
     prop_NPR = NPR_age / sum(NPR_age)   ! Proportion at age relative to numbers per female recruit
-
+    
 !---> Calculate initial human caused mortality rate (f_init) that results in stable age-structure at initial depletion                
     objf_f_init = BRENT(ax = 0.0d0, bx = 0.10d0, cx = 1.0d0, func = initial_F, & ! See Brent.f90 for details on arguments
                         tol = 0.0000001d0, xmin = f_init_ii(ii)) 
-
+    
+    print *, ""                    
+    print *, "f_init_ii(ii = 1)"
+    print *, f_init_ii(1)
+    print *, ""
+    print *, "NPR_age_tmp(F = f_init)"
+    print *, NPR_age_tmp
+!    stop 
+    
     Call rescale_NPR(k_1plus_tmp = k_1plus(ii), initial_oneplus_tmp = NPR_oneplus, & ! Scale NPR to Numbers at age
                     N_age_unscaled = NPR_age_tmp, N_age_scaled = N_age) ! N_age returned as scaled numbers of females at age 
-      
+    
 ! * 
 ! TODO : If initial conditions are the same for every simulation, can this be done more efficiently without a loop over sims? 
-! * Not sure...
+! In other words, do calculations once, then just set array values across sims equal for year 0. Can probably get rid of sim_ii loop. 
+! * 
     do sim_ii = 0, n_sims ! Initial conditions are deterministic and hence identical across simulations. Make it so.
             
       N_age_sex_area_stock_yr_sim(:, female, 0, ii, 0, sim_ii) = N_age  ! Assign scaled numbers at age for this stock to main array
@@ -271,7 +331,7 @@ program main
               N_age_sex_area_stock_yr_sim( : , ss, all_areas, ii, 0, :) * area_stock_prop(jj, ii)
 
           N_tot_sex_area_stock_yr_sim(ss, jj, ii, 0, sim_ii) = & ! Sum total abundance by sex for each stock in each area
-              sum(N_age_sex_area_stock_yr_sim(0:age_x, ss, jj, ii, 0, sim_ii))
+              sum(N_age_sex_area_stock_yr_sim(0:age_x, ss, jj, ii, 0, sim_ii))    
 
           end do  ! End loop over sexes
       end do      ! End loop over areas
@@ -280,35 +340,30 @@ program main
       
     end do        ! End loop over simulations
 ! *
-! TODO : Check can we set right hand side to sim_ii instead of zero ?? (Note the TODO in the main loop below as well)    
+! TODO : Check can we set right hand side to sim_ii instead of zero ?? (Note the TODO in the main loop below as well)
 ! *
     N_plus_area123(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, ii, 0, 0)) ! N_plus index = (yr, stock, sim) 
     N_tot_area123(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, ii, 0, 0))  ! Abundance in survey area for each stock 
     
     N_plus_yr_stock_sim(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:4, ii, 0, 0)) ! Sum stock size across areas
-    N_tot_yr_stock_sim(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:4, ii, 0, 0))      
+    N_tot_yr_stock_sim(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:4, ii, 0, 0))  
+    N_mature_yr_stock_sim(0, ii, 0) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, ii, 0, 0))
   end do          ! end loop over stocks
-
-!---> Some final accounting in recording initial conditions
-
-! TODO : Don't think these vectors are necessary at present. Seem redundant. 
-!  N_plus(0) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, 0, 0)) ! Sum across stocks, in the surveyed areas
-!  N_tot(0) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, 0, 0))  ! These vectors might be redundant now, see below : TODO
-
+  
+!---> Some final accounting in recording initial conditions - "N_plus_area123" numbers at age 1+ in survey area (1,2,3)
   N_plus_area123(0, 0, 0) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, 0, 0)) ! yr, stock, sim
   N_tot_area123(0, 0, 0) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, 0, 0))  
-
-!---> Calculate standardized selectivity at age (selectivity_norm sums to one)
-!  selectivity_norm(:) = selectivity(:) / sum(selectivity(:))
-
+  N_mature_yr_stock_sim(0, 0, 0) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, 1:n_stocks, 0, 0))  
 !---> Assign relative vulnerabilities by area (inter-annual variability not implemented)
-! TODO : Extend to allow for inter-annual variability in rel vulnerabilities by area  
+! *
+! TODO : Extend to allow for inter-annual variability in relative vulnerabilities by area -- multiply omega by random variable to add noise 
+! *  
   do jj = 1, n_area ! Areas 
     omega_yr_area(: , jj) = omega(jj)
   end do 
 
 !====== +++ === === +++ === === +++ === 
-!---> START SIMULATIONS    -------->>>>
+!---- START SIMULATIONS ------------------------------------------------------>
 !====== +++ === === +++ === === +++ ===
   flag = 0              ! dummy variable to indicate whether or not this is first simulation 
     
@@ -318,24 +373,32 @@ program main
 ! * TODO : Do this summation one time (instead of n_sims times) then assign remaining (1 to n_sims) initial conditions equal to first summation    
     N_plus_area123(0, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, 0, sim_ii)) ! yr, stock, sim
     N_tot_area123(0, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, 0, sim_ii))  ! 
+    N_mature_yr_stock_sim(0, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, 1:n_stocks, 0, sim_ii))
+      
     do stock_ii = 1, n_stocks 
       N_plus_area123(0, stock_ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, stock_ii, 0, sim_ii)) ! yr, stock, sim
       N_tot_area123(0, stock_ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, stock_ii, 0, sim_ii))  ! get abundance in survey area for each stock 
+      N_mature_yr_stock_sim(0, stock_ii, sim_ii) = &
+        sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, stock_ii, 0, sim_ii))
     end do
     
     do yr = 1, yr_max     ! Years -- starting at year one, because year zero is in the books and pop has been initialized     
+    
       do ii = 1, n_stocks ! Stocks            
-        
-        if (depl_yr_stock(yr - 1, ii) <= 0.d0) then
+
+! Calculate density dependent annual birth rate for each stock ----------------       
+        if (depl_yr_stock(yr - 1, ii) .le. 0.d0 .or. depl_yr_stock(yr - 1, ii) .ge. 1.d0) then
           b_yr_stock(yr, ii) = 0.d0
         else
-          b_yr_stock(yr, ii) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, ii)**theta) ! Annual birth rate for each stock
+          b_yr_stock(yr, ii) = b_eq + (b_max - b_eq) * (1 - depl_yr_stock(yr - 1, ii)**theta) 
         end if
         
         do jj = 1, n_area ! Areas    
+          
           do ss = 1, 2    ! Sexes
-!---> Reproduction and natural mortality
-! Note this procedure works with the total abundance (i.e. area = 0)           
+            
+!---> Reproduction and natural mortality --------------------------------------
+! Note this procedure works with the total abundance (i.e. area = 0) for each stock          
             Call pop_projection(f_rate = 0.0d0, b_rate = b_yr_stock(yr, ii), &           ! Project males and females separately,
               N_age_old = N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr - 1, sim_ii),  &  !  because could potentially have different selectivities, sex ratios at birth, etc. 
               N_age_new = N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr, sim_ii))         !  in a future version of operating model         
@@ -343,83 +406,95 @@ program main
 !            do aa = 0, age_x ! Ages (Don't think actually need to loop over ages, have just inserted ":" into array instead
 !! Anything needed inside a loop over ages?       
 
-! Redistribute each stock (by age) across areas              
+! Redistribute each stock (by age) across areas -------------------------------              
             N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = & 
                 N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr, sim_ii) * area_stock_prop(jj, ii)
 
 !            end do ! End loop over ages
 
-! sum total by sex for this area for this stock this year
+! Sum total by sex for this area for this stock this year ---------------------
             N_tot_sex_area_stock_yr_sim(ss, jj, ii, yr, sim_ii) = &
                 sum(N_age_sex_area_stock_yr_sim(0:age_x, ss, jj, ii, yr, sim_ii)) 
                 
           end do ! End loop over sexes
-        end do ! End loop over areas         
+        end do   ! End loop over areas         
       end do     ! End loop over stocks 
+      
+! Check if this is a survey year --------------------------------------------------------- 
+! mod() is intrinsic function for the remainder. If zero, it's a survey year
+      is_surv_yr(yr) = mod(yr - 1, surv_freq) 
+      
+! If this is a survey year, calculate PBR
+      if (is_surv_yr(yr) == 0) then 
 
-      is_surv_yr(yr) = mod(yr - 1, surv_freq) ! mod() is intrinsic function for the remainder. If zero, it's a survey year
-!        
-      if (is_surv_yr(yr) == 0) then ! If this is a survey year, calculate PBR
-! *
-! TODO: Rename this from "foo" to a more meaningful word
-! *               
-!        foo = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))
-        
+! Check that population is not extinct already        
         if (sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)) > 0.d0) then
           
-!          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
-!            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)
+! Generate survey estimate of abundance --------------------------------------------------
+! Estimates generated with CV = cv_n_true. Where cv_true not necessarily equal to cv_n. 
+! cv_n is the estimated sampling error used to calculate N_min.          
+! cv_n_true > cv_n represents a biased underestimate of the true sampling error
+! Function gen_survey_estimate() located in PBR_calcs_module.f90
+! Assumes surveys apply to ages 0+ (cf. Wade 1998) 
+ 
+          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate( &
+            true_abundance = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), &
+            cv = cv_n_true)  
 
-! Note cv = cv_n_true, and cv_true not necessarily equal to cv_n (the latter is "the estimate" used to calculate N_min)          
-          n_hat_yr_sim(yr, sim_ii) = gen_survey_estimate(true_abundance = &
-            sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)), cv = cv_n_true) ! Assumes surveys apply to ages 0+ (cf. Wade 1998)  
+! Account for potential bias in abundance estimates -------------------------------------- 
+! If n_bias = 1.0, then abundance estimates are unbiased. 
+! n_bias > 1.0 for scenario(s) where abundance estimates positively biased. 
+! n_bias specified in input.par file.            
+          n_hat_yr_sim(yr, sim_ii) = n_bias * n_hat_yr_sim(yr, sim_ii) 
 
-! Account for potential bias in abundance estimates. 
-! If n_bias = 1.0, then abundance estimates are unbiased. n_bias > 1.0 for scenario(s) where abundance estimates positively biased. 
-          n_hat_yr_sim(yr, sim_ii) = n_bias * n_hat_yr_sim(yr, sim_ii) ! n_bias specified in input.par file.            
-          
-          Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)  ! Return normal variate given lower tail (e.g. 1.96
-          
-          if (ifault .ne. 0) then ! Check to make sure call to qnorm returns without error
-            print *, "ERROR from `qnorm()` during simulation: ", sim_ii, " and year: ", yr
-            stop  ! Stop program execution
+! Apply any tier specific methods (e.g. averaging) to calculate current best estimate of abundance      
+          call calc_n_hat(tier = tier, &
+                          yr = yr, &
+                          n_hat_yr_in = n_hat_yr_sim(:, sim_ii), &
+                          cv_n_in = cv_n, &
+                          n_hat_out = n_tier_yr_sim(yr, sim_ii), &
+                          cv_n_out = cv_n_tier_out)
+       
+! Calculate N_min -------------------------------------------------------------		  		  
+          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_tier_yr_sim(yr, sim_ii), &
+                                                cv = cv_n_tier_out, &
+                                                z_score = norm_deviate)
+! Calculate PBR ---------------------------------------------------------------		                                                
+          if (determ_pbr .eq. "N") then
+            pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1)
+          else if (determ_pbr .eq. "Y") then
+! DEBUGGING -- set PBR equal to number of mature animals of box stocks in survey area ----            
+            pbr_yr_sim(yr, sim_ii) = N_mature_yr_stock_sim(yr, 0, sim_ii) * F_rate
           end if
           
-          norm_deviate = ABS(norm_deviate) ! Use absolute value to be consistent with calc_n_min() method from Wade (1998)
-          
-          N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_hat_yr_sim(yr, sim_ii), cv = cv_n, z_score = norm_deviate)
-
-! *
-! TODO: Make this more general for Tier System           
-! This is using status quo approach to calculate PBR (calc_n_min) above 
-! *         
-!      e.g. call calc_pbr(tier, pbr, n_hat, cv_n)          
-          pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1) 
-!          print *, "pbr_yr_sim: ", pbr_yr_sim(yr, sim_ii)
-!          pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr, sim_ii) / r_bias 
-!          print *, "pbr_yr_sim / r_bias: ", pbr_yr_sim(yr, sim_ii)
-          
-        else 
+! ****************************************************************************************          
+        else ! If population extinct, set these to zero 
           n_hat_yr_sim(yr, sim_ii) = 0.d0
           N_min_yr_sim(yr, sim_ii) = 0.d0
           pbr_yr_sim(yr, sim_ii) = 0.d0
         end if
 
       else 
-        
-        pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr - 1, sim_ii) ! If not a survey year, set PBR equal to previous year
+! If not a survey year, set PBR (expectation of human caused mortality) equal to previous year        
+        pbr_yr_sim(yr, sim_ii) = pbr_yr_sim(yr - 1, sim_ii) 
 
       end if      
-        
-      sigma_pbr_yr_sim(yr, sim_ii) = cv_mortality(1) * pbr_yr_sim(yr, sim_ii) ! Transform CV for uncertainty in human caused mortality to SD
+
+! Set human caused mortality based on stochastic normal random variable (Wade 1998) or deterministically equal to PBR
+      if (determ_pbr .eq. "N") then ! Stochastic
+! Given CV for uncertainty in human caused mortality (CV_M), calculate the SD of human caused mortality         
+        sigma_pbr_yr_sim(yr, sim_ii) = cv_mortality(1) * pbr_yr_sim(yr, sim_ii) 
 
 ! Generate normal random deviate with PBR as expectation of human caused mortality -- follows approach of Wade (1998) p.9 step 4       
-      M_yr_sim(yr, sim_ii) = random_normal(mean = real(pbr_yr_sim(yr, sim_ii),  4), & ! Need to convert from 8 to 4 bytes w real() : TODO modify random_normal() to 8 byte
-        sd = real(sigma_pbr_yr_sim(yr, sim_ii), 4)) 
+        M_yr_sim(yr, sim_ii) = random_normal(mean = real(pbr_yr_sim(yr, sim_ii),  4), & ! Convert from 8 to 4 bytes w real() : TODO modify random_normal() to 8 byte
+          sd = real(sigma_pbr_yr_sim(yr, sim_ii), 4)) 
+      else ! Deterministic
+        M_yr_sim(yr, sim_ii) = pbr_yr_sim(yr, sim_ii) ! Realized human caused mortality exactly equal to PBR in this case
+      end if
 ! Account for potential bias in mortality estimates. 
-! If m_bias = 1.0, then mortality estimates are unbiased. 
+! If m_bias = 1.0, then human caused mortality estimates are unbiased. 
 ! If m_bias > 1.0 then scenario(s) where mortality estimates negatively biased, e.g. actual mortality is twice PBR.       
-      M_yr_sim(yr, sim_ii) = m_bias * M_yr_sim(yr, sim_ii)
+      M_yr_sim(yr, sim_ii) = m_bias * M_yr_sim(yr, sim_ii) ! m_bias read from input file (e.g. input.par)
       
 ! If populations reach low numbers, negative mortality (i.e. zombies) possible. Alert user.
       if (M_yr_sim(yr, sim_ii) < 0.0d0) then 
@@ -427,38 +502,9 @@ program main
           print *, "Resetting human cause mortality to zero."
           M_yr_sim(yr, sim_ii) = 0.0d0
       end if
-     
-! *
-! DEBUGGING        
-! *        
-!      if (sim_ii == 0) then      
-!        if (flag == 0) then
-!          if (n_stocks == 2) then
-!            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1), &
-!                   "depl_yr_stock(yr=0, 2):", depl_yr_stock(0, 2)
-!          else
-!            print *, "depl_yr_stock(yr=0, 1):", depl_yr_stock(0, 1)
-!          end if 
-!          flag = 1
-!        end if
-        
-!        if (n_stocks == 2) then
-!          print *, "Year:", yr, &
-!          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
-!          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
-!  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
-!          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1), &
-!          "depl_yr_stock(yr, 2):", depl_yr_stock(yr, 2)
-!        else
-!          print *, "Year:", yr, &
-!          "pbr_yr_sim:", pbr_yr_sim(yr, sim_ii), &
-!          "M_yr_sim:", M_yr_sim(yr, sim_ii), &
-!  !          "N_min_yr_sim: ", N_min_yr_sim(yr, sim_ii) &
-!          "depl_yr_stock(yr, 1):", depl_yr_stock(yr, 1)         
-!        end if
-!      end if
+
 !====== +++ === === +++ === === +++ ===          
-!---> Allocate spatial sex- and age-structure human caused mortality      
+! Allocate spatial age- and sex-structured human caused mortality --------------      
 !====== +++ === === +++ === === +++ ===   
       if (sim_ii > 0) then        ! First simulation do not (calculate?) or subtract mortality
 !  These loops needed for the summation in the denominator of spatial mortality allocation equation
@@ -468,11 +514,11 @@ program main
           do jj = 1, n_area ! Areas    
             do ss = 1, 2    ! Sexes
 
-! Numerator from spatial allocation of mortality Eqn                                  
+! Numerator from spatial allocation of mortality Eqn XX                                 
               M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = M_yr_sim(yr, sim_ii) * omega_yr_area(yr, jj) &
                 * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) 
 
-! Denominator from spatial allocation of mortality Eqn                  
+! Denominator from spatial allocation of mortality Eqn XX                 
               M_scale_yr_sim(yr, sim_ii) = M_scale_yr_sim(yr, sim_ii) + &
                 sum(omega_yr_area(yr, jj) * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)) 
 
@@ -538,29 +584,36 @@ program main
                   N_age_sex_area_stock_yr_sim(aa, ss, 0, ii, yr, sim_ii) = 0.d0 
                 end if  
 
-              end if
-            end do ! Ages
-          end do   ! Sexes
-
-! ###################################### This bit of code between ## has been moved from above (from mid- to end-of-year) needs to be tested / verified                     
+              end if 
+            end do   ! Ages
+          end do     ! Sexes
+                    
         N_plus_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, ii, yr, sim_ii)) ! by stock 
         N_tot_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, ii, yr, sim_ii)) 
-        
+        N_mature_yr_stock_sim(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, ii, yr, sim_ii))
 ! *
-! TODO : Don't think need to do the summing below. replace numerator with N_plus(yr, ii, sim_ii) = stock size summed over areas
-! *           
-        if (ii == 1) then   
-          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
-        else if (ii == 2) then
-          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
+! TODO : Could minimize summing below, e.g. replace with N_plus(yr, ii, sim_ii) = stock size summed over areas
+! *     
+        if (dd_component .eq. "1") then  
+          if (ii == 1) then   
+            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
+          else if (ii == 2) then
+            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
+          end if
+        else if (dd_component .eq. "M") then  
+          if (ii == 1) then   
+            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
+          else if (ii == 2) then
+            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
+          end if
         end if
+
         
         depl_yr_stock_sim(yr, ii, sim_ii) = depl_yr_stock(yr, ii) ! keep track of annual depletion by simulation            
         
       end do       ! Stocks
       N_plus_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii)) ! yr, stock, sim
       N_tot_area123(yr, 0, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, 1:n_stocks, yr, sim_ii))  ! add abundance across stocks, this is abundance available to survey       
-! ######################################             
       
     end do           ! End loop over years
       
@@ -570,33 +623,49 @@ program main
 !====== +++ === === +++ === === +++ ===    
   print *, "Finished simulations"
   print *, "Writing output to files"
+!====== +++ === === +++ === === +++ ===
+
+!  write(percentile, '(f4.3)') lower_tail ! transfer from type real to type character 
+!  print *, "N_min percentile: ", percentile    ! check
+  
+! Test output to try and reduce explicit do loops on file output and see if can speed that process
+!  print *, "N_plus_area123(: , 1, 1) "
+!  print *, N_plus_area123(: , 1, 1)
+  
 !====== +++ === === +++ === === +++ ===          
-!---> Start writing output to files
+! Write results to output files -----------------------------------------------
 !====== +++ === === +++ === === +++ ===   
-  write(percentile, '(f4.3)') lower_tail ! transfer from type real to type character 
-  print *, "percentile: ", percentile    ! check
+  open(unit = 6, file = "depl_by_trial.out")
+  write(6, "(4(a10))") "trial", "lower", "median", "upper"
+  write(6, "(a10, 3(f10.4))") REF, sorted_final_depl(lower_ii), median_depl, sorted_final_depl(upper_ii)
+  close(unit = 6)
   
 !  open(unit = 5, file = "N_aggregated" // percentile // ".out")
   open(unit = 5, file = "N_aggregated.out")  
-  write(5, "(9(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", "depl_yr_stock", &
-    "pbr_yr_sim", "M_yr_sim"
-20  format(3(i15), 3(f15.4)) !
+  write(5, "(11(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", &
+    "Nmat_yr_ii_sim", "n_tier_yr_sim", "depl_yr_stock", "pbr_yr_sim", "M_yr_sim"
+    
+20  format(3(i15), 4(f15.4)) !
   do sim_ii = 0, n_sims
     do yr = 0, yr_max
       do ii = 0, n_stocks
         
         write(5, 20, advance = 'no') sim_ii, yr, ii, N_tot_area123(yr, ii, sim_ii), &
-          N_plus_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii) 
+          N_plus_area123(yr, ii, sim_ii), n_hat_yr_sim(yr, sim_ii), N_mature_yr_stock_sim(yr, ii, sim_ii)
         
-        write(5, "(f15.4)", advance = 'no') depl_yr_stock_sim(yr, ii, sim_ii) ! In terms of 1+ abundance
+        write(5, "(f15.4)", advance = 'no') n_tier_yr_sim(yr, sim_ii)
         
-        write(5, "(f15.4)", advance = 'no') pbr_yr_sim(yr, sim_ii) ! In terms of 1+ abundance
+        write(5, "(f15.4)", advance = 'no') depl_yr_stock_sim(yr, ii, sim_ii) 
         
-        write(5, "(f15.4)") M_yr_sim(yr, sim_ii) ! In terms of 1+ abundance
+        write(5, "(f15.4)", advance = 'no') pbr_yr_sim(yr, sim_ii) 
+        
+        write(5, "(f15.4)") M_yr_sim(yr, sim_ii)
         
       end do
     end do
   end do
+  
+! Deprecated output below (N_array files get very large, etc.) 
 !====== +++ === === +++ === === +++ ===    
 ! Writing results of major array with spatial-temporal age structure to output file 
 ! Also writing results of summing over ages in major array (i.e. the slightly smaller array that is pertinent to PBR_calcs)    
@@ -631,35 +700,19 @@ program main
 !  !write (1, "(A7,I3)") "hello", 10    ! example of conversion and concantination of character string in fortran    
 !  close(unit = 3) ! close output file
 !  close(unit = 4) 
-
-! Testing qnorm(): routine that returns normal deviate given percentile P
-  Call qnorm(p = lower_tail, normal_dev = norm_deviate, ifault = ifault)
-  print *, "norm_deviate", norm_deviate
-  
-  Call qnorm(p = 0.10d0, normal_dev = norm_deviate, ifault = ifault)
-  print *, "norm_deviate; p = 0.10d0: ", norm_deviate
-  print *, "N_min; p = 0.10d0: ", calc_n_min(n_hat = 100.d0, cv = cv_n, z_score = norm_deviate)
-  
-  Call qnorm(p = 0.15d0, normal_dev = norm_deviate, ifault = ifault)
-  print *, "norm_deviate; p = 0.15d0: ", norm_deviate
-  print *, "N_min; p = 0.15d0: ", calc_n_min(n_hat = 100.d0, cv = cv_n, z_score = norm_deviate)
-  
   
   print *, "Trial REF: ", REF  ! Reference case 
-  print *, "cv_n_true: ", cv_n_true
-!  print *, "Test concatenation:"
-  
+
 !$         print *, "Compiled with -fopenmp"    ! This is a test for compiling with OpenMP (parallel processor directive <- !$)
 ! OpenMP not available for earlier versions of gfortran (including gfortran 4.2)
     
   print *, "Closing down"
   return     
-!====== +++ === === +++ === === +++ ===   
-!###### +++ ### ### +++ ### ### +++ ###             
+! *
   contains
-!====== +++ === === +++ === === +++ ===   
-!###### +++ ### ### +++ ### ### +++ ###             
+! ----------------------------------------------------------------------------------------      
   subroutine initialize_local_vars()
+! ----------------------------------------------------------------------------------------          
     print *, "Hello from initialize_local_vars()"
     f_init_ii = 0.d0
     f_yr_stock = 0.d0
@@ -697,6 +750,61 @@ program main
         !
     return
   end subroutine initialize_local_vars
-
+! *
+! ----------------------------------------------------------------------------------------        
+  subroutine sort(arr)
+! ----------------------------------------------------------------------------------------          
+  implicit none
+  real(kind = 8), dimension(:), intent(inout) :: arr
+! Sorts an array arr into ascending numerical order by Shell’s method (diminishing increment
+! sort). arr is replaced on output by its sorted rearrangement.
+! From Press et al. Numerical Recipes
+  integer(kind = 4) :: i,j,inc,n
+  real(kind = 8) :: v
+  n = size(arr)
+  inc = 1
+! Determine the starting increment
+  do 
+    inc = 3 * inc +1
+    if (inc > n) exit
+  end do
+! *
+! Loop over the partial sorts.  
+  do 
+    inc = inc / 3
+    do i = inc + 1, n ! Outer loop of straight insertion.
+      v = arr(i)
+      j=i
+      do              ! Inner loop of straight insertion.
+        if (arr(j - inc) <= v) exit
+        arr(j) = arr(j - inc)
+        j = j - inc
+        if (j <= inc) exit
+      end do
+      arr(j) = v
+    end do
+    if (inc <= 1) exit
+  end do
+  
+  end subroutine sort
+! *
+! ----------------------------------------------------------------------------------------        
+  real(kind = 8) function median(x)
+! ----------------------------------------------------------------------------------------        
+! calculate median of a *sorted* vector of double precision real numbers
+  implicit none
+  integer(kind = 4) :: n  ! length of vector
+  real(kind = 8), intent(in) :: x(:)
+  
+  n = size(x) 
+  
+  if (MOD(n, 2) == 0) then           ! interpolate if length of vector is odd
+    median = (x(n / 2) + x(n / 2 + 1)) / 2.0d0
+  else
+    median = x(n / 2 + 1)
+  end if
+  
+  end function median
+! ----------------------------------------------------------------------------------------        
 end program main
 
