@@ -56,12 +56,27 @@ MODULE PBR_Errorcheck_module
             print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
-        if (tier < 0 .or. tier > 3) then
+        if (tier < 1 .or. tier > 4) then
             print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             print *, "ERROR : Condition (0 < tier < 3) not met. Check input file."
             error_check_input = -6            
             print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
+        
+        if (prop_catch_fem < 0.d0 .or. prop_catch_fem > 1.d0) then
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print *, "ERROR : Condition (0 < prop_catch_fem < 1) not met. Check input file."
+            error_check_input = -6            
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        end if        
+        
+        if (determ_pbr /= "Y" .and. determ_pbr /= "N") then
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print *, "ERROR : determ_pbr must be 'Y' or 'N'. Check input file."
+            error_check_input = -6            
+            print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        end if            
+        
         
         return
     end function error_check_input
