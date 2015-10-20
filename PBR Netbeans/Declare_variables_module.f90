@@ -50,7 +50,11 @@ MODULE Declare_variables_module
     real(kind = 8) :: cv_n_true         ! Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
 !    real(kind = 8) :: cv_m_true         ! True CV of mortality : Not sure this is needed, could just change cv_mortality and have seperate input files: Wade (1998) trial 5    
     integer(kind = 4) :: tier           ! Data tier
-    
+    integer(kind = 4) :: n_yrs_avg      ! Window of years to average across
+    character determ_pbr*1              ! N = Interannual stochastic human caused mortality; Y = Deterministic (e.g. equal exactly to PBR or some fraction therein) 
+    real(kind = 8) :: prop_catch_fem    ! Proportion of catch that is female
+    real(kind = 8) :: F_rate            ! Constant fishing mortality rate (DEBUGGING)
+    character dd_component*1
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
     real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)  
