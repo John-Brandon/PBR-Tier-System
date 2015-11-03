@@ -1,3 +1,6 @@
+module brent_mod
+  contains
+  
 FUNCTION brent(ax,bx,cx,func,tol,xmin)
 ! From Numerical Recipes (Press et al)
     IMPLICIT NONE
@@ -10,10 +13,10 @@ FUNCTION brent(ax,bx,cx,func,tol,xmin)
         FUNCTION func(x)   ! This is for Initial_F(), not very generic TODO: edit interface for generic function
         IMPLICIT NONE
         REAL(kind = 8), INTENT(IN) :: x
-!        INTEGER(kind = 4), INTENT(IN) :: a_r        
         REAL(kind = 8) :: func
         END FUNCTION func
     END INTERFACE
+    
     INTEGER(kind = 4), PARAMETER :: ITMAX = 100 ! DEBUGGING
     REAL(kind = 8), PARAMETER :: CGOLD=0.3819660,ZEPS=1.0e-3*epsilon(ax)
 ! Given a function func, and given a bracketing triplet of abscissas ax, bx, cx (such that bx
@@ -111,4 +114,6 @@ CONTAINS
     END SUBROUTINE shft
 
 END FUNCTION brent
+
+end module brent_mod
 
