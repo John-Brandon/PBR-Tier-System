@@ -45,6 +45,7 @@ program main
   use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): Generate_random_numbers_module.f90
   use PBR_Errorcheck_module          ! Contains function 'error_check_input' to do error checking on input values [Beta]
   use eigen_module                   ! Contains calls to DGEEV for calculating the eigenvalues and eigenvectors of the projection matrix
+!  use brent_mod
 !---> Turns off implicit typing by Fortran; all variables must be explicitly declared by type
   implicit none 
 !---> Constant parameters
@@ -303,7 +304,7 @@ program main
 !---> Calculate initial human caused mortality rate (f_init) that results in stable age-structure at initial depletion                
     objf_f_init = BRENT(ax = 0.0d0, bx = 0.10d0, cx = 1.0d0, func = initial_F, & ! See Brent.f90 for details on arguments
                         tol = 0.0000001d0, xmin = f_init_ii(ii)) 
-    
+
     print *, ""                    
     print *, "f_init_ii(ii = 1)"
     print *, f_init_ii(1)
@@ -631,15 +632,42 @@ program main
 ! Test output to try and reduce explicit do loops on file output and see if can speed that process
 !  print *, "N_plus_area123(: , 1, 1) "
 !  print *, N_plus_area123(: , 1, 1)
-  
+
+!====== +++ === === +++ === === +++ ===
+! Extract final depletion percentiles  
+!====== +++ === === +++ === === +++ ===
+ sorted_final_depl(:) = depl_yr_stock_sim(yr_max, 1, 1:n_sims)
+ CALL sort(sorted_final_depl)
+ median_depl = median(sorted_final_depl)
+ lower_ii = int(real(n_sims) * 0.05)
+ upper_ii = int(real(n_sims) * 0.95)
+ upper_ii = upper_ii + 1
+
+ print *, "lower_ii"
+ print *, lower_ii
+ print *, "upper_ii"
+ print *, upper_ii
+ print *, "size(sorted_final_depl)"
+ print *, size(sorted_final_depl)
+
+ print *, "sorted_final_depl(lower_ii)"
+ print *, sorted_final_depl(lower_ii)
+ print *, "median_depl"
+ print *, median_depl
+ print *, "sorted_final_depl(upper_ii)"
+ print *, sorted_final_depl(upper_ii)
+
 !====== +++ === === +++ === === +++ ===          
-! Write results to output files -----------------------------------------------
+! Write results to output files 
 !====== +++ === === +++ === === +++ ===   
+  print *, "here"
+  print *, "lower_ii", lower_ii
+  print *, "upper_ii", upper_ii
   open(unit = 6, file = "depl_by_trial.out")
   write(6, "(4(a10))") "trial", "lower", "median", "upper"
   write(6, "(a10, 3(f10.4))") REF, sorted_final_depl(lower_ii), median_depl, sorted_final_depl(upper_ii)
   close(unit = 6)
-  
+
 !  open(unit = 5, file = "N_aggregated" // percentile // ".out")
   open(unit = 5, file = "N_aggregated.out")  
   write(5, "(11(a15))") "sim", "yr", "stock", "N_tot_area123", "N_plus_area123", "n_hat_yr", &
