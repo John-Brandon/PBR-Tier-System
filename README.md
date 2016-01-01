@@ -1,7 +1,7 @@
 # Welcome to the PBR Tier System Code Repository
 <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">This repository currently includes Fortran 90/95 code for an age-structured multi-stock population dynamics model</a>. 
 
-Code development is occurring, under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 compiler</a>. <a href="https://github.com/John-Brandon/pbrr" target="_blank">A related open-source repository with R code to analyze the simulations can be found here</a>. 
+Code development is occurring, under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 compiler</a>. A related open-source <a href="https://github.com/John-Brandon/pbrr" target="_blank">repository with R code to analyze the simulations can be found here</a>. 
 
 Links are provided at the top of this page to view the files in this repository, as well as to download the files therein (raw code or otherwise). Motivation and background for this project is provided below, but first a quick FAQ.
 
