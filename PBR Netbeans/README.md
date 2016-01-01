@@ -25,6 +25,8 @@ Brief file descriptions: PBR-Tier-System
 
 * `nbproject` Contains Makefiles created by the Netbeans IDE (warning: likely outdated).
 
+A related open-source <a href="https://github.com/John-Brandon/pbrr" target="_blank">repository with R code to analyze the simulations can be found here</a>. 
+
 
 
 
