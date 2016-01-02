@@ -251,7 +251,17 @@ module calcs
 ! *         
 ! TODO fit linear regression to logarithm of abundance estimates        
 ! *                
-
+        print *, ""
+        print *, "-------------------------"
+        print *, " ERROR:"
+        print *, "-------------------------"
+        print *, "Tier 1 Code has not been developed. "
+        print *, "Check input file and change Tier #."
+        print *, "Available Tier #'s are currently 2, 3, or 4."  
+        print *, "Stopping Program at:"
+        print *, "Line 258 of PBR_calcs_module.f90"
+        print *, "-------------------------"
+        stop
 ! 
 ! The standard approach of using only last estimate of abundance as n_hat ----------------
       case (2) 
