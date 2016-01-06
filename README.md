@@ -28,9 +28,11 @@ xcode-select --install
 ```
 (4). Then re-type the `gfortran -v` command. If that doesn't work, you'll need to install gfortran. Links and instructions can be found at: http://hpc.sourceforge.net/
 
-(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files (e.g. ~/PBR-Tier-System-master/PBR Netbeans) downloaded from this repository. You can use the `cd` terminal command to change directories.
+(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository (e.g. ~/PBR-Tier-System-master/PBR Netbeans). You can use the `cd` terminal command to change directories.
 ```shell
 cd Your-working-directory-here
+# e.g.
+# cd ~/PBR-Tier-System-master/PBR Netbeans
 ```
 (6). Next, use this command to compile the Fortran code:
 ```shell
@@ -50,8 +52,8 @@ gfortran --version
 ```
 (2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
 ```shell
-GNU Fortran (GCC) 4.7.0 20111220 (experimental)
-Copyright (C) 2011 Free Sofware Foundation, Inc.
+GNU Fortran (GCC) 4.2
+Copyright (C) Free Sofware Foundation, Inc.
 ```
 (3). If you get an error message (e.g. the `gfortran` command can not be found), download MinGW from: http://sourceforge.net/projects/mingw
 
@@ -60,6 +62,8 @@ Copyright (C) 2011 Free Sofware Foundation, Inc.
 (5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository (e.g. C:\PBR-Tier-System-master\PBR Netbeans). You can use the `cd` terminal command to change directories if you need.
 ```shell
 cd Type-your-working-directory-here
+# e.g.
+# cd C:\PBR-Tier-System-master\PBR Netbeans
 ```
 
 (6). Next, use this command to compile the Fortran code:
