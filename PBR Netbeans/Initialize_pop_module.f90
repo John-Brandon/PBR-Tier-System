@@ -35,114 +35,50 @@ MODULE initialize_pop
 !  Brent's method is used to find the root of this objective function, the solution for juvenile survival.    
 !  
 !-----------------------------------------------------------------------------------------
+
 !-----------------------------------------------------------------------------------------
-  real (kind = 8) function calc_recruit_F(NPR, b_eq, selex_a, surv_a)
-!-----------------------------------------------------------------------------------------  
-! Returns the number of recruits (age 0) given an initial exploitation rate, selectivity ogive etc.
-! This is Eqn 16 of Punt, A.E. 1999. A full description of the BALEEN II Model ... JCRM 1 (suppl): 267-276
-! Notes:  
-! `NPR_oneplus` and `sum_NPR` are global in scope
-! `NPR_mature` is declared in main program
+real(kind = 8) function calc_recruits_at_F(NPR_F, Apar, a_d, a_m, age_x, b_eq, theta, NPR_D_eq) result(recruit)
 !-----------------------------------------------------------------------------------------
-    real (kind = 8), intent(in) :: selex_a(0:age_x), surv_a(0:age_x)
-    real (kind = 8), intent(in) :: NPR(0:age_x) ! Numbers per recruit
-!    real (kind = 8) :: recruit
-    real (kind = 8) :: NPR_tmp(0:age_x), NPR_F0(0:age_x) 
-    real (kind = 8) :: sum_NPR_1plus, sum_NPR_mat
-    real (kind = 8) :: sum_NPR_1plus_F0, sum_NPR_mat_F0    
-    real (kind = 8) :: NPR_sum_recd, NPR_sum_unrecd, NPR_sum_recd_F0, NPR_sum_unrecd_F0
-    real (kind = 8) :: A
-    real (kind = 8) :: b_eq ! Calculated in main program after calling NPR_age() = 1 / NPR_mature(F = 0)
-    real (kind = 8) :: b_Finit_tmp 
-    integer (kind = 4) :: Nsearch, ii
-    real (kind = 8) :: ff
-    real (kind = 8) :: N_0_Finit
-    
-! Initialize
-    Nsearch = 500
-    A = (b_max - b_eq) / b_eq ! b_eq calculated in main program given F = 0 (pre-exploitation equilibrium birth rate) 
-    
-    print *, "A parameter: "
-    print *, A
+! Eqn 16 of Punt.1999.JCRM
+! Returns the number of 'recruits' (i.e. number of age 0 individuals)
+! Recruits are a function of fishing mortality rate and selectivity ogive
+! N should be a function of Finit, i.e. fec(Finit) = 1 / N[a_m:age_x]
+!  Hence: 1 / (fec_eq * sum(N[a_m:age_x])) = fec(Finit) / fec_eq (as per Punt eqn 16)
+! Apar = (f_max - f_eq) / f_eq 
+!-----------------------------------------------------------------------------------------
+  real(kind = 8), intent(in) :: NPR_F(0:age_x) 
+  real(kind = 8), intent(in) :: Apar, b_eq, theta, NPR_D_eq
+  integer(kind = 4), intent(in) :: a_d, a_m, age_x
+  real(kind = 8) :: recruit, Term1
+  real(kind = 8) :: NPR_F_mat, NPR_F_D
+  real(kind = 8) :: b_F       ! birth rate as function of exploitation rate 
+  real(kind = 8) :: b_ratio   ! ratio of birth rate given exploitation to birth rate at pre-exploitation equilibrium s  
+  
+! "K / Nmat" below corresponds to the density-dependent component    
+! So, sum(N[:]) needs to be same component as K (e.g. 1+ ; mature ; etc.)      
+  NPR_F_mat = sum(NPR_F(a_m:age_x))
+  b_F = 1.0d0 / NPR_F_mat
+  b_ratio = b_F / b_eq
+  Term1 = 1.d0 - ((b_ratio - 1.d0) / Apar)
+  if (Term1 .gt. 0.d0) then
+! Rescales up from single recruit to total number of recruits, given K         
+    NPR_F_D = sum(NPR_F(a_d:age_x)) 
+    recruit = (NPR_D_eq / NPR_F_D) * (Term1 ** (1.d0 / theta)) 
+!    print *, ""
+!    print *, "theta", theta
+!    print *, "Apar:", Apar
+!    print *, "b_ratio:", b_ratio
+!    print *, "b_F:", b_F
+!    print *, "NPR_D_eq:", NPR_D_eq
+!    print *, "NPR_F_mat:", NPR_F_mat
+!    print *, "Term1:", Term1
+!    print *, "recruit:", recruit
+  else 
+    recruit = 0.d0
+  end if
 
-! Caculate Numbers per female recruit at pre-exploitation equilibrium (F = 0)    
-    Call calc_NPR_age(f_rate = 0.d0, N_recruits = b_sex_ratio, &
-      N_age_tmp = NPR_F0, sum_1plus = sum_NPR_1plus_F0, sum_mature = sum_NPR_mat_F0, &
-      NPR_sum_recd = NPR_sum_recd_F0, NPR_sum_unrecd = NPR_sum_unrecd_F0)
-
-    print *, "ii; ff:"    
-    
-    do ii = 0, Nsearch
-      
-      ff = real(ii, kind = 8) / real(Nsearch, kind = 8) * 0.05
-      
-      Call calc_NPR_age(f_rate = ff, N_recruits = b_sex_ratio, &
-        N_age_tmp = NPR_tmp, sum_1plus = sum_NPR_1plus, sum_mature = sum_NPR_mat, &
-        NPR_sum_recd = NPR_sum_recd, NPR_sum_unrecd = NPR_sum_unrecd)
-      
-      b_Finit_tmp = 1.d0 / sum_NPR_mat
-      
-      N_0_Finit = (b_Finit_tmp / b_eq) - 1
-      N_0_Finit = N_0_Finit / A
-      N_0_Finit = 1.d0 - N_0_Finit
-      N_0_Finit = N_0_Finit ** (1 / theta)
-      
-      if(N_0_Finit .gt. 0.d0) then 
-        
-      else
-        N_0_Finit = 0.d0
-      end if
-      
-!      print *, ii, ff, N_0_Finit
-        
-      if(dd_component .eq. "1") then
-              
-      else 
-        print *, "ERROR in function calc_recruit_F(): `dd_component` not equal to '1'"
-        print *, "Density dependence is currently only supported in terms of the age 1+ component"
-        stop
-      end if
-      
-    end do
-
-! Debugging checking -- start with pre-exploitation equilibrium: F = 0.    
-    Call calc_NPR_age(f_rate = 0.d0, N_recruits = b_sex_ratio, &
-      N_age_tmp = NPR_tmp, sum_1plus = sum_NPR_1plus, sum_mature = sum_NPR_mat, &
-      NPR_sum_recd = NPR_sum_recd, NPR_sum_unrecd = NPR_sum_unrecd)
-      
-    print *, "NPR_tmp"
-    print *, NPR_tmp    
-    print *, "sum_NPR_1plus"
-    print *, sum_NPR_1plus            
-    print *, "sum_NPR_mat"
-    print *, sum_NPR_mat    
-    print *, "NPR_sum_recd"
-    print *, NPR_sum_recd        
-    print *, "NPR_sum_unrecd"
-    print *, NPR_sum_unrecd      
-!    stop
-    
-    calc_recruit_F = 1.d0
-
-! # This is apparently the function that need to code in Fortran -----------------
-!    Recruit <- function(N, Apar, fec_eq, theta, K){
-!      # Looks like Eqn 16 of Punt (1999)
-!      # Apar = (f_max - f_eq) / f_eq
-!      # Returns the number of recruits (age 0, indexed as age 1 in R code)
-!      # Recruits are a function of fishing mortality / selectivity ogive 
-!      InvF <- 1.0 / (fec_eq * N[6]) 
-!      Top <- 1.0 - (InvF - 1) / Apar
-!      if (Top > 0)
-! # The "K/sumN[6]" bit corresponds to the density-dependent component    
-! # So, sum(N[:]) needs to be same component as K (e.g. 1+ ; mature ; etc.)    
-! # Rescales up from single recruit to total number of recruits, given K     
-!       Recruit <- K / sum(N[6]) * (Top^(1/theta)) 
-!      else
-!       Recruit <- 0
-!    }  
-    
-    return
-  end function calc_recruit_F
+  return
+end function calc_recruits_at_F 
   
 !-----------------------------------------------------------------------------------------
   subroutine assign_par_vectors(a_r, a_m, a_t, age_x, S_adult, S_juv, S_age, selectivity_age, prop_mat_age)
@@ -245,6 +181,55 @@ MODULE initialize_pop
     
     return
   end subroutine calc_NPR_age   
+  
+!-----------------------------------------------------------------------------------------
+  subroutine calc_NPR_age_dd(f_rate, N_recruits, N_age_tmp, sum_1plus, sum_mature, NPR_sum_recd, NPR_sum_unrecd)
+!-----------------------------------------------------------------------------------------    
+! Do numbers-per-recruit calculations (NPR). 
+! Used to calculate the unexploited and exploited stable age-structure in the first year of the projections                 
+!  This version of this function takes as an argument, a_d, the age from which density dependence (DD) is assumed to act.
+!  For example, if a_d = 1, DD is a function of the age 1+ component of the population. 
+!-----------------------------------------------------------------------------------------
+    real(kind = 8), intent(in) :: f_rate                ! Human caused mortality rate
+    real(kind = 8), intent(in) :: N_recruits            ! Female recruits that are age zero (female calves) for NPR calcs and Initial_F()
+    real(kind = 8), intent(inout) :: N_age_tmp(0:age_x) ! Numbers at age vector   
+    real(kind = 8), intent(out) :: sum_1plus            ! Size of 1+ component 
+    real(kind = 8), intent(out) :: sum_mature           ! Size of mature component 
+    real(kind = 8), intent(out) :: NPR_sum_recd, NPR_sum_unrecd 
+    real(kind = 8) :: prop_N_age(0:age_x)               ! Proportion at age : sum(prop_NPR) = 1.0
+    real(kind = 8) :: N_age_mat(0:age_x)                ! Numbers at age per that are mature
+    real(kind = 8) :: N_age_immat(0:age_x)              ! Numbers at age per that are immature
+    real(kind = 8) :: sum_N_age                         ! The sum of numbers across ages        
+    integer(kind = 4) :: ii                             ! Counter for looping over ages
+! Initialize to number of age zero recruits
+    N_age_tmp = 0.0d0
+    sum_1plus = 0.0d0
+    sum_mature = 0.0d0
+
+! Fraction of female offspring per recruit, assuming 50:50 sex ratio at birth
+    N_age_tmp(0) = N_recruits    
+
+! NPR calculations from Age 1 to Age x-1
+    do ii = 1, (age_x - 1)                                              
+        N_age_tmp(ii) = N_age_tmp(ii - 1) * S_age(ii - 1)                       ! Subtract natural mortality 
+        N_age_tmp(ii) = N_age_tmp(ii) * (1 - selectivity(ii - 1) * f_rate)      ! Subtract any human caused mortality 
+    end do
+! Calculate numbers in the plus-group        
+    N_age_tmp(age_x) = N_age_tmp(age_x - 1) * S_age(age_x - 1)                  ! Natural mortality into plus-group
+    N_age_tmp(age_x) = N_age_tmp(age_x) * (1 - selectivity(age_x - 1) * f_rate) ! Human caused mortality into plus-group         
+    N_age_tmp(age_x) = N_age_tmp(age_x) / (1 - S_age(age_x) * (1 - selectivity(age_x) * f_rate)) ! Plus-group mortality
+! Note these are vectorized operations below 
+    N_age_mat = N_age_tmp * prop_mat_age          ! Mature females
+    N_age_immat = N_age_tmp * (1 - prop_mat_age)  ! Numbers immature at age per recruit
+    sum_1plus = sum(N_age_tmp(1 : age_x))         ! Keep track of one_plus component (females)
+    sum_mature = sum(N_age_mat)                   ! Sum mature females per female recruit
+    sum_N_age = sum(N_age_tmp)                    ! Sum across ages in NPR vector
+    prop_N_age = N_age_tmp / sum_N_age            ! Proportions at each age : sum(prop_N_age) = 1.0
+    NPR_sum_recd = sum(N_age_tmp(a_r : age_x))    ! Numbers recruited per recruit
+    NPR_sum_unrecd = sum(N_age_tmp(0 : a_r - 1))  ! Numbers un-recruited per recruit
+    
+    return
+  end subroutine calc_NPR_age_dd 
   
 !-----------------------------------------------------------------------------------------
   function Initial_F(f_init) result(objf_f_init)
