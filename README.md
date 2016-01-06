@@ -17,11 +17,9 @@ This project is funded by the [U.S. Western Pacific Fisheries Management Council
 
 ## Compiling the Fortran code under Mac OS X
 1. At least some versions of Mac OS X come with the gfortran (v4.2) compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
-
 ```shell
 gfortran -v
 ``` 
-
 2. If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
 ```shell
 Using built-in specs.
@@ -30,24 +28,19 @@ Configured with: /Builds/unix/gcc/gcc-4.2/configure --prefix=/usr/local --mandir
 Thread model: posix
 gcc version 4.2.3
 ```
-
 3. If you get an error message (e.g. the `gfortran` command can not be found), try installing Apple's XCode command-line tools by typing:
 ```shell
 xcode-select --install
 ```
-
 4. Then re-type the `gfortran` command. If that doesn't work, you'll need to install gfortran. Links and instructions can be found at: http://hpc.sourceforge.net/
-
 5. Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository. You can use the `cd` terminal command to change directories if you need.
 ```shell
 cd Type-your-working-directory-here
 ```
-
 6. Next, use this command to compile the Fortran code:
 ```shell
 gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 -o main -fbounds-check -framework accelerate 
 ```
-
 7. Once everything compiles, you can run the program by typing:
 ```shell
 ./main
@@ -57,27 +50,20 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 Windows doesn't come with gfortran pre-installed. Nevertheless, it's worth double checking that it hasn't been installed at some point in the past (perhaps bundled-in with another installation). 
 
 1. Open the command prompt and type: 
-
 ```shell
 gfortran --version
 ```
-
 2. If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
-
 ```shell
 GNU Fortran (GCC) 4.7.0 20111220 (experimental)
 Copyright (C) 2011 Free Sofware Foundation, Inc.
 ```
-
 3. If you get an error message (e.g. the `gfortran` command can not be found), download MinGW from: http://sourceforge.net/projects/mingw
-
 4. Follow the installation steps in this video: https://www.youtube.com/watch?v=oVfAU1ziOjg
-
 5. Next, use this command to compile the Fortran code:
 ```shell
 gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 liblapack.a libblas.a -o main 
 ```
-
 7. Once everything compiles, you can run the program by typing:
 ```shell
 main
