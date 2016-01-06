@@ -45,7 +45,7 @@ program main
   use Generate_random_numbers_module ! Determine if seed for RNG is user defined (for reproducible results) or if seed is based on CPU clock (for different psuedo random variates each time program runs): Generate_random_numbers_module.f90
   use PBR_Errorcheck_module          ! Contains function 'error_check_input' to do error checking on input values [Beta]
   use eigen_module                   ! Contains calls to DGEEV for calculating the eigenvalues and eigenvectors of the projection matrix
-!  use brent_mod
+  use brent_mod
 !---> Turns off implicit typing by Fortran; all variables must be explicitly declared by type
   implicit none 
 !---> Constant parameters
@@ -102,7 +102,7 @@ program main
   real(kind = 8) :: NPR_sum_unrecd                       ! Total number of unrecruited animals per recruit
   real(kind = 8) :: objf_lambda                          ! Objective function for finding juvenile survival that results in R_max
   real(kind = 8) :: objf_f_init                          ! Objective function for finding f_init resulting in stable age structure
-  real(kind = 8) :: brent                                ! Function brent() :: file = Brent.f90 
+!  real(kind = 8) :: brent                                ! Function brent() :: file = Brent.f90 
   real(kind = 8) :: lambda                               ! Dominant real eigen value of the transition matrix
   integer(kind = 4) :: io_error                          ! Error flag for checking initial values in input.par
   integer(kind = 4) :: sim_ii, ii, jj, aa, ss, yr        ! Counters for indexing loops  
@@ -452,9 +452,9 @@ program main
           call calc_n_hat(tier = tier, &
                           yr = yr, &
                           n_hat_yr_in = n_hat_yr_sim(:, sim_ii), &
-                          cv_n_in = cv_n, &
-                          n_hat_out = n_tier_yr_sim(yr, sim_ii), &
-                          cv_n_out = cv_n_tier_out)
+                          cv_n_in     = cv_n, &
+                          n_hat_out   = n_tier_yr_sim(yr, sim_ii), &
+                          cv_n_out    = cv_n_tier_out)
        
 ! Calculate N_min -------------------------------------------------------------		  		  
           N_min_yr_sim(yr, sim_ii) = calc_n_min(n_hat = n_tier_yr_sim(yr, sim_ii), &
@@ -595,19 +595,24 @@ program main
 ! *
 ! TODO : Could minimize summing below, e.g. replace with N_plus(yr, ii, sim_ii) = stock size summed over areas
 ! *     
-        if (dd_component .eq. "1") then  
-          if (ii == 1) then   
-            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
-          else if (ii == 2) then
-            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
-          end if
-        else if (dd_component .eq. "M") then  
-          if (ii == 1) then   
-            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
-          else if (ii == 2) then
-            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
-          end if
+        if (ii == 1) then   
+          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_d:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) 
+        else if (ii == 2) then
+          depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_d:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) 
         end if
+!        if (dd_component .eq. "1") then  
+!          if (ii == 1) then   
+!            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
+!          else if (ii == 2) then
+!            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(1:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
+!          end if
+!        else if (dd_component .eq. "M") then  
+!          if (ii == 1) then   
+!            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+
+!          else if (ii == 2) then
+!            depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, :, 2:4, ii, yr, sim_ii)) / k_1plus(ii) ! In terms of ages 1+ 
+!          end if
+!        end if
 
         
         depl_yr_stock_sim(yr, ii, sim_ii) = depl_yr_stock(yr, ii) ! keep track of annual depletion by simulation            
