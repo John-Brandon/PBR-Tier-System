@@ -1,4 +1,4 @@
-Brief file descriptions: PBR-Tier-System
+File descriptions: PBR-Tier-System
 ===============
 
 ## Fortran Files
