@@ -43,7 +43,7 @@ n_bias          1.0     # Bias in abundance estimates (1.0 = no bias; > 1.0 = es
 r_bias          1.0     # Bias in R_max (1.0 = no bias; if < 1.0 then true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
 cv_n_true       0.2     # Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
 tier            2       # Data tier (Tier 2 = Standard PBR approach of using only last estimate of abundance)
-n_yrs_avg       99      # Window of years to average across (e.g. n_yrs_avg = 9 would average two abundance estimates if survey interval = 8 yrs)
+n_yrs_avg       1       # Window of years to average across (e.g. n_yrs_avg = 9 would average two abundance estimates if survey interval = 8 yrs)
 determ_pbr      N       # N = Stochastic human caused mortality; Y = Deterministic (e.g., equal exactly to PBR or some fraction of abundance) 
 prop_catch_fem  0.50    # Fraction of catch that is composed of females
 F_rate          0.01    # Constant fishing mortality rate (used for debugging MNPL as function of theta, selectivity ogive etc.)
