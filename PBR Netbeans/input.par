@@ -10,7 +10,7 @@ yr_max          100     # Number of years to project over
 surv_freq       4       # Interval (yrs) between abundance surveys : Wade (1998) trial 6
 k_1plus(1)      10000   # Carrying capacity for stock i = 1
 k_1plus(2)      10000   # Carrying capacity for stock i = 2
-cv_n            0.200   # CV(N_stock 1) , will be transformed to the standard deviation in log-space
+cv_n            0.2     # CV(N_stock 1) , will be transformed to the standard deviation in log-space
 cv_mortality(1) 0.30    # Variability in mortality for stock 1, used to generate random normal deviate with mean = PBR
 cv_mortality(2) 0.30    # Variability in mortality for stock 2, used to generate random normal deviate with mean = PBR
 theta           1.0     # Density dependence shape parameter
@@ -19,11 +19,12 @@ F_r(1)          1.0     # Base case recovery factor for stock 1
 F_r(2)          1.0     # Base case recovery factor for stock 2
 init_depl(1)    0.3     # Initial depletion for stock 1 (Age 1+ abundance as a fraction of 1+ carrying capacity)
 init_depl(2)    0.3     # Initial depletion for stock 2 (Age 1+ abundance as a fraction of 1+ carrying capacity)
-lower_tail      0.200   # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
+lower_tail      0.20    # Percentile of log-normal distribution, used to calculate N.min, given CV(N)
 b_max           0.5     # Maximum birth rate (in the absence of density dependence)
 b_sex_ratio     0.50    # Sex ratio at birth
 S_adult         0.980   # Adult (mature) survival rate
 S_juv           0.75    # Juvenile (immature) survival rate
+a_d             1       # Density dependence acts on (a_d:age_x) component, e.g. if a_d = 1, then DD on 1+ component
 a_t             5       # Age at transition to mature survival rate
 a_m             5       # Age at sexual maturity  
 age_x           5       # Plus-group (self-loop) age
@@ -40,9 +41,9 @@ omega_4         0.0     # Relative vulnerability of animals in area 4 (independe
 m_bias          1.0     # Bias in mortality estimates (1.0 = no bias; > 1.0 = estimated mortality less than actual mortality) : Wade (1998) trial 1
 n_bias          1.0     # Bias in abundance estimates (1.0 = no bias; > 1.0 = estimated abundance more than actual abundance) : Wade (1998) trial 2
 r_bias          1.0     # Bias in R_max (1.0 = no bias; if < 1.0 then true R_max is less than assumed by default PBR value) : Wade (1998) trial 3
-cv_n_true       0.200   # Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
+cv_n_true       0.2     # Actual CV of abundance (Eqn 3) Wade (1998) used to generate N_hat : Wade (1998) trial 4
 tier            2       # Data tier (Tier 2 = Standard PBR approach of using only last estimate of abundance)
-n_yrs_avg       9       # Window of years to average across (e.g. n_yrs_avg = 9 would average two abundance estimates if survey interval = 8 yrs)
+n_yrs_avg       99      # Window of years to average across (e.g. n_yrs_avg = 9 would average two abundance estimates if survey interval = 8 yrs)
 determ_pbr      N       # N = Stochastic human caused mortality; Y = Deterministic (e.g., equal exactly to PBR or some fraction of abundance) 
 prop_catch_fem  0.50    # Fraction of catch that is composed of females
 F_rate          0.01    # Constant fishing mortality rate (used for debugging MNPL as function of theta, selectivity ogive etc.)
