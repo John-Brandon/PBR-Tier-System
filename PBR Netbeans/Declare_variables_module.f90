@@ -34,6 +34,7 @@ MODULE Declare_variables_module
     real(kind = 8) :: b_sex_ratio       ! Sex ratio at birth, in terms of female calves per female (i.e. 0.75 -> 3/4 calves are female)
     real(kind = 8) :: s_adult           ! Adult survival rate
     real(kind = 8) :: s_juv             ! Juvenile survival rate
+    integer(kind = 4) :: a_d            ! Density dependence acts on (a_d:age_x) component, e.g. if a_d = 1, then DD on 1+ component
     integer(kind = 4) :: a_t            ! Age at transition to adult survival 
     integer(kind = 4) :: a_m            ! Age at sexual maturity  
     integer(kind = 4) :: age_x          ! Age at which individuals enter the 'plus-group' (identical for each stock at present)    
@@ -54,7 +55,7 @@ MODULE Declare_variables_module
     character determ_pbr*1              ! N = Interannual stochastic human caused mortality; Y = Deterministic (e.g. equal exactly to PBR or some fraction therein) 
     real(kind = 8) :: prop_catch_fem    ! Proportion of catch that is female
     real(kind = 8) :: F_rate            ! Constant fishing mortality rate (DEBUGGING)
-    character dd_component*1
+!    character dd_component*1
 !====== +++ === === +++ === === +++ === ! End variables read from input.par
 !====== +++ === === +++ === === +++ === ! These are probably useful also as global variables     
     real(kind = 8), allocatable :: selectivity(:)   ! Selectivity at age (identical for each stock at present)  
