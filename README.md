@@ -1,12 +1,12 @@
 # Welcome to the PBR Tier System Code Repository
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. This allows for a range of management strategy evaluations to be performed. 
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. Further, the code allows for a tier approach, depending on data availability.   This allows for a range of management strategy evaluations (Tier System) to be performed. 
 
-The Fortran code files are located in the `PBR Netbeans` folder. Additionally, R code is provided, as an example work-flow, for running trials as part of a management strategy evaluation for a single stock PBR Tier System.  <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The Readme.md file in that folder</a> contains descriptions for the code files. 
+The Fortran code files are located in the `PBR Netbeans` folder. Additionally, R code is provided, as an example work-flow, for running trials as part of a management strategy evaluation for a single stock PBR Tier System.  <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The Readme.md file in that folder</a> contains an overview description of each code file.  
 
 The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Instructions are provided below for compiling the Fortran code using the gfortran compiler. 
 
 ### Funding and Contributors
-This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. [John R. Brandon](https://www.linkedin.com/in/john-brandon-b5690a26), [Andr&eacute; E. Punt, U.W.](https://fish.uw.edu/faculty/andre-punt/), Paula Moreno (U.S.M), and Randall R. Reeves (Okapi Wildlife Assoc.) are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
+This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. [John R. Brandon](https://www.linkedin.com/in/john-brandon-b5690a26), [Andr&eacute; E. Punt, U.W.](https://fish.uw.edu/faculty/andre-punt/), Paula Moreno (U.S.M), and Randall R. Reeves (Okapi Wildlife Assoc.) are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through the [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
 
 ## Compiling the Fortran code under Mac OS X
 (1). Recent versions of Mac OS X have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
@@ -31,7 +31,7 @@ xcode-select --install
 ```shell
 cd Your-working-directory-here
 # e.g.
-# cd ~/PBR-Tier-System-master/PBR Netbeans
+# cd ~/PBR-Tier-System-master/PBR\ Netbeans
 ```
 (6). Next, use this command to compile the Fortran code:
 ```shell
