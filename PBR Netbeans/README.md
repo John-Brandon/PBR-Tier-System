@@ -3,37 +3,37 @@ Brief file descriptions: PBR-Tier-System
 
 ## Fortran Files
 
-  1. **main.f90** 
+1. **main.f90** 
   * This is the main program file. At the top of the file are a list of "use" statements. The use statements include the following modules of code: 
 
-  2. **Declare_variables_module.f90**  
+2. **Declare_variables_module.f90**  
   * Module containing variable declarations, which are potentially global in scope.
 
-  3. **PBR_FileIO_Module.f90**  
+3. **PBR_FileIO_Module.f90**  
   * Module containing file input / output routines.
 
-  4. **PBR_Errorcheck_module.f90**  
+4. **PBR_Errorcheck_module.f90**  
   * Module for error checking input file. 
 
-  5. **Initialize_pop_module.f90**  
+5. **Initialize_pop_module.f90**  
   * Module for initializing age structure.
 
-  6. **BRENT.f90**  
+6. **BRENT.f90**  
   * Code for finding a root using Brent's method (Press et al. Num Recipes).
 
-  7. **PBR_calcs_module.f90**  
+7. **PBR_calcs_module.f90**  
   * Module containing routines for calculating PBR.
 
-  8. **A_Random_module.f90**  
+8. **A_Random_module.f90**  
   * Module that seeds random number generator (given user input).
 
-  9. **Generate_random_numbers_module.f90**  
+9. **Generate_random_numbers_module.f90**  
   * Module with random number generating procedures.
 
-  10. **Eigen_module.f90**  
+10. **Eigen_module.f90**  
   * Module with wrapper functions for eigen analysis (calculating lambda_max).
 
-  11. **input.par**  
+11. **input.par**  
   * __This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials.__. 
 
 ## R Files 
