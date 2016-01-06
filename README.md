@@ -5,14 +5,8 @@ The code files are located in the `PBR Netbeans` folder. <a href="https://github
 
 The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Instructions are provided below for compiling the Fortran code using the gfortran compiler. 
 
-* For instructions on compiling the Fortran code under Mac OS X, [please see below](#compiling-the-fortran-code-under-mac-os)
-
-* For instructions on compiling the Fortran code under Windows, [please see below](#compiling-the-fortran-code-under-windows)
-
-Links are provided at the top of this page to view the files in this repository, as well as to download the files therein. 
-
 ### Funding and Contributors
-This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt](http://fish.washington.edu/people/punt/index.html), Paula Moreno and Randall R. Reeves are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
+This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. John R. Brandon, [Andr&eacute; E. Punt, U.W.](http://fish.washington.edu/people/punt/index.html), Paula Moreno (U.S.M), and Randall R. Reeves (Okapi Wildlife Assoc.) are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
 
 
 ## Compiling the Fortran code under Mac OS X
