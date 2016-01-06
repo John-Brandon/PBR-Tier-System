@@ -49,22 +49,22 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 ## Compiling the Fortran code under Windows
 Windows doesn't come with gfortran pre-installed. Nevertheless, it's worth double checking that it hasn't been installed at some point in the past (perhaps bundled-in with another installation). 
 
-1. Open the command prompt and type: 
+(1). Open the command prompt and type: 
 ```shell
 gfortran --version
 ```
-2. If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
+(2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
 ```shell
 GNU Fortran (GCC) 4.7.0 20111220 (experimental)
 Copyright (C) 2011 Free Sofware Foundation, Inc.
 ```
-3. If you get an error message (e.g. the `gfortran` command can not be found), download MinGW from: http://sourceforge.net/projects/mingw
-4. Follow the installation steps in this video: https://www.youtube.com/watch?v=oVfAU1ziOjg
-5. Next, use this command to compile the Fortran code:
+(3). If you get an error message (e.g. the `gfortran` command can not be found), download MinGW from: http://sourceforge.net/projects/mingw
+(4). Follow the installation steps in this video: https://www.youtube.com/watch?v=oVfAU1ziOjg
+(5). Next, use this command to compile the Fortran code:
 ```shell
 gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 liblapack.a libblas.a -o main 
 ```
-7. Once everything compiles, you can run the program by typing:
+(7). Once everything compiles, you can run the program by typing:
 ```shell
 main
 ```
