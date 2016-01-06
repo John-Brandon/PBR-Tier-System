@@ -59,6 +59,7 @@ module PBR_FileIO_Module
        read (input_file, 802) b_sex_ratio       
        read (input_file, 802) S_adult
        read (input_file, 802) S_juv
+       read (input_file, 801) a_d       
        read (input_file, 801) a_t       
        read (input_file, 801) a_m
        read (input_file, 801) age_x
@@ -81,7 +82,7 @@ module PBR_FileIO_Module
        read (input_file, 804) determ_pbr
        read (input_file, 802) prop_catch_fem    ! Proportion of catch that is female
        read (input_file, 802) F_rate ! Constant fishing mortality rate (DEBUGGING)
-       read (input_file, 804) dd_component
+!       read (input_file, 804) dd_component
 ! Output to screen for checking
        write(*,*) "cseed: ", cseed ! DEBUGGING
        write(*,*) "iseed: ", iseed ! DEBUGGING
@@ -100,7 +101,8 @@ module PBR_FileIO_Module
        write(*,*) "LOWER_TAIL: ", LOWER_TAIL
        write(*,*) "b_max: ", b_max
        write(*,*) "S_adult: ", S_adult
-       write(*,*) "S_juv: ", S_juv       
+       write(*,*) "S_juv: ", S_juv 
+       write(*,*) "a_t: ", a_d
        write(*,*) "a_t: ", a_t
        write(*,*) "a_m: ", a_m
        write(*,*) "age_x: ", age_x
@@ -123,7 +125,7 @@ module PBR_FileIO_Module
        write(*,*) "determ_pbr: ", determ_pbr
        write(*,*) "prop_catch_fem: ", prop_catch_fem
        write(*,*) "F_rate: ", F_rate
-       write(*,*) "dd_component: ", dd_component
+!       write(*,*) "dd_component: ", dd_component
        
        close(input_file)
        
