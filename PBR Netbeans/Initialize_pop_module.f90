@@ -233,7 +233,7 @@ end function calc_recruits_at_F
   end subroutine calc_NPR_age_dd 
   
 !-----------------------------------------------------------------------------------------
-  function Initial_F(f_init) result(objf_f_init)
+ real(kind = 8) function Initial_F(f_init) result(objf_f_init)
 !-----------------------------------------------------------------------------------------
 ! Given numbers per-recruit at equilibrium - apply initial human caused mortality rate (F_init)
 ! Global Vars accessed:    
@@ -258,7 +258,7 @@ end function calc_recruits_at_F
     real(kind = 8) :: rec_init              ! Initial recruitment conditioned on Finit (in terms of females)
     real(kind = 8) :: pred_rec              ! Predicted recruitment, used when finding f_init at the root of objf_f_init()
     real(kind = 8) :: initial_oneplus       ! Initial size of the 1+ component per female recruit (used in scaling)
-    real(kind = 8) :: objf_f_init           ! Objective function to be minimized in finding root at f_init
+!    real(kind = 8) :: objf_f_init           ! Objective function to be minimized in finding root at f_init
     real(kind = 8) :: NPR_sum_recd, NPR_sum_unrecd
 ! Initialize
     temp_mature = 0.d0    
@@ -354,7 +354,7 @@ end function calc_recruits_at_F
 !       Eigen() is a wrapper for DGEEV(), the LAPACK (Linear Algebra PACKage) procedure for eigenvalues/vectors from a non-symmetric matrix.
 !       See also, www.netlib.org            
 !-----------------------------------------------------------------------------------------
-    real(kind = 8), intent(in) :: s_juv_tmp         ! Juvenile survival rate
+    real(kind = 8), intent(inout) :: s_juv_tmp         ! Juvenile survival rate
     real(kind = 8) :: objf_lambda  ! Objective function for lambda. The squared difference between target and calculated
     real(kind = 8) :: transition_matrix_tmp(0 : age_x , 0 : age_x) ! Temp transition matrix
     real(kind = 8) :: S_age_tmp(0 : age_x)          ! Temporary vector of survival rates at age
