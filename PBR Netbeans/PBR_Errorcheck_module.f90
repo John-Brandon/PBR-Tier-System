@@ -20,10 +20,10 @@ MODULE PBR_Errorcheck_module
 !  This error checking code is a work in progress. It is certainly not yet as comprehensive as it could / should be.     
 !====== +++ === === +++ === === +++ === ===    
         error_check_input = 0
-
+        
         if (a_d .ne. 1) then      ! Check density dependent component
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-          print *, "ERROR : Code only currently supports density dependence on age 1+ (i.e. a_d = 1). Check input file."
+          print *, "ERROR : Currently code only supports density dependence on age 1+ (i.e. a_d = 1). Check input file."
           error_check_input = -9
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
@@ -67,6 +67,12 @@ MODULE PBR_Errorcheck_module
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
           print *, "ERROR : Condition (0 < tier < 3) not met. Check input file."
           error_check_input = -6            
+          print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        end if
+        
+        if (tier .eq. 3 .and. n_yrs_avg > 8) then
+          print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          print *, "ERROR : Tier 3 can not average over more than 8 years. Check input file. Change (n_yrs_avg)"
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
