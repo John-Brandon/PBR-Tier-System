@@ -1,7 +1,7 @@
 # Welcome to the PBR Tier System Code Repository
 This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. This allows for a range of management strategy evaluations to be performed. 
 
-The code files are located in the `PBR Netbeans` folder. <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The Readme.md file in that folder</a> contains descriptions for the code files, including R code which is provided as an example work-flow for running trials as part of a management strategy evaluation for a single stock PBR Tier System.  
+The code files are located in the `PBR Netbeans` folder. <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The Readme.md file in that folder</a> contains descriptions for the code files. Additionally, R code is provided, as an example work-flow, for running trials as part of a management strategy evaluation for a single stock PBR Tier System.  
 
 The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Instructions are provided below for compiling the Fortran code using the gfortran compiler. 
 
