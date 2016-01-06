@@ -16,7 +16,7 @@ This project is funded by the [U.S. Western Pacific Fisheries Management Council
 
 
 ## Compiling the Fortran code under Mac OS X
-(1). At least some versions of Mac OS X come with the gfortran (v4.2) compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
+(1). Recent versions of Mac OS X have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
 ```shell
 gfortran -v
 ``` 
@@ -32,11 +32,11 @@ gcc version 4.2.3
 ```shell
 xcode-select --install
 ```
-(4). Then re-type the `gfortran` command. If that doesn't work, you'll need to install gfortran. Links and instructions can be found at: http://hpc.sourceforge.net/
+(4). Then re-type the `gfortran -v` command. If that doesn't work, you'll need to install gfortran. Links and instructions can be found at: http://hpc.sourceforge.net/
 
-(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository. You can use the `cd` terminal command to change directories if you need.
+(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files (e.g. ~/PBR-Tier-System-master/PBR Netbeans) downloaded from this repository. You can use the `cd` terminal command to change directories.
 ```shell
-cd Type-your-working-directory-here
+cd Your-working-directory-here
 ```
 (6). Next, use this command to compile the Fortran code:
 ```shell
@@ -63,7 +63,7 @@ Copyright (C) 2011 Free Sofware Foundation, Inc.
 
 (4). Follow the installation steps in this video: https://www.youtube.com/watch?v=oVfAU1ziOjg
 
-(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository. You can use the `cd` terminal command to change directories if you need.
+(5). Assuming you have gfortran installed, the next step is to make sure that you are in the working directory with the Fortran files downloaded from this repository (e.g. C:\PBR-Tier-System-master\PBR Netbeans). You can use the `cd` terminal command to change directories if you need.
 ```shell
 cd Type-your-working-directory-here
 ```
