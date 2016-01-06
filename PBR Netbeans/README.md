@@ -34,7 +34,7 @@ Brief file descriptions: PBR-Tier-System
   * Module with wrapper functions for eigen analysis (calculating lambda_max).
 
 11. **input.par**  
-  * __This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials.__. 
+  * This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials. 
 
 ## R Files 
 
