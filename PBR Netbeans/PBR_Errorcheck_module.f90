@@ -70,9 +70,10 @@ MODULE PBR_Errorcheck_module
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
-        if (tier .eq. 3 .and. n_yrs_avg > 8) then
+        if (tier .eq. 3 .and. n_yrs_avg .gt. 8) then
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
           print *, "ERROR : Tier 3 can not average over more than 8 years. Check input file. Change (n_yrs_avg)"
+          error_check_input = -6
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
