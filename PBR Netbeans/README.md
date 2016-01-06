@@ -31,7 +31,7 @@ File descriptions: PBR-Tier-System
   * Module with random number generating procedures.
 
 10. **Eigen_module.f90**  
-  * Module with wrapper functions for eigen analysis (calculating lambda_max).
+  * Module with wrapper functions for eigen analysis (calculating R_max).
 
 11. **input.par**  
   * This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials. 
@@ -47,7 +47,6 @@ Typical `source()` order for running scripts would be:
   
 2. **PBR_create_input_files.R**
   * See the Notes in the header comments for the naming convention of input files for each trial.
-  * Please note the comment regarding directory structure next to the initialization of the `code_dir` variable. This could be improved, but for now, it will require modification by the user to match where the code resides in their personal directories. 
 
 3. **PBR_batch.R**
   * Contains functions for running batches of simulations given lists of input file names. 
