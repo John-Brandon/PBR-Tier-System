@@ -51,8 +51,6 @@ Typical `source()` order for running scripts would be:
 
 3. **PBR_batch.R**
   * Contains functions for running batches of simulations given lists of input file names. 
-  * Note: These functions were developed to run under Mac OS X, and the `system()` calls would likely need to be modified under a different OS. 
-  * Future versions of these functions could be made more cross-platform friendly by making the `system()` calls conditional on the value returned from, for example `.Platform$OS.type`
 
 4. **PBR_fortran_output.R**
   * Contains functions for compiling depletion statistics and plotting. 
