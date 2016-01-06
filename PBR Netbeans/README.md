@@ -46,7 +46,7 @@ Typical `source()` order for running scripts would be:
   * The `write_inits()` function is relied on heavily for batching runs of simulations.
   
 2. **PBR_create_input_files.R**
-  * See the Notes in the header comments for the naming convention of input files for each trial.
+  * See the Notes in the header comments for the naming convention of files for each trial.
 
 3. **PBR_batch.R**
   * Contains functions for running batches of simulations given lists of input file names. 
