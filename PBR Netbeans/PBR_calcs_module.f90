@@ -372,7 +372,7 @@ module calcs
         
       case default ! Should never get here
         
-        print *, "ERROR IN TIER: SHOULD BE EITHER: 0, 1, 2 or 3"
+        print *, "ERROR IN TIER: SHOULD BE EITHER: 1, 2, 3, 4"
         
     end select 
               
