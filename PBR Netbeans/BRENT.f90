@@ -12,7 +12,7 @@ FUNCTION brent(ax,bx,cx,func,tol,xmin)
     INTERFACE
         FUNCTION func(x)   ! This is for Initial_F(), not very generic TODO: edit interface for generic function
         IMPLICIT NONE
-        REAL(kind = 8), INTENT(IN) :: x
+        REAL(kind = 8), INTENT(INOUT) :: x
         REAL(kind = 8) :: func
         END FUNCTION func
     END INTERFACE
