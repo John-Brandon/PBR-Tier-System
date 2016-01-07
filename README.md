@@ -9,11 +9,11 @@ The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://
 This project is funded by the [U.S. Western Pacific Fisheries Management Council](http://www.wpcouncil.org/about-us/). Drs. [John R. Brandon](https://www.linkedin.com/in/john-brandon-b5690a26), [Andr&eacute; E. Punt, U.W.](https://fish.uw.edu/faculty/andre-punt/), Paula Moreno (U.S.M), and Randall R. Reeves (Okapi Wildlife Assoc.) are collaborators. They are working together as [the Independent Advisory Team on marine mammal stock assessment] (http://www.usm.edu/gcrl/scemfis/marine.mammal.asssessment.team.php), with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The team is funded through the [Science Center for Marine Fisheries](http://scemfis.org/aboutus.html). The center is run under the [U.S. National Science Foundation's Industry and University Cooperative Research Program.](http://www.nsf.gov/eng/iip/iucrc/program.jsp) 
 
 ## Compiling the Fortran code under Mac OS X
-(1). Recent versions of Mac OS X have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
+(1). Recent versions of Mac OS X may have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
 ```shell
 gfortran -v
 ``` 
-(2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
+(2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5 (noting step 3):
 ```shell
 Using built-in specs.
 Target: i686-apple-darwin8
@@ -43,7 +43,7 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 ```
 
 ## Compiling the Fortran code under Windows
-Windows doesn't come with gfortran pre-installed. Nevertheless, it's worth double checking that it hasn't been installed at some point in the past (perhaps bundled-in with another installation). 
+Windows doesn't come with gfortran pre-installed. Nevertheless, it's worth double checking that it hasn't been installed at some point in the past (perhaps bundled-in with another installation).  
 
 (1). Open the command prompt and type: 
 ```shell
@@ -51,7 +51,7 @@ gfortran --version
 ```
 (2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
 ```shell
-GNU Fortran (GCC) 4.2
+GNU Fortran (GCC) 4.7 20111220 (experimental)
 Copyright (C) Free Sofware Foundation, Inc.
 ```
 (3). If you get an error message (e.g. the `gfortran` command can not be found), download MinGW from: http://sourceforge.net/projects/mingw
