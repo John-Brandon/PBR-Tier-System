@@ -38,9 +38,9 @@ File descriptions: PBR-Tier-System
 
 ## R Files 
 
-These files are included as an example work-flow for running trials as part of a management strategy evaluation. These files were developed under Mac OS 10.9.5. Some modification would be needed to run the batch scripts under Windows. They involve `system()` calls, which differ between operating systems. It is assumed that there is a compiled executable, named "main". 
+These files are included as an example work-flow for running trials as part of a management strategy evaluation. These files were developed under Mac OS 10.9.5. Some modification would be needed to run the batch scripts under Windows. They involve `system()` calls, which differ between operating systems. 
 
-The code in the **PBR_Fortran_controller.R** script will `source()` the functions in the other scripts. It will run batches of trials, compile depletion statistics and create plots of the simulation output. 
+The code in the **PBR_Fortran_controller.R** script will `source()` the functions in the other scripts. It will run batches of trials, compile depletion statistics and create plots of the simulation output. The batch functions assume that there is a compiled executable, named "main". 
 
 Further notes below:   
 
