@@ -1,7 +1,7 @@
 # Welcome to the PBR Tier System Code Repository
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided to control the batching of simulation trials, compile performance statistics and plot output.
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided which controls the batching of simulation trials, compiles performance statistics, and plots output.
 
-The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A full mathematical description is available here. 
+The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A full mathematical description of the operating model <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">is available here</a>
 
 This code allows for a tier system approach to management strategy evaluation. The PBR formula as evaluated by Wade (1998) makes use of only the most recent estimate of abundance, irrespective of its precision and the number of estimates available. A tier system would assign species or stocks to different tiers based on the availability and quality of data. Ultimately, a tier system approach would serve to optimize available information for each stock.
 
