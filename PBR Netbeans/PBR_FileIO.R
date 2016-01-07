@@ -1,11 +1,13 @@
 #----------------------------------------------------------------------------- #
+# Functions for file IO. 
 # Author: John R. Brandon
 # eMail:  jbrandon@gmail.com
 # Date :  Fall 2015
 # OS   :  Mac OS 10.9.5 (x86_64-apple-darwin10.8.0 (64-bit))
 # Language : R (ver 3.2.0 (2015-04-25) -- "Full of Ingredients")
 # IDE  : Rstudio v 0.99.484
-# Purpose: Functions for file IO.
+#
+# Notes: 
 # -Read values from the input.par file
 # -Write values to the input file. 
 #   The write_inits() function is relied on heavily for batching runs of simulations.

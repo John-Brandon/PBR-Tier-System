@@ -1,16 +1,17 @@
-#===#===#===#===#===#===#===#===#===#===#
-# Code to read Fortran output for PBR Tier System
-# Author : John R. Brandon 
-# Contact : jbrandon@gmail.com
-# Date : Aug 2015
-# Purpose : Read Fortran output file(s) for PBR Tier System
+#----------------------------------------------------------------------------- #
+# Code to read Fortran output file(s) for PBR Tier System
+# Author   : John R. Brandon
+# eMail    : jbrandon@gmail.com
+# Date     : Fall 2015
+# OS       : Mac OS 10.9.5
+# R version: 3.2.0 (2015-04-16)
 #
-# Notes: At present this R code is being used to visually check that Fortran output is making sense
-# Could compile and run the main program from R
+# Notes: 
+# - Could compile and run the main program from R
 # > compile_cmd = "gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 -o main -framework accelerate"
 # > system(compile_cmd) # Link and compile main program
 # > system("./main")    # Run main program
-#===#===#===#===#===#===#===#===#===#===#
+#----------------------------------------------------------------------------- #
 # detach(package:plyr) # Seems to be interferring with dplyr's group_by() function
 library(ggplot2)
 library(readr)

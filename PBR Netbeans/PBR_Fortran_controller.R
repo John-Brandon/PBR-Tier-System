@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------- #
-# Start from scratch -- this code should make reproducible examples
+# Code to run batches of trials, compile depletion statistics, and plot ouput
 # OS: Mac OS 10.10.4
 # R version 3.2.0 (2015-04-16)
 # Author: John R. Brandon
@@ -107,7 +107,7 @@ write_inits(par_name = "n_yrs_avg", par_val = formatC(8, format = "d"),
 source("PBR_create_input_files.R") # Create input files for each trial with two stocks (n = 72)
 lapply(X = cet_file_names, FUN = run_batch, n_sims = 100) # run cetacean trials
 
-# Store some results from Tier 3 (standard approach) ---------------------------
+# Store some results from Tier 3 (GAMMS approach) ------------------------------
 dat_cet_trial03_0A = read.table(file = "N_agg_Cet_0A.out", header = TRUE)
 dat_cet_trial03_0B = read.table(file = "N_agg_Cet_0B.out", header = TRUE)
 

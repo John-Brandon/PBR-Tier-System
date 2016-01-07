@@ -1,12 +1,15 @@
-#===#===#===#===#===#===#===#===#===#===#
+#----------------------------------------------------------------------------- #
 # Functions for running batches: PBR Tier System
-# OS: Mac OS 10.10.4
-# R version 3.2.0 (2015-04-16)
-# Author: John R. Brandon
+# Author   : John R. Brandon
+# eMail    : jbrandon@gmail.com
+# Date     : Fall 2015
+# OS       : Mac OS 10.9.5
+# R version: 3.2.0 (2015-04-16)
 #
+# Notes:
 # To compile the Fortran code on Mac OS:
 # gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 -o main -fbounds-check -framework accelerate
-#===#===#===#===#===#===#===#===#===#===#
+#----------------------------------------------------------------------------- #
 library(dplyr)
 library(ggplot2)
 library(tidyr)   # For function `seperate`: Split trial_id column into two columns with taxa and trial factors
