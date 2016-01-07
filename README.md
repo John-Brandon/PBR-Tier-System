@@ -1,5 +1,5 @@
 # Welcome to the PBR Tier System Code Repository
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided which controls the batching of simulation trials, compiles performance statistics, and plots output.
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided which: controls the batching of simulation trials; compiles performance statistics, and; plots output.
 
 The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A full mathematical description of the operating model <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">is available here</a>
 
