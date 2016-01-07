@@ -12,7 +12,6 @@
 # > system(compile_cmd) # Link and compile main program
 # > system("./main")    # Run main program
 #----------------------------------------------------------------------------- #
-# detach(package:plyr) # Seems to be interferring with dplyr's group_by() function
 library(ggplot2)
 library(readr)
 library(stringr)
@@ -34,7 +33,6 @@ mytheme_bw = theme_bw() + theme(axis.title.x = element_text(size = rel(1.5), vju
                                 panel.grid.minor.y = element_blank(),
                                 strip.text.x = element_text(size = 15), 
                                 strip.text.y = element_text(size = 15))
-#panel.grid.minor = element_line(colour = "gray")) # , plot.margin=unit(c(1,1,1,1),"cm")
 
 # ---------------------------------------------------------------------------- #
 ribbon_depletion_plot = function(n_traj = 25, default_data = TRUE, N_agg = NULL, stock_id = 1, title = FALSE){
@@ -100,9 +98,7 @@ ribbon_depletion_plot = function(n_traj = 25, default_data = TRUE, N_agg = NULL,
     plt + geom_hline(aes(yintercept = 0.50), colour = "blue", linetype = "dashed", lwd = 1.2)
   }
 }
-# ribbon_depletion_plot(n_traj = 30, default_data = FALSE, N_agg = "N_agg_Cet_1A.out", stock_id = 1)
-# ribbon_depletion_plot(n_traj = 30, default_data = FALSE, N_agg = "N_agg_Cet_1A.out", stock_id = 1)
-# read_inits("Cet_2A.txt")$ref
+
 # ---------------------------------------------------------------------------- #
 survey_plot_agg = function(sim_n, read_data = TRUE, N_agg = NULL, stock_id = 1){
 #
@@ -139,8 +135,6 @@ survey_plot_agg = function(sim_n, read_data = TRUE, N_agg = NULL, stock_id = 1){
     labs(x = "Year", y = "Abundance", title = trial_id ) + # "Abundance in Areas 1, 2, and 3"
     theme_bw() +  theme(legend.position="none") #theme(legend.position = c(0.1, 0.8))
 }
-# survey_plot_agg(sim_n = 0) # reference simulation with zero mortality 
-# survey_plot_agg(sim_n = 1) # first simulation
 
 # ---------------------------------------------------------------------------- #
 plot_depl_nmin = function(depl, title){
@@ -184,7 +178,6 @@ plot_depl_nmin2 = function(depl1, depl2, title){
   }
   title(title)
 }
-# plot_depl_nmin2(depl_matrix_cet0a_tier2, depl_matrix_cet0a_tier3, expression("Cetacean: "*CV[N]*" = 0.20"))
 
 # ---------------------------------------------------------------------------- #
 # "Zeh" style plots for depletion as function of N_min(lower_tail), cf Wade (1998) Fig 4.
@@ -214,9 +207,6 @@ plot_prb_variation = function(default_data = TRUE, N_agg = NULL, stock_id = 1){
   }
   
   tier_n = pars$tier - 1
-  
-  # sims_sample = sample(1:pars$n_sims, 25) # random sample of n_traj from set
-  # N_agg %<>% filter(., sim %in% sims_sample) # just a sample to plot
   
   N_agg %<>% filter(., stock == 1, n_hat_yr > 0, sim > 0)  
   
@@ -391,7 +381,6 @@ plot_2stock_depl = function(n_traj = 30, read_data = TRUE, N_agg = NULL){
   
   ggplot() +
   geom_line(data = N_agg_sims_sample, aes(x = yr, y = depl_yr_stock, group = interaction(sim, Stock), col = Stock)) +        
-  # geom_line(data = N_agg_sims_sample, aes(x = yr, y = depl_yr_stock, group = interaction(sim, Stock), col = Stock)) +    
   expand_limits(y = 0) + 
   scale_alpha_manual(values = c(0.50, 0.5)) +
   coord_cartesian(xlim = range(N_agg_sims$yr), ylim = c(0, 1.05)) +
@@ -402,14 +391,6 @@ plot_2stock_depl = function(n_traj = 30, read_data = TRUE, N_agg = NULL){
   scale_color_manual(values = c("blue", "red")) +
   geom_ribbon(data = percentiles, aes(x = yr, ymin = lower_5th, ymax = upper_95th, fill = Stock), alpha = 0.40) +
   scale_fill_manual(values = c("blue", "red")) #+ # Can set different colors here
-  # theme(legend.position="none")
-  # theme(legend.title=element_blank()) 
-#     scale_alpha_manual(values = c(0.50, 1.0)) +
-#     scale_size_manual(values = c(0.75, 1.0)) +     
-#     scale_linetype_manual(values = c(1, 1)) +          # Can set different line-types for ref_case (TRUE or FALSE)
-}
 
-# survey_plot_agg(sim_n = 0) # reference simulation with zero mortality 
-# plot_2stock_depl() # first simulation
-# plot_2stock_depl(read_data = FALSE, N_agg = "N_agg_Cet_8D.out") # first simulation
+}
 
