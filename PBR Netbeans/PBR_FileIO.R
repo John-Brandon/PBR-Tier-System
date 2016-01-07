@@ -1,18 +1,17 @@
-#====== +++ === === +++ === === +++ === === +++ === === +++ === === +++ === === +
+#----------------------------------------------------------------------------- #
 # Author: John R. Brandon
 # eMail:  jbrandon@gmail.com
 # Date :  Fall 2015
 # OS   :  Mac OS 10.9.5 (x86_64-apple-darwin10.8.0 (64-bit))
 # Language : R (ver 3.2.0 (2015-04-25) -- "Full of Ingredients")
 # IDE  : Rstudio v 0.99.484
-#====== +++ === === +++ === === +++ === === +++ === === +++ === === +++ === === +
-# Functions for file IO:
+# Purpose: Functions for file IO.
 # -Read values from the input.par file
 # -Write values to the input file. 
 #   The write_inits() function is relied on heavily for batching runs of simulations.
 # -Create a list of new files for a batch
 # -Check that files exist before running a batch
-#====== +++ === === +++ === === +++ === === +++ === === +++ === === +++ === === +
+#----------------------------------------------------------------------------- #
 
 # Read parameter values from input file ----------------------------------------
 read_inits = function(input_file = "input.par"){
@@ -27,6 +26,7 @@ read_inits = function(input_file = "input.par"){
   cv_mortality = rep(x = 0, times = 2)  # CV for mortality (mortality is stochastic)
   F_r = rep(x = 0, times = 2)           # Recovery factor
   init_depl = rep(x = 0, times = 2)     # Depletion in first year (initial abundance / carrying capacity)
+  vuln = rep(x = 0, times = 4)          # Relative vulnerability by area
 #====================================== # These vectors not read from input file, but it's convienient to initialize them here.
   sum_NPR_age = rep(x = 0, times = 2)   # Total numbers (summed across ages) per female recruit
   NPR_oneplus = rep(x = 0, times = 2)   # Total numbers (summed across ages aged 1+) per female recruit (note R indexing starts at 1, not zero, so this is sum(2:age_x))
@@ -73,28 +73,48 @@ read_inits = function(input_file = "input.par"){
   B_sex_ratio = as.numeric(par_df[20,2])
   S_adult = as.numeric(par_df[21,2])
   S_juv = as.numeric(par_df[22,2])
-  a_t = as.integer(par_df[23,2]) + 1   # Need to add one, as booking step, to be comparible with Fortran code,
-  a_m = as.integer(par_df[24,2]) + 1   #  because indexing has been defined to start at zero in Fortran.
-  age_x = as.integer(par_df[25,2]) + 1
-  a_r = as.integer(par_df[26,2]) + 1
+  
+  a_d = as.integer(par_df[23,2]) + 1   # Need to add one, as booking step, to be comparible with Fortran code,
+  a_t = as.integer(par_df[24,2]) + 1   # Need to add one, as booking step, to be comparible with Fortran code,
+  a_m = as.integer(par_df[25,2]) + 1   #  because indexing has been defined to start at zero in Fortran.
+  age_x = as.integer(par_df[26,2]) + 1
+  a_r = as.integer(par_df[27,2]) + 1
 
-  p_a1_s1 = as.numeric(par_df[27,2])
-  p_a2_s1 = as.numeric(par_df[28,2])
-  p_a2_s2 = as.numeric(par_df[29,2])
-  p_a3_s2 = as.numeric(par_df[30,2])
-  p_a4_s2 = as.numeric(par_df[31,2])
+  p_a1_s1 = as.numeric(par_df[28,2])
+  p_a2_s1 = as.numeric(par_df[29,2])
+  p_a2_s2 = as.numeric(par_df[30,2])
+  p_a3_s2 = as.numeric(par_df[31,2])
+  p_a4_s2 = as.numeric(par_df[32,2])
 
-# TODO : Update list with omega parameters
-# TODO : Update list with bias parameters e.g., m_bias, n_bias, r_bias etc.
+  vuln[1] = as.numeric(par_df[33,2])
+  vuln[2] = as.numeric(par_df[34,2])
+  vuln[3] = as.numeric(par_df[35,2])
+  vuln[4] = as.numeric(par_df[36,2])
+  
+  m_bias = as.numeric(par_df[37,2])
+  n_bias = as.numeric(par_df[38,2])
+  r_bias = as.numeric(par_df[39,2])
+  cv_n_true = as.numeric(par_df[40,2])
+  tier = as.integer(par_df[41,2])     
+  n_yrs_avg = as.integer(par_df[42,2])
+  
+  determ_pbr = par_df[43,2]
+  prop_catch_fem = as.numeric(par_df[44,2])
+  F_rate = as.numeric(par_df[45,2])
+  dd_component = par_df[46,2]
 
   par_ls = list(ref = ref, cseed = cseed, iseed = iseed, n_sims = n_sims, n_stocks = n_stocks,
                 yr_max = yr_max, surv_freq = surv_freq, KK = KK,
                 cv_n = cv_n, cv_mortality = cv_mortality, theta = theta,
                 R_max = R_max, F_r = F_r, init_depl = init_depl,
                 lower_tail = lower_tail, b_max = B_max, b_sex_ratio = B_sex_ratio,
-                S_adult = S_adult, S_juv = S_juv, a_t = a_t, a_m = a_m,
+                S_adult = S_adult, S_juv = S_juv, a_d = a_d, a_t = a_t, a_m = a_m,
                 age_x = age_x, a_r = a_r, p_a1_s1 = p_a1_s1, p_a2_s1 = p_a2_s1,
                 p_a2_s2 = p_a2_s2, p_a3_s2 = p_a3_s2, p_a4_s2 = p_a4_s2,
+                vuln = vuln, m_bias = m_bias, n_bias = n_bias, r_bias = r_bias,
+                cv_n_true = cv_n_true, tier = tier, n_yrs_avg = n_yrs_avg,
+                determ_pbr = determ_pbr, prop_catch_fem = prop_catch_fem, F_rate = F_rate,
+                dd_component = dd_component,
                 sum_NPR_age = sum_NPR_age, NPR_oneplus = NPR_oneplus, sum_NPR = sum_NPR)
 
   return(par_ls)
@@ -118,7 +138,6 @@ write_inits = function(par_name, par_val, infile, outfile){
   print(input_text[ii])
   writeLines(text = input_text, con = outfile)
 }
-
 
 # Create file list -------------------------------------------------------------
 create_file_list = function(n_trials, prefix){
