@@ -24,6 +24,14 @@
 #  4. cet_file_names is a list of input files by trial for cetaceans
 #      created in PBR_create_input_files.R (see also pin_ and all_file_names)
 #
+#  5. Assumes these packages are installed:
+#       ggplot2
+#       stringr
+#       readr
+#       tidyr
+#       magrittr
+#       dplyr 
+#
 #----------------------------------------------------------------------------- #
 rm(list = ls())  # clear workspace
 
