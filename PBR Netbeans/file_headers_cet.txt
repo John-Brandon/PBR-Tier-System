@@ -1,0 +1,72 @@
+MANAGEMENT PARAMETERS         CASE  Cet_0A
+Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_0B
+Base Case: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_0C
+Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_0D
+Base Case: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_1A
+Double Mortality: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_1B
+Double Mortality: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_1C
+Double Mortality: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_1D
+Double Mortality: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_2A
+Biased Abundance: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_2B
+Biased Abundance: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_2C
+Biased Abundance: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_2D
+Biased Abundance: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_3A
+Biased R_max: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_3B
+Biased R_max: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_3C
+Biased R_max: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_3D
+Biased R_max: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_4A
+Biased CV_N: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_4B
+Biased CV_N: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_4C
+Biased CV_N: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_4D
+Biased CV_N: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_5A
+Biased CV_M: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 1.20
+MANAGEMENT PARAMETERS         CASE  Cet_5B
+Biased CV_M: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 1.20
+MANAGEMENT PARAMETERS         CASE  Cet_5C
+Biased CV_M: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 1.20
+MANAGEMENT PARAMETERS         CASE  Cet_5D
+Biased CV_M: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 1.20
+MANAGEMENT PARAMETERS         CASE  Cet_6A
+surv_freq = 8 yr: CV_N = 0.20; R_max = 0.04; surv_freq = 8; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_6B
+surv_freq = 8 yr: CV_N = 0.80; R_max = 0.04; surv_freq = 8; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_6C
+surv_freq = 8 yr: CV_N = 0.20; R_max = 0.04; surv_freq = 8; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_6D
+surv_freq = 8 yr: CV_N = 0.80; R_max = 0.04; surv_freq = 8; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_7A
+theta = 0.53: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_7B
+theta = 0.53: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_7C
+theta = 0.53: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_7D
+theta = 0.53: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_8A
+Biased mortality & theta = 5.04: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_8B
+Biased mortality & theta = 5.04: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_8C
+Biased mortality & theta = 5.04: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
+MANAGEMENT PARAMETERS         CASE  Cet_8D
+Biased mortality & theta = 5.04: CV_N = 0.80; R_max = 0.04; surv_freq = 4; cv_m = 0.30
