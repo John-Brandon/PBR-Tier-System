@@ -39,7 +39,7 @@ rm(list = ls())  # clear workspace
 file.copy(from = "input.par", to = "input_par_copy.txt", overwrite = TRUE) 
 
 # Create input files for trials and load helper functions ----------------------
-source(file = "PBR_fortran_output.R")
+source(file = "PBR_fortran_output.R") # May throw warnings: incomplete final lines
 
 # Batch run of all cetacean trials ---------------------------------------------
 lapply(X = cet_file_names, FUN = run_batch, n_sims = 100) # run all trials
