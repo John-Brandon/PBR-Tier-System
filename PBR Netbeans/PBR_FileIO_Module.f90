@@ -22,7 +22,7 @@ module PBR_FileIO_Module
        integer :: input_file
        data input_file /7/   ! move this into Declare_variables_module?
        
-       open (input_file, file = 'INPUT.PAR', status = 'OLD')
+       open (input_file, file = 'input.par', status = 'OLD')
 
 801    FORMAT(16X, I6) ! move these into Format_module?
 802    FORMAT(16X, F8.0)
