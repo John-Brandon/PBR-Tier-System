@@ -13,14 +13,14 @@
 # > system("./main")    # Run main program
 #----------------------------------------------------------------------------- #
 library(ggplot2)
-library(readr)
+# library(readr)
 library(stringr)
 library(tidyr)
 library(magrittr)
 library(dplyr)
 
 # Fetch parameters from input.par file
-source(file = "PBR_Batch.R") # Reads the same input file being used by Fortran code
+source(file = "PBR_batch.R") # Reads the same input file being used by Fortran code
 
 # Theme for plotting
 mytheme_bw = theme_bw() + theme(axis.title.x = element_text(size = rel(1.5), vjust = 0.0), 
