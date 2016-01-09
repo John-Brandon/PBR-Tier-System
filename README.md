@@ -5,7 +5,7 @@ The operating model can mimick the dynamics of either a single stock, or two sto
 
 This code allows for a tier system approach to management strategy evaluation. The PBR formula as evaluated by Wade (1998) makes use of only the most recent estimate of abundance, irrespective of its precision and the number of estimates available. A tier system would assign species or stocks to different tiers based on the availability and quality of data. Ultimately, a tier system approach would serve to optimize available information for each stock.
 
-The Fortran and R code files are located in the `PBR Netbeans` folder. <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The Readme.md file in that folder</a> contains an overview description of each code file.  
+The Fortran and R code files are located in the `PBR Netbeans` folder. <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The README.md file in that folder</a> contains an overview description of each code file and notes on running the R scripts.  
 
 The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Instructions are provided below for compiling the Fortran code using the gfortran compiler. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
 
@@ -15,15 +15,17 @@ Funding for this project was provided by the <a href="http://www.wpcouncil.org/a
 ## Compiling the Fortran code under Mac OS X
 (1). Recent versions of Mac OS X may have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
 ```shell
-gfortran -v
+gfortran --version
 ``` 
 (2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5 (noting step 3):
 ```shell
-Using built-in specs.
-Target: i686-apple-darwin8
-Configured with: /Builds/unix/gcc/gcc-4.2/configure --prefix=/usr/local --mandir=/share/man --program-transform-name=/^[cg][^.-]*$/s/$/-4.2/ --build=i686-apple-darwin8 --host=i686-apple-darwin8 --target=i686-apple-darwin8 --enable-languages=fortran
-Thread model: posix
-gcc version 4.2.3
+GNU Fortran (GCC) 4.2.3
+Copyright (C) 2007 Free Software Foundation, Inc.
+
+GNU Fortran comes with NO WARRANTY, to the extent permitted by law.
+You may redistribute copies of GNU Fortran
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING
 ```
 (3). If you get an error message (e.g. the `gfortran` command can not be found), try installing Apple's XCode command-line tools by typing:
 ```shell
@@ -77,6 +79,43 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 (7). Once everything compiles, you can run the program by typing:
 ```shell
 main
+```
+## Compiling the Fortran code under Ubuntu Linux 
+These instructions were tested on Ubuntu v14.04 (thanks to Michael Mathews for his trouble-shooting help with Linux). 
+
+(1). Open the terminal and type: 
+```shell
+gfortran --version
+```
+(2). If you see a message like the one below, your machine has gfortran installed, and you can skip to step 5:
+```shell
+GNU Fortran (Ubuntu 4.8.4-2ubuntu1~14.04) 4.8.4
+Copyright (C) 2013 Free Software Foundation, Inc.
+```
+(3). If you get an error message (e.g. the `gfortran` command can not be found) type:
+```shell
+sudo apt-get install gfortran
+```
+(4). Assuming you now have gfortran installed, the next step is to check whether you have the LAPACK and BLAS libraries installed. If you have R installed, LAPACK and BLAS should be installed already in the /usr/lib/ directory. You can check by typing:
+```shell
+locate liblapack.a
+locate libblas.a
+```
+If you see those files in the usr/lib/ directory, you can move on to the next step. Otherwise, you'll need to install LAPACK and BLAS. These libraries are available from: http://www.netlib.org/lapack
+
+(5). Assuming you have gfortran, LAPACK and BLAS installed, make sure you are in the working directory with the Fortran files downloaded from this repository (e.g. ~/PBR-Tier-System-master/PBR Netbeans). You can use the `cd` terminal command to change directories if you need.
+```shell
+cd Type-your-working-directory-here
+# e.g.
+# cd ~/PBR-Tier-System-master/PBR Netbeans
+```
+(6). Next, use this command to compile the Fortran code:
+```shell
+gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module.f90 Generate_random_numbers_module.f90 Initialize_pop_module.f90 PBR_Errorcheck_module.f90 PBR_FileIO_Module.f90 PBR_calcs_module.f90 main.f90 -o main -L/usr/lib/ -llapack -lblas 
+```
+(7). Once everything compiles, you can run the program by typing:
+```shell
+./main
 ```
 
 [Top](#welcome-to-the-pbr-tier-system-code-repository)
