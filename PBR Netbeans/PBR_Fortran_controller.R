@@ -16,18 +16,17 @@
 #     Tier 4 is coded as the weighted by time and precision approach (Brandao and Butterworth, 2014)
 #
 #  3. n_sims is set to 100 as a place-holder for the code repository. 
-#     Batching runs with large numbers 
+#     Batching runs with larger numbers 
 #     (e.g n_sims = 2000) of simulations can take up a moderate amount 
 #     (e.g. a few Gigabytes) of disk space, and several minutes (or more) to run. 
-#     So, proceed with that in mind. 
+#     So, proceed with that in mind before running batches with large "n_sims". 
 #
-#  4. cet_file_names is a list of input files by trial for cetaceans
+#  4. cet_file_names is a list of input files by trial for cetaceans,
 #      created in PBR_create_input_files.R (see also pin_ and all_file_names)
 #
-#  5. Assumes these packages are installed:
+#  5. Assumes these packages are installed (might be some redundancies):
 #       ggplot2
 #       stringr
-#       readr
 #       tidyr
 #       magrittr
 #       dplyr 
@@ -35,11 +34,17 @@
 #----------------------------------------------------------------------------- #
 rm(list = ls())  # clear workspace
 
+# Check installed packages and install if not already --------------------------
+list_of_packages <- c("ggplot2", "stringr", "tidyr", "magrittr", "dplyr") 
+new_packages = list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages) > 0) install.packages(new_packages)
+
 # Copy existing input.par file to temp file ------------------------------------
 file.copy(from = "input.par", to = "input_par_copy.txt", overwrite = TRUE) 
 
 # Create input files for trials and load helper functions ----------------------
-source(file = "PBR_fortran_output.R") # May throw warnings: incomplete final lines
+# May throw warnings: 'incomplete final lines'. Safe to ignore.
+source(file = "PBR_fortran_output.R") 
 
 # Batch run of all cetacean trials ---------------------------------------------
 lapply(X = cet_file_names, FUN = run_batch, n_sims = 100) # run all trials
