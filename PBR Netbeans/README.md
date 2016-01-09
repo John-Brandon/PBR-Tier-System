@@ -37,10 +37,15 @@ File descriptions: PBR-Tier-System
   * This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials. 
 
 ## R Files 
+R is a freely available programming environment for statistical computing and graphics, <a href="https://cran.r-project.org/" target="_blank">available here</a>. 
 
-These files are included as an example work-flow for running trials as part of a management strategy evaluation. These files were developed under Mac OS 10.9.5. Some modification would be needed to run the batch scripts under Windows. They involve `system()` calls, which differ between operating systems. 
+The R code assumes that the Fortran code has been compiled into an executable, named "main", residing in the same directory. Instructions for compiling the Fortran code are https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md<a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md" target="_blank">available here.</a>
 
-The code in the **PBR_Fortran_controller.R** script will `source()` the functions in the other scripts. It will run batches of trials, compile depletion statistics and create plots of the simulation output. The batch functions assume that there is a compiled executable, named "main". Please also see the comments at the top of the 'controller' file regarding R packages that are assumed to be installed. Those packages can be installed from the R console using the `install.package("Package_Name_Here")` command.
+[//]: # (At present, some modification would be needed to run the batch scripts under Windows. They involve `system()` calls, which differ between operating systems.)
+
+The code in the **PBR_Fortran_controller.R** script will `source()` the functions in the other R files, and contains several calls to batch runs of simulations. It is therefore recommended, at least as a first pass, that the 'controller' R script be run using <a href="https://www.rstudio.com/" target="_blank">RStudio</a>, or another IDE that allows individual lines or segments of code to be run (segments in the controller script are delineated by commented lines). This will also provide a better sense of what the R code is doing, and provide finer control over the batching process at first. In addition to batching runs, the controller script compiles depletion statisics and creates plots of from the simulation output.  
+
+If you're running a Linux OS (e.g. Ubuntu), and don't have the pre-requisite R packages installed ("ggplot2", "stringr", "tidyr", "magrittr", and "dplyr"), you may need to: start your R session using the `sudo` terminal command (e.g. `sudo rstudio`); make sure you have the secure APT key added to your system and; have added an entry for your favorite CRAN mirror (e.g. in your /etc/apt/sources.list file). Further instructions are provided under the "Download R for Linux" link and README files for each Linux OS <a href="https://cran.r-project.org/" target="_blank">available here</a>. 
 
 Further notes below:   
 
@@ -58,11 +63,4 @@ Further notes below:
 
 5. **PBR_Fortran_controller.R**
   * Runs scripts above, compiles depletion statistics and creates plots.
-
-
-
-
-
-
-
-
+  
