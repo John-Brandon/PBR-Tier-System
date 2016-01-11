@@ -665,13 +665,13 @@ program main
 !====== +++ === === +++ === === +++ ===          
 ! Write results to output files 
 !====== +++ === === +++ === === +++ ===   
-  print *, "here"
-  print *, "lower_ii", lower_ii
-  print *, "upper_ii", upper_ii
-  open(unit = 6, file = "depl_by_trial.out")
-  write(6, "(4(a10))") "trial", "lower", "median", "upper"
-  write(6, "(a10, 3(f10.4))") REF, sorted_final_depl(lower_ii), median_depl, sorted_final_depl(upper_ii)
-  close(unit = 6)
+!  print *, "here"
+!  print *, "lower_ii", lower_ii
+!  print *, "upper_ii", upper_ii
+!  open(unit = 6, file = "depl_by_trial.out") ! TODO: Throws error under Ubuntu 14.04 (but not Windows 7 or Mac OS 10.11)
+!  write(6, "(4(a10))") "trial", "lower", "median", "upper"
+!  write(6, "(a10, 3(f10.4))") REF, sorted_final_depl(lower_ii), median_depl, sorted_final_depl(upper_ii)
+!  close(unit = 6)
 
 !  open(unit = 5, file = "N_aggregated" // percentile // ".out")
   open(unit = 5, file = "N_aggregated.out")  
