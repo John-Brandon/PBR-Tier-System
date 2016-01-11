@@ -1,4 +1,4 @@
-#----------------------------------------------------------------------------- #
+# Description ------------------------------------------------------------------
 # Code to run batches of trials, compile depletion statistics, and plot ouput
 # OS: Mac OS 10.10.4
 # R version 3.2.0 (2015-04-16)
@@ -69,9 +69,6 @@ df_depl %<>% mutate(taxa = substr(trial_id, start = 1, stop = 3),
 df_depl_cet = df_depl %>% filter(taxa == "Cet")
 df_depl_cet_ab = df_depl_cet %>% filter(trial_l == "A" | trial_l == "B")
 df_depl_cet_cd = df_depl_cet %>% filter(trial_l == "C" | trial_l == "D")
-df_depl_pin = df_depl %>% filter(taxa == "Pin")
-df_depl_pin_ab = df_depl_pin %>% filter(trial_l == "A" | trial_l == "B")
-df_depl_pin_cd = df_depl_pin %>% filter(trial_l == "C" | trial_l == "D")
 
 # Expressions for facet labels in zeh plots
 trial_names = list( 
