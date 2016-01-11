@@ -26,8 +26,6 @@ sudo apt-get update
 
 To install R (this could take a couple of minutes), open the terminal and type:
 ```shell
-# Install base R. On Ubuntu this might be an old version.
-# We'll update to the latest version below. 
 sudo apt-get -y install r-base 
 ```
 
