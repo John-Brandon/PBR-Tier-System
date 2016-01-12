@@ -37,7 +37,7 @@ File descriptions: PBR-Tier-System
   * This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials. 
 
 ## R Files 
-R is a freely available programming environment for statistical computing and graphics, <a href="https://cran.r-project.org/" target="_blank">available here</a>. 
+R is a freely available programming environment for statistical computing and graphics, <a href="https://cran.r-project.org/" target="_blank">available here</a>. Instructions for installing R are provided for Linux, Windows and Mac OS.
 
 The R code assumes that the Fortran code has been compiled into an executable, named "main", residing in the same directory. Instructions for compiling the Fortran code are https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md<a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md" target="_blank">available here.</a>
 
@@ -45,7 +45,7 @@ The R code assumes that the Fortran code has been compiled into an executable, n
 
 The code in the **PBR_Fortran_controller.R** script will `source()` the functions in the other R files, and contains several calls to batch runs of simulations. It is therefore recommended, at least as a first pass, that the 'controller' R script be run using <a href="https://www.rstudio.com/" target="_blank">RStudio</a>, or another IDE that allows individual lines or segments of code to be run (segments in the controller script are delineated by commented lines). This will also provide a better sense of what the R code is doing, and  finer control over the batching process at first. In addition to batching runs, the controller script compiles depletion statisics and creates plots of from the simulation output.  
 
-If you're running a Linux OS (e.g. Ubuntu), and don't have the pre-requisite R packages installed ("ggplot2", "stringr", "tidyr", "magrittr", and "dplyr"), you may need to start your R session using the `sudo` terminal command. Further notes on R under Ubuntu are <a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/PBR%20Netbeans/Readme_Ubuntu_R.md" target="_blank">available here</a>. Instructions are provided under the "Download R for Linux" link and README files for different Linux OS's <a href="https://cran.r-project.org/" target="_blank">available via the CRAN website</a>. Instructions are also available from CRAN for Windows and Mac OS. 
+If you're running a Linux OS (e.g. Ubuntu), and don't have the pre-requisite R packages installed ("ggplot2", "stringr", "tidyr", "magrittr", and "dplyr"), you may need to start your R session using the `sudo` terminal command. Further notes on R under Ubuntu are <a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/PBR%20Netbeans/Readme_Ubuntu_R.md" target="_blank">available here</a>. 
 
 Further notes below:   
 
