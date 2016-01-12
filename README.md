@@ -1,5 +1,5 @@
 # Welcome to the PBR Tier System Code Repository
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided which serves as a script to: automate the generation of input files for trials (<a href="http://www.cheatography.com/davechild/cheat-sheets/regular-expressions/" target="_blank">e.g. using regex</a>); batch multiple runs of simulation trials through shell commands; compile performance statistics across the batch, and; plot output. Instructions for installing R  <a href="https://cran.r-project.org/" target="_blank">are available here.</a> 
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. Additionally, R code is provided which serves as a script to: automate the generation of input files for trials; batch multiple runs of simulation trials through shell commands; compile performance statistics across the batch, and; plot output. Instructions for installing R  <a href="https://cran.r-project.org/" target="_blank">are available here.</a> 
 
 The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A full mathematical description of the operating model <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">is available here</a>
 
@@ -81,7 +81,8 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 main
 ```
 ## Compiling the Fortran code under Ubuntu Linux 
-These instructions were tested on Ubuntu v14.04 (thanks to Michael Mathews for his trouble-shooting help with Linux). 
+#### (Thanks to Michael Mathews for his trouble-shooting help with Linux)
+These instructions were tested on Ubuntu v14.04. 
 
 (1). Open the terminal and type: 
 ```shell
@@ -120,7 +121,7 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 
 [Top](#welcome-to-the-pbr-tier-system-code-repository)
 
-*last updated: 2015 Jan 05*
+*last updated: 2015 Jan*
 
 *contact: jbrandon@gmail.com*
 
