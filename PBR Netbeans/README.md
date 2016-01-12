@@ -37,7 +37,7 @@ File descriptions: PBR-Tier-System
   * This file contains the list of input variables (e.g., survey frequency, etc.) that differ between trials. 
 
 ## R Files 
-R is a freely available programming environment for statistical computing and graphics, <a href="https://cran.r-project.org/" target="_blank">available here</a>. Instructions for installing R are provided for Linux, Windows and Mac OS.
+R is a freely available programming environment for statistical computing and graphics. Instructions and downloads for installing R are provided for Linux, Windows and Mac OS at <a href="https://cran.r-project.org/" target="_blank">the CRAN website</a>.
 
 The R code assumes that the Fortran code has been compiled into an executable, named "main", residing in the same directory. Instructions for compiling the Fortran code are https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md<a href="https://github.com/John-Brandon/PBR-Tier-System/blob/master/README.md" target="_blank">available here.</a>
 
