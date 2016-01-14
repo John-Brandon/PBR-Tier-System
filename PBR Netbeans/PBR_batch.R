@@ -60,7 +60,7 @@ run_batch = function(file_names, n_sims = 100, ...){
 
   file_check(file_names) # will stop and throw error if input file(s) don't exist
 
-  file.copy(from = "input.par", to = "input_par_copy.txt", overwrite = TRUE) # copy existing input.par file to temp file
+  # file.copy(from = "input.par", to = "input_par_copy.txt", overwrite = TRUE) # copy existing input.par file to temp file
 
   for(ii in 1:length(file_names)){ # Loop over input files (trials)
     if(file_names != "input.par"){
@@ -74,7 +74,7 @@ run_batch = function(file_names, n_sims = 100, ...){
     file.copy(from = "N_aggregated.out", to = paste("N_agg_", trial_id[ii], ".out", sep = ""), overwrite = TRUE)
   }
 
-  file.copy(from = "input_par_copy.txt", to = "input.par", overwrite = TRUE) # re-establish original input.par file
+  # file.copy(from = "input_par_copy.txt", to = "input.par", overwrite = TRUE) # re-establish original input.par file
 
   trial_depl %<>% mutate(taxa = substr(trial_id, start = 1, stop = 3),
                          trial_n = substr(trial_id, start = 5, stop = 5),
