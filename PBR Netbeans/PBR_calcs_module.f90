@@ -64,7 +64,7 @@ module calcs
 ! Not used. Assigns vector with dummy variables indicating if year is a survey year.  
 !  
 ! ----------------------------------------------------------------------------------------      
-  subroutine pop_projection(f_rate, b_rate, N_age_old, N_age_new)
+  subroutine pop_projection(f_rate, b_rate, N_mat_fem, N_age_old, N_age_new)
 ! ----------------------------------------------------------------------------------------    
 ! Project population one year into the future, given human caused mortality (f_rate), selectivity pattern etc.            
 ! Assumes access to some global variables, like selectivity patterns at age (via, e.g. "use Declare_variables_module"      
@@ -72,11 +72,13 @@ module calcs
 ! ----------------------------------------------------------------------------------------
         real(kind = 8), intent(in) :: f_rate                ! Human caused mortality rate -- input, calculated prior to projection
         real(kind = 8), intent(in) :: b_rate                ! The birth rate at the start of year t+1; calculated prior to projection
+        real(kind = 8), intent(in) :: N_mat_fem             ! Number of females that have reached the age of first partuition
         real(kind = 8), intent(in) :: N_age_old(0:age_x)    ! Numbers at age at previous time step
         real(kind = 8), intent(out) :: N_age_new(0:age_x)   ! Numbers at age at next time step (ouput)
         integer(kind = 4) :: ii                             ! Counter for looping over ages
 ! Calculate calves before mortality
-        N_age_new(0) = b_sex_ratio * b_rate * sum(N_age_old(:) * prop_mat_age(:))  
+        N_age_new(0) = b_sex_ratio * b_rate * N_mat_fem          
+!        N_age_new(0) = b_sex_ratio * b_rate * sum(N_age_old(:) * prop_mat_age(:))  
 
         do ii = 1, (age_x - 1)                                              ! NPR calculations from Age 1 to Age x-1
             N_age_new(ii) = N_age_old(ii - 1) * S_age(ii - 1)                       ! Subtract natural mortality 
