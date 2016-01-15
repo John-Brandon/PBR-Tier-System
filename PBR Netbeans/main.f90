@@ -59,7 +59,8 @@ program main
   integer(kind = 4), parameter :: n_area = 4          ! Counter for do loops -- could instead read this as input from file?
   integer(kind = 4), parameter :: female = 1          
   integer(kind = 4), parameter :: male = 2            
-!---> Local variables                 
+!---> Local variables          
+  real(kind = 8) :: prop_sex_catch(1:2)
   real(kind = 8), allocatable :: f_init_ii(:)         ! Initial human caused mortality rates for each stock  
   real(kind = 8), allocatable :: f_yr_stock(:,:)      ! Human caused mortality rate each year (rows) by stock (columns)
   real(kind = 8), allocatable :: b_init_ii(:)         ! Initial birth rate for each stock 
@@ -186,6 +187,9 @@ program main
 !---> Initialize those variables declared in main program (above) -- set to zero.
   call initialize_local_vars()          ! This subroutine is contained in the main program (at bottom)
 
+  prop_sex_catch(female) = prop_catch_fem ! Relative vulnerability of females to males (1.0 = equally vulnerable)
+  prop_sex_catch(male) = 1.d0 
+  
 !---> Set seed for RNG -- see comment after 'use Generate_random_numbers_module' statement above
   Call set_random_seed() ! Set seed based on input.par, either: (a) given # (reproducible results), or (b) based on CPU clock
 
@@ -262,32 +266,11 @@ program main
   print *, NPR_age
   print *, "NPR_age (females & males):"
   print *, NPR_age * 2.d0
-
-! *  
-! DEBUGGING - Comparing with Andre's `Yield Function.R` script - but this resets NPR_mature and hence b_eq incorrectly   
-!  print *, ""
-!  Call calc_NPR_age(f_rate = 0.01d0, &           ! d0 suffix for double precision to match argument type in function                                             
-!      N_recruits = b_sex_ratio, N_age_tmp = NPR_age, & ! Calc NPR_age, NPR_oneplus and NPR_mature (F = 0)
-!      sum_1plus = NPR_oneplus, sum_mature = NPR_mature, NPR_sum_recd = NPR_sum_recd, NPR_sum_unrecd = NPR_sum_unrecd) 
-!  print *, "Finished call #2, calc_NPR_age(f_rate = 0.0): " 
-!  print *, "NPR_age (just females):" 
-!  print *, NPR_age
-!  print *, "NPR_age (females & males):"
-!  print *, NPR_age * 2.d0
-!  print *, "MAXLOC(NPR_age): "
-!  print *, MAXLOC(NPR_age)   ! This is like the `which(ii == max(x))` function in R, for vector x and index ii
-! *
   
 !---> Calculate pre-exploitation equilibrium birth rate (at carrying capacity when F = 0)
   b_eq = 1 / NPR_mature               ! Equilibrium birth rate. Equal for both stocks under assumption of identical life histories                
   print *, "Equilibrium birth rate"
   print *, b_eq
-
-  ! * * * * * *
-  ! DEBUGGGING
-!  NPR_0_F = calc_recruit_F(NPR = NPR_age, b_eq = b_eq, selex_a = selectivity, surv_a = S_age)
-               
-  ! *
   
 !---> Calculate the initial age structure and distribute across areas for each stock         
   do ii = 1, n_stocks    ! Initial age structures for each stock can differ, e.g. initial depletion may not be equal
@@ -401,6 +384,7 @@ program main
 !---> Reproduction and natural mortality --------------------------------------
 ! Note this procedure works with the total abundance (i.e. area = 0) for each stock          
             Call pop_projection(f_rate = 0.0d0, b_rate = b_yr_stock(yr, ii), &           ! Project males and females separately,
+              N_mat_fem = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, female, 0, ii, yr - 1, sim_ii)), &
               N_age_old = N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr - 1, sim_ii),  &  !  because could potentially have different selectivities, sex ratios at birth, etc. 
               N_age_new = N_age_sex_area_stock_yr_sim(:, ss, 0, ii, yr, sim_ii))         !  in a future version of operating model         
                       
@@ -461,12 +445,12 @@ program main
                                                 cv = cv_n_tier_out, &
                                                 z_score = norm_deviate)
 ! Calculate PBR ---------------------------------------------------------------		                                                
-          if (determ_pbr .eq. "N") then
+!          if (determ_pbr .eq. "N") then
             pbr_yr_sim(yr, sim_ii) = N_min_yr_sim(yr, sim_ii) * 0.5d0 * r_max * F_r(1)
-          else if (determ_pbr .eq. "Y") then
-! DEBUGGING -- set PBR equal to number of mature animals of box stocks in survey area ----            
-            pbr_yr_sim(yr, sim_ii) = N_mature_yr_stock_sim(yr, 0, sim_ii) * F_rate
-          end if
+!          else if (determ_pbr .eq. "Y") then           
+             ! Example setting deterministic exploitation rate on mature component -- Not run.
+!            !pbr_yr_sim(yr, sim_ii) = N_mature_yr_stock_sim(yr, 0, sim_ii) * F_rate
+!          end if
           
 ! ****************************************************************************************          
         else ! If population extinct, set these to zero 
@@ -515,13 +499,23 @@ program main
           do jj = 1, n_area ! Areas    
             do ss = 1, 2    ! Sexes
 
-! Numerator from spatial allocation of mortality Eqn XX                                 
-              M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = M_yr_sim(yr, sim_ii) * omega_yr_area(yr, jj) &
+!! Numerator from spatial allocation of mortality Eqn                                  
+              M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = M_yr_sim(yr, sim_ii) * prop_sex_catch(ss) &
+                * omega_yr_area(yr, jj) &
                 * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) 
-
-! Denominator from spatial allocation of mortality Eqn XX                 
+!
+!! Denominator from spatial allocation of mortality Eqn                  
               M_scale_yr_sim(yr, sim_ii) = M_scale_yr_sim(yr, sim_ii) + &
-                sum(omega_yr_area(yr, jj) * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)) 
+                sum(omega_yr_area(yr, jj) &
+                * selectivity(:) * prop_sex_catch(ss) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)) 
+
+! Numerator from spatial allocation of mortality Eqn                                  
+!              M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = M_yr_sim(yr, sim_ii) * omega_yr_area(yr, jj) &
+!                * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) 
+
+! Denominator from spatial allocation of mortality Eqn                  
+!              M_scale_yr_sim(yr, sim_ii) = M_scale_yr_sim(yr, sim_ii) + &
+!                sum(omega_yr_area(yr, jj) * selectivity(:) * N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)) 
 
             end do ! Sexes
           end do   ! Areas
@@ -539,10 +533,39 @@ program main
                   M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) / M_scale_yr_sim(yr, sim_ii)
               end if  
 
+! Proportion of total mortality by sex          
+!              if(ss .eq. female) then 
+!                print *, "Females"
+!!                print *, "M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)"
+!!                print *, M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!!              
+!!                M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
+!!                  prop_catch_fem * M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!                  
+!                print *, "After proportioning to females"
+!                print *, M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!
+!              else if(ss .eq. male) then
+!                print *, "Males"
+!!                print *, "M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)"
+!!                print *, M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!!                
+!!                M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
+!!                  (1.d0 - prop_catch_fem) * M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!                
+!                print *, "After proportioning to males"
+!                print *, M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
+!                print *, "(1.d0 - prop_catch_fem)", (1.d0 - prop_catch_fem)
+!                  ! *
+!                stop
+!!              ! *
+!              end if
+
 ! Subtract spatial mortality for this stock in this area by age and sex class
                 N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) = &
                   N_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii) - M_age_sex_area_stock_yr_sim(:, ss, jj, ii, yr, sim_ii)
-                
+                  
+
 ! Check for negative abundance at age                  
                 do aa = 0, age_x
                   if (N_age_sex_area_stock_yr_sim(aa, ss, jj, ii, yr, sim_ii) < 0.d0) then
@@ -561,6 +584,20 @@ program main
             end do       ! Sexes
           end do         ! Areas
         end do           ! Stocks      
+        
+!                print *, "female kill"
+!                print *, sum(M_age_sex_area_stock_yr_sim(0:age_x, female, 1, :, yr, sim_ii))
+!   
+!                print *, "male kill"
+!                print *, sum(M_age_sex_area_stock_yr_sim(0:age_x, male, 1, :, yr, sim_ii))
+!                print *, "female numbers after subtracting mortality"
+!                print *, sum(N_age_sex_area_stock_yr_sim(0:age_x, female, 1, :, yr, sim_ii))
+!   
+!                print *, "male numbers after subtracting mortality"
+!                print *, sum(N_age_sex_area_stock_yr_sim(0:age_x, male, 1, :, yr, sim_ii))
+!                
+!                stop      
+        
       end if             ! Finished allocating kills for sim_ii > 0
    
 ! Total numbers at age and sex for each stock (i.e. sum across areas and assign totals to 'area 0'        
@@ -593,7 +630,7 @@ program main
         N_tot_area123(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(0:age_x, 1:2, 1:3, ii, yr, sim_ii)) 
         N_mature_yr_stock_sim(yr, ii, sim_ii) = sum(N_age_sex_area_stock_yr_sim(a_m:age_x, 1:2, 1:4, ii, yr, sim_ii))
 ! *
-! TODO : Could minimize summing below, e.g. replace with N_plus(yr, ii, sim_ii) = stock size summed over areas
+! TODO : Check if could minimize summing below, e.g. replace with N_plus(yr, ii, sim_ii) = stock size summed over areas
 ! *     
         if (ii == 1) then   
           depl_yr_stock(yr, ii) = sum(N_age_sex_area_stock_yr_sim(a_d:age_x, :, 1:2, ii, yr, sim_ii)) / k_1plus(ii) 
@@ -668,7 +705,7 @@ program main
 !  print *, "here from line 668"
   print *, "lower_ii", lower_ii
   print *, "upper_ii", upper_ii
-  open(unit = 6, file = "depl_by_trial.out") ! TODO: Throws error under Ubuntu 14.04 (but not Windows 7 or Mac OS 10.11)
+  open(unit = 6, file = "depl_by_trial.out") 
   write(6, "(4(a10))") "trial", "lower", "median", "upper"
   write(6, "(a10, 3(f10.4))") REF, sorted_final_depl(lower_ii), median_depl, sorted_final_depl(upper_ii)
   close(unit = 6)
