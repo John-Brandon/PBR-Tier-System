@@ -77,9 +77,9 @@ MODULE PBR_Errorcheck_module
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if
         
-        if (prop_catch_fem < 0.d0 .or. prop_catch_fem > 1.d0) then
+        if (prop_catch_fem .le. 0.d0) then
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-          print *, "ERROR : Condition (0 < prop_catch_fem < 1) not met. Check input file."
+          print *, "ERROR : Condition (prop_catch_fem > 0) not met. Check input file."
           error_check_input = -6            
           print *, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end if        
