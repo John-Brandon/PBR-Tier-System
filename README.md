@@ -2,7 +2,13 @@
 
 --------------------------------------------------------------------------------
 
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model for the population dynamics of marine mammals. The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Cross-platform instructions are provided below for compiling the Fortran code using `gfortran`. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model for the population dynamics of marine mammals. The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A draft mathematical description of the full operating model <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">is available here</a>
+
+This code allows for a tier system approach to management strategy evaluation. The PBR formula as evaluated by Wade (1998) makes use of only the most recent estimate of abundance, irrespective of its precision and the number of estimates available. A tier system would assign species or stocks to different tiers based on the availability and quality of data. 
+
+Ultimately, a tier system approach would serve to optimize available information for each stock. For example, preliminary research has indicated that the availability and use of multiple estimates of abundance leads to an ability to meet conservation management objectives, while also having lower variability in PBR limits through time, relative to the current approach. Increased stability in PBR would likely reduce the economic uncertainty associated with human activities that are regulated according to this limit (e.g. commercial fisheries bycatch in the U.S.).
+
+The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Cross-platform instructions are provided below for compiling the Fortran code using `gfortran`. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
 
 Additionally, R code is provided which serves as a script to: 
 
@@ -12,10 +18,6 @@ Additionally, R code is provided which serves as a script to:
   * Plot output. 
   
 Instructions for installing R  <a href="https://cran.r-project.org/" target="_blank">are available here.</a> 
-
-The operating model can mimick the dynamics of either a single stock, or two stocks of the same species which overlap spatially. A draft mathematical description of the full operating model <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">is available here</a>
-
-This code allows for a tier system approach to management strategy evaluation. The PBR formula as evaluated by Wade (1998) makes use of only the most recent estimate of abundance, irrespective of its precision and the number of estimates available. A tier system would assign species or stocks to different tiers based on the availability and quality of data. Ultimately, a tier system approach would serve to optimize available information for each stock.
 
 The Fortran and R code files are located in the `PBR Netbeans` folder. <a href="https://github.com/John-Brandon/PBR-Tier-System/tree/master/PBR%20Netbeans" target="_blank">The README.md file in that folder</a> contains an overview description of each code file and notes on running the R controller script.  
 
