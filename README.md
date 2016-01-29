@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------
 
-This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model. The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Cross-platform instructions are provided below for compiling the Fortran code using `gfortran`. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
+This repository currently includes Fortran 90/95 code for an age- and sex-structured operating model for the population dynamics of marine mammals. The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Cross-platform instructions are provided below for compiling the Fortran code using `gfortran`. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
 
 Additionally, R code is provided which serves as a script to: 
 
@@ -25,6 +25,8 @@ The Fortran and R code files are located in the `PBR Netbeans` folder. <a href="
 Funding for this project was provided by the <a href="http://www.wpcouncil.org/about-us/" target="_blank">U.S. Western Pacific Fisheries Management Council</a>. Drs. <a href="https://www.linkedin.com/in/john-brandon-b5690a26" target="_blank">John R. Brandon</a>, <a href="https://fish.uw.edu/faculty/andre-punt/" target="_blank">Andr&eacute; E. Punt (U.W.)</a>, Paula Moreno (U.S.M), and Randall R. Reeves (Okapi Wildlife Assoc.) are collaborators, working together as part of the<a href="http://gcrl.usm.edu/scemfis/marine.mammal.asssessment.team.php" target="_blank"> Independent Advisory Team for Marine Mammal Assessment (IAT)</a>. The IAT was formed under the <a href="http://scemfis.org/aboutus.html" target="_blank">Science Center for Marine Fisheries</a>, with the goal of developing research projects that serve to reduce uncertainty in marine mammal stock assessment. The Science Center is managed under the <a href="http://www.nsf.gov/eng/iip/iucrc/program.jsp" target="_blank">U.S. National Science Foundation's Industry and University Cooperative Research Program.</a> 
 
 --------------------------------------------------------------------------------
+
+# Cross-platform Instructions for Compiling the Fortran Code
 
 ## Compiling the Fortran code under Mac OS X
 (1). Recent versions of Mac OS X may have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
@@ -99,7 +101,7 @@ main
 
 ## Compiling the Fortran code under Ubuntu Linux 
 #### (Thanks to Michael Mathews for his trouble-shooting help with Linux)
-These instructions were tested on Ubuntu v14.04. 
+These instructions were tested on Ubuntu v14.04 running through Oracle VirtualBox Virtual Machine (v5.0.12) under Mac OS 10.11. 
 
 (1). Open the terminal and type: 
 ```shell
