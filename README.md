@@ -6,7 +6,7 @@ This repository currently includes Fortran 90/95 code for an age- and sex-struct
 
 This code allows for a tier system approach to management strategy evaluation. The PBR formula as evaluated by Wade (1998) makes use of only the most recent estimate of abundance, irrespective of its precision and the number of estimates available. A tier system would assign species or stocks to different tiers based on the availability and quality of data. 
 
-Ultimately, a tier system approach would serve to optimize available information for each stock. For example, preliminary research has indicated that the availability and use of multiple estimates of abundance leads to an ability to meet conservation management objectives, while also having lower variability in PBR limits through time, relative to the current approach. Increased stability in PBR would likely reduce the economic uncertainty associated with human activities that are regulated according to this limit (e.g. commercial fisheries bycatch in the U.S.).
+Ultimately, a tier system approach would serve to optimize available information for each stock. For example, preliminary research has indicated that the availability and use of multiple estimates of abundance leads to an ability to meet conservation management objectives, while also resulting in lower variability in PBR limits through time, relative to the current approach. Increased stability in PBR would likely reduce the economic uncertainty associated with human activities that are regulated according to this limit (e.g. commercial fisheries bycatch in the U.S.).
 
 The Fortran code has been developed under Mac OS 10.9.5, using <a href="https://gcc.gnu.org/wiki/GFortran" target="_blank">the free, open source, GNU Fortran 95 (gfortran) compiler</a>. Cross-platform instructions are provided below for compiling the Fortran code using `gfortran`. Compiled executables for Mac OS X and Windows <a href="https://www.dropbox.com/sh/qga2x5sq2h41vfp/AADlfFXYeO9MjfjrRor4-Z1Ca?dl=0" target="_blank">are available here.</a> 
 
@@ -28,7 +28,7 @@ Funding for this project was provided by the <a href="http://www.wpcouncil.org/a
 
 --------------------------------------------------------------------------------
 
-# Cross-platform Instructions for Compiling the Fortran Code
+# Cross-platform (Mac, Windows, Linux) Instructions for Compiling the Fortran Code 
 
 ## Compiling the Fortran code under Mac OS X
 (1). Recent versions of Mac OS X may have the gfortran compiler pre-installed. You can check if your machine has this installed by opening the terminal and typing
