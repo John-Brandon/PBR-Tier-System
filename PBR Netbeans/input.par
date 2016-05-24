@@ -2,9 +2,9 @@ MANAGEMENT PARAMETERS         CASE  Cet_0A
 Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 
 # Input parameters for PBR Tier system simulations
-cseed           N       # Y = Yes, then provide a seed (iseed) to the random number generator; N = seed with CPU clock instead           
+cseed           Y       # Y = Yes, then provide a seed (iseed) to the random number generator; N = seed with CPU clock instead           
 iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
-n_sims           100    # Number of simulated population trajectories
+n_sims          100     # Number of simulated population trajectories
 n_stocks        1       # Number of stocks (one or two)
 yr_max          100     # Number of years to project over
 surv_freq       4       # Interval (yrs) between abundance surveys : Wade (1998) trial 6
