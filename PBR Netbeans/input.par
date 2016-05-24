@@ -2,9 +2,9 @@ MANAGEMENT PARAMETERS         CASE  Cet_0A
 Base Case: CV_N = 0.20; R_max = 0.04; surv_freq = 4; cv_m = 0.30
 
 # Input parameters for PBR Tier system simulations
-cseed           Y       # Y = Yes, then provide a seed (iseed) to the random number generator; N = seed with CPU clock instead           
+cseed           N       # Y = Yes, then provide a seed (iseed) to the random number generator; N = seed with CPU clock instead           
 iseed           1234    # User supplied seed for radom number generator, ignored if cseed = N
-n_sims          100     # Number of simulated population trajectories
+n_sims           100    # Number of simulated population trajectories
 n_stocks        1       # Number of stocks (one or two)
 yr_max          100     # Number of years to project over
 surv_freq       4       # Interval (yrs) between abundance surveys : Wade (1998) trial 6
@@ -45,6 +45,6 @@ cv_n_true       0.20    # Actual CV of abundance (Eqn 3) Wade (1998) used to gen
 tier            2       # Data tier (Tier 2 = Standard PBR approach of using only last estimate of abundance)
 n_yrs_avg       1       # Window of years to average across (e.g. n_yrs_avg = 9 would average two abundance estimates if survey interval = 8 yrs)
 determ_pbr      N       # N = Stochastic human caused mortality; Y = Deterministic (e.g., equal exactly to PBR or some fraction of abundance) 
-prop_catch_fem  1.0     # Relative vulnerability of females to males (1.0 means both sexes equally vulnerable)
+prop_catch_fem  1000.000# Relative vulnerability of females to males (1.0 means both sexes equally vulnerable)
 F_rate          0.01    # Constant fishing mortality rate (used for debugging MNPL as function of theta, selectivity ogive etc.)
 dd_component    1       # Density dependence on: "1" = 1+ component or "M" = mature component
