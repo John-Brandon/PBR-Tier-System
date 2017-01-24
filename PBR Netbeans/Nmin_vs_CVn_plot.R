@@ -2,7 +2,7 @@
 # Plot N_min percentile that meets MMPA management objective as a function
 #  of the CV of the abundance estimates
 # John Brandon
-rm(list = ls())
+rm(list = ls())    # Clear workspace
 library(magrittr)  # For Pipes %>% in R
 library(dplyr)     # Data wrangling
 library(ggplot2)   # Plotting
