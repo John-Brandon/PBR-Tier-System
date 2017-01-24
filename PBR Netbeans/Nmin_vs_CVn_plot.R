@@ -10,7 +10,7 @@ library(devtools)  # To source code snippet (aka 'gist') with custom plot theme
 #
 # Read in data.frame with solutions to Nmin percentile as function of CV_N -----
 #
-snmin = read.csv(file = "solve_Nmin.csv") %>% tbl_df() %>% 
+snmin = read.csv(file = "solve_Nmin.csv") %>% 
   mutate(Tier = as.factor(Tier))
 
 #
