@@ -103,7 +103,10 @@ main
 
 ## Compiling the Fortran code under Ubuntu Linux 
 #### (Thanks to Michael Mathews for his trouble-shooting help with Linux)
-These instructions were tested on Ubuntu v14.04 running through Oracle VirtualBox Virtual Machine (v5.0.12) under Mac OS 10.11. 
+
+It has been reported that on Fedora, the Lapack and Blas packages only have the shared libraries (ie, *.so files), and to get the static libraries you will need to install lapack-static and blas-static. Also on a 64 bit Fedora install the libraries are in /usr/lib64 not /usr/lib.
+
+The instructions below were tested on Ubuntu v14.04 running through Oracle VirtualBox Virtual Machine (v5.0.12) under Mac OS 10.11.
 
 (1). Open the terminal and type: 
 ```shell
@@ -147,7 +150,7 @@ gfortran A_Random_module.f90 BRENT.f90 Declare_variables_module.f90 Eigen_module
 --------------------------------------------------------------------------------
 
 ### References
-Wade, P. R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds .Marine Mammal Science, 14:1–37. 
+Wade, P. R. 1998. Calculating limits to the allowable human-caused mortality of cetaceans and pinnipeds. Marine Mammal Science, 14:1–37. 
 
 --------------------------------------------------------------------------------
 *last updated: 2015 Jan*
